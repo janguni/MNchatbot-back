@@ -34,26 +34,19 @@ public class PetController {
     private final PetService petService;
 
     // 반려동물 추가
-    @PostMapping("/addPet")
+    @PostMapping("/pet/add")
     public ResponseEntity<String> addPet(@RequestBody PetRegReq petRegReq, Authentication authentication) {
         PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
-        log.info("member->{}", principal.getMember().getMemberEmail());
         petService.registerPet(petRegReq);
-        log.info("petRegReg={}",petRegReq.getPetName());
+        log.info("addPet = {}",petRegReq.getPetName());
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.ADD_PET), HttpStatus.OK);
     }
 
     // 반려동물 프로필 변경
-    @PostMapping("/changePetInfo")
-    public ResponseEntity<String> addPet(@RequestBody ChangePetInfoReq petInfoReq) {
+    @PostMapping("/pet/changeInfo")
+    public ResponseEntity<String> changePetInfo(@RequestBody ChangePetInfoReq petInfoReq) {
         petService.changePetInfo(petInfoReq);
-        log.info("petRegReg={}",petInfoReq.getPetName());
+        log.info("changePetInfo = {}",petInfoReq.getPetName());
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_CHANGE_PET_INFO), HttpStatus.OK);
     }
-
-
-    // 반려동물 목록
-//    @GetMapping("/")
-
-
 }
