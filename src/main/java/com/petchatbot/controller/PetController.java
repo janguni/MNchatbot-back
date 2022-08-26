@@ -47,6 +47,14 @@ public class PetController {
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_CHANGE_PET_INFO), HttpStatus.OK);
     }
 
+    // 반려동물 List
+    @GetMapping("/pet/petList")
+    public ResponseEntity<String> petList(Authentication authentication) {
+        String email = extractEmail(authentication);
+        petService.petList(email);
+        return null;
+    }
+
     private String extractEmail(Authentication authentication){
         PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
         String memberEmail = principal.getMember().getMemberEmail();

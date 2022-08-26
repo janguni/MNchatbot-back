@@ -14,4 +14,6 @@ public interface PetService {
     // 반려동물 변경
     void changePetInfo(ChangePetInfoReq petInfoReq);
 
+    void petList(String email);
+
 }

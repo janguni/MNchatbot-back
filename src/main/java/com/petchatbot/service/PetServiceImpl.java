@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -35,6 +37,15 @@ public class PetServiceImpl implements PetService{
     public void changePetInfo(ChangePetInfoReq petInfoReq) {
         Pet findPet = getFindPet(petInfoReq);
         setPet(petInfoReq, findPet);
+    }
+
+    @Override
+    public void petList(String email) {
+        Member member = memberRepository.findByMemberEmail(email);
+        List<Pet> petList = member.getPetList();
+        for (Pet pet: petList){
+            log.info("pet 정보 ={}", pet.getPetName());
+        }
     }
 
     private void setPet(ChangePetInfoReq petInfoReq, Pet findPet) {

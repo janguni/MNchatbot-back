@@ -13,8 +13,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import static com.petchatbot.domain.model.Breed.CAT;
 import static com.petchatbot.domain.model.Breed.DOG;
 import static com.petchatbot.domain.model.Neutralization.NEUTER;
+import static com.petchatbot.domain.model.PetSex.FEMALE;
 import static com.petchatbot.domain.model.PetSex.MALE;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,15 +33,17 @@ class MemberRepositoryTest {
     PetService petService;
 
     @Test
-    void 회원탈퇴(){
+    void 회원탈퇴(){ //지연로딩 발생// No Session
         MemberDto memberDto = new MemberDto("abc@naver.com", "pwpw");
         memberService.join(memberDto);
 
-        PetRegReq petRegReq = new PetRegReq(DOG, "haru", 2, MALE, NEUTER);
-        petService.registerPet(petRegReq, memberDto.getMemberEmail());
+        PetRegReq pet1 = new PetRegReq(DOG, "haru", 2, MALE, NEUTER);
+        PetRegReq pet2 = new PetRegReq(CAT, "onemac", 3, FEMALE, NEUTER);
+        petService.registerPet(pet1, memberDto.getMemberEmail());
+        petService.registerPet(pet2, memberDto.getMemberEmail());
 
         EmailDto emailDto = new EmailDto(memberDto.getMemberEmail());
-        memberService.withdrawal(emailDto);
+        petService.petList(emailDto.getReceiveMail());
 
     }
 
