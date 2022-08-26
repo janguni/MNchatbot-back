@@ -1,5 +1,6 @@
 package com.petchatbot.service;
 
+import com.petchatbot.domain.dto.EmailDto;
 import com.petchatbot.domain.dto.MemberDto;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +17,9 @@ public interface MemberService {
 
     // 비밀번호 변경
     void changePassword(MemberDto memberDto);
+
+    // 회원탈퇴
+    void withdrawal(EmailDto emailDto);
 
 
 

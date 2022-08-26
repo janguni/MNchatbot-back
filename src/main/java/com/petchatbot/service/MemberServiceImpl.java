@@ -1,5 +1,6 @@
 package com.petchatbot.service;
 
+import com.petchatbot.domain.dto.EmailDto;
 import com.petchatbot.domain.dto.MemberDto;
 import com.petchatbot.domain.model.Member;
 import com.petchatbot.repository.MemberRepository;
@@ -51,8 +52,12 @@ public class MemberServiceImpl implements MemberService {
         findMember.changePassword(encodedPassword);
     }
 
-
-
-
-
+    // 회원탈퇴
+    @Transactional
+    @Override
+    public void withdrawal(EmailDto emailDto) {
+        String memberEmail = emailDto.getReceiveMail();
+        Member findMember = memberRepository.findByMemberEmail(memberEmail);
+        memberRepository.delete(findMember);
+    }
 }

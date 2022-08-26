@@ -2,6 +2,7 @@ package com.petchatbot.controller;
 
 import com.petchatbot.config.ResponseMessage;
 import com.petchatbot.config.StatusCode;
+import com.petchatbot.config.auth.PrincipalDetails;
 import com.petchatbot.domain.dto.CodeDto;
 import com.petchatbot.domain.dto.EmailCodeDto;
 import com.petchatbot.domain.dto.EmailDto;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -121,6 +123,15 @@ public class MemberController {
         MemberDto memberDto = new MemberDto(memberEmail, memberNewPassword);
         memberService.changePassword(memberDto);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CHANGE_PW), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/member/delete")
+    public ResponseEntity<String> withdrawal(Authentication authentication){
+        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
+        String memberEmail = principal.getMember().getMemberEmail();
+        EmailDto emailDto = new EmailDto(memberEmail);
+        memberService.withdrawal(emailDto);
+        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.DELETE_USER), HttpStatus.OK);
     }
 
     public int makeRandomNumber() {

@@ -23,7 +23,7 @@ public class Member {
     private String memberPassword;
     private String roles; // USER, ADMIN
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Pet> petList = new ArrayList<>();
 
     public Member() {
