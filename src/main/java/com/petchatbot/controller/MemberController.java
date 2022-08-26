@@ -32,29 +32,31 @@ public class MemberController {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    // 이메일 중복 확인
     @PostMapping("/validateDuplicateEmail")
     public ResponseEntity<String> validateDuplicateEmail(@RequestBody EmailDto emailDto) {
-        log.info("validate email={}", emailDto.getReceiveMail());
         if (memberService.isExistingMember(emailDto.getReceiveMail())){
             log.info("--중복된 이메일--");
             return new ResponseEntity(DefaultRes.res(StatusCode.CONFLICTPERMALINK, ResponseMessage.DUPLICATE_EMAIL), HttpStatus.OK);
         }
+        log.info("validate email={}", emailDto.getReceiveMail());
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.AVAILABLE_EMAIL), HttpStatus.OK);
     }
 
-    @PostMapping("/join")
-    public ResponseEntity<String> join(@RequestBody JoinReq joinReq) {
-        String email = joinReq.getMemberEmail();
-        String password = joinReq.getMemberPassword();
+//    @PostMapping("/join")
+//    public ResponseEntity<String> join(@RequestBody JoinReq joinReq) {
+//        String email = joinReq.getMemberEmail();
+//        String password = joinReq.getMemberPassword();
+//
+//        String rawPassword = joinReq.getMemberPassword();
+//        String encodedPassword = bCryptPasswordEncoder.encode(rawPassword); // 패스워드 암호화
+//
+//        // 성공 로직
+//        MemberDto memberDto = new MemberDto(email, encodedPassword);
+//        log.info("email={}, password={}", email, rawPassword);
+//        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.ENTER_JOIN_INFORMATION), HttpStatus.OK);
+//    }
 
-        String rawPassword = joinReq.getMemberPassword();
-        String encodedPassword = bCryptPasswordEncoder.encode(rawPassword); // 패스워드 암호화
-
-        // 성공 로직
-        MemberDto memberDto = new MemberDto(email, encodedPassword);
-        log.info("email={}, password={}", email, rawPassword);
-        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.ENTER_JOIN_INFORMATION), HttpStatus.OK);
-    }
 
     // 이메일 전송
     @PostMapping("/sendEmailCode")
@@ -73,10 +75,9 @@ public class MemberController {
     }
 
 
-    // 인증번호 입력 (회원가입)
+    // 인증번호 입력 & 회원가입
     @PostMapping("/enterEmailCode/join")
     public ResponseEntity<String> enterEmailCode(@RequestBody EmailCodeDto ecCode){
-        log.info("join시도 email={}", ecCode.getMemberEmail());
         int sendCode = ecCode.getSendCode();
         int receivedCode = ecCode.getReceivedCode();
 
@@ -87,7 +88,7 @@ public class MemberController {
 
             MemberDto memberDto = new MemberDto(memberEmail, encodedPassword);
             memberService.join(memberDto);
-            log.info("join성공 이메일={}", ecCode.getMemberEmail());
+            log.info("join email={}", ecCode.getMemberEmail());
             return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER), HttpStatus.OK);
         }
         else{
@@ -96,28 +97,28 @@ public class MemberController {
         }
     }
 
-    // 인증코드 입력 (비밀번호 변경)
-    @PostMapping("/enterEmailCode/changePw")
+    // 인증코드 입력 (비밀번호 변경을 위함)
+    @PostMapping("/enterEmailCode")
     public ResponseEntity<String> enterEmailCode_password(@RequestBody CodeDto codeDto){
         int sendCode = codeDto.getSendCode();
         int receivedCode = codeDto.getReceivedCode();
 
         if (sendCode == receivedCode){
+            log.info("비밀번호 설정을 위한 인증통과");
             return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_EMAIL_CODE), HttpStatus.OK);
         }
         else{
+            log.info("--잘못된 인증코드 입력--");
             return new ResponseEntity(DefaultRes.res(StatusCode.BAD_REQUEST, ResponseMessage.WRONG_EMAIL_CODE), HttpStatus.OK);
         }
     }
-
-    @PostMapping("/changePw")
+    // 비밀번호 변경
+    @PatchMapping("/member/changePw")
     public ResponseEntity<String> change_password(@RequestBody ChangePwReq changePwReq) {
         String memberEmail = changePwReq.getMemberEmail();
         String memberNewPassword = changePwReq.getMemberNewPassword();
-        log.info("changePwReq.email={}", memberEmail);
-        log.info("changePwReq.password={}", memberNewPassword);
+        log.info("changePw email={}", memberEmail);
         MemberDto memberDto = new MemberDto(memberEmail, memberNewPassword);
-
         memberService.changePassword(memberDto);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CHANGE_PW), HttpStatus.OK);
     }
@@ -128,8 +129,6 @@ public class MemberController {
         int checkNum = r.nextInt(888888) + 111111;
         return checkNum;
     }
-
-
 
 }
 
