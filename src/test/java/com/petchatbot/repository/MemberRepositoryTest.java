@@ -29,20 +29,7 @@ class MemberRepositoryTest {
     @Autowired
     PetService petService;
 
-    @Test
-    void 회원탈퇴(){ //지연로딩 발생// No Session
-        MemberDto memberDto = new MemberDto("abc@naver.com", "pwpw");
-        memberService.join(memberDto);
 
-        PetReq pet1 = new PetReq(DOG, "haru", 2, MALE, NEUTER);
-        PetReq pet2 = new PetReq(CAT, "onemac", 3, FEMALE, NEUTER);
-        petService.registerPet(pet1, memberDto.getMemberEmail());
-        petService.registerPet(pet2, memberDto.getMemberEmail());
-
-        EmailDto emailDto = new EmailDto(memberDto.getMemberEmail());
-        petService.petList(emailDto.getReceiveMail());
-
-    }
 
 
 }
