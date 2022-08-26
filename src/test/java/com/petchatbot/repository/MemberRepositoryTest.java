@@ -35,8 +35,8 @@ class MemberRepositoryTest {
         MemberDto memberDto = new MemberDto("abc@naver.com", "pwpw");
         memberService.join(memberDto);
 
-        PetRegReq petRegReq = new PetRegReq(memberDto.getMemberEmail(), DOG, "haru", 2, MALE, NEUTER);
-        petService.registerPet(petRegReq);
+        PetRegReq petRegReq = new PetRegReq(DOG, "haru", 2, MALE, NEUTER);
+        petService.registerPet(petRegReq, memberDto.getMemberEmail());
 
         EmailDto emailDto = new EmailDto(memberDto.getMemberEmail());
         memberService.withdrawal(emailDto);

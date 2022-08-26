@@ -9,7 +9,7 @@ import com.petchatbot.domain.requestAndResponse.PetRegReq;
 public interface PetService {
 
     // 반려동물 추가
-    void registerPet(PetRegReq petRegReq);
+    void registerPet(PetRegReq petRegReq, String email);
 
     // 반려동물 변경
     void changePetInfo(ChangePetInfoReq petInfoReq);

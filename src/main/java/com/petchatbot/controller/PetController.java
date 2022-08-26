@@ -33,8 +33,8 @@ public class PetController {
     // 반려동물 추가
     @PostMapping("/pet/add")
     public ResponseEntity<String> addPet(@RequestBody PetRegReq petRegReq, Authentication authentication) {
-        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
-        petService.registerPet(petRegReq);
+        String email = extractEmail(authentication);
+        petService.registerPet(petRegReq, email);
         log.info("addPet = {}",petRegReq.getPetName());
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.ADD_PET), HttpStatus.OK);
     }
@@ -45,5 +45,11 @@ public class PetController {
         petService.changePetInfo(petInfoReq);
         log.info("changePetInfo = {}",petInfoReq.getPetName());
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_CHANGE_PET_INFO), HttpStatus.OK);
+    }
+
+    private String extractEmail(Authentication authentication){
+        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
+        String memberEmail = principal.getMember().getMemberEmail();
+        return memberEmail;
     }
 }

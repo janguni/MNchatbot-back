@@ -116,8 +116,8 @@ public class MemberController {
     }
     // 비밀번호 변경
     @PatchMapping("/member/changePw")
-    public ResponseEntity<String> change_password(@RequestBody ChangePwReq changePwReq) {
-        String memberEmail = changePwReq.getMemberEmail();
+    public ResponseEntity<String> change_password(@RequestBody ChangePwReq changePwReq, Authentication authentication) {
+        String memberEmail = extractEmail(authentication);
         String memberNewPassword = changePwReq.getMemberNewPassword();
         log.info("changePw email={}", memberEmail);
         MemberDto memberDto = new MemberDto(memberEmail, memberNewPassword);
@@ -127,8 +127,7 @@ public class MemberController {
 
     @DeleteMapping("/member/delete")
     public ResponseEntity<String> withdrawal(Authentication authentication){
-        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
-        String memberEmail = principal.getMember().getMemberEmail();
+        String memberEmail = extractEmail(authentication);
         EmailDto emailDto = new EmailDto(memberEmail);
         memberService.withdrawal(emailDto);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.DELETE_USER), HttpStatus.OK);
@@ -139,6 +138,12 @@ public class MemberController {
         Random r = new Random();
         int checkNum = r.nextInt(888888) + 111111;
         return checkNum;
+    }
+
+    private String extractEmail(Authentication authentication){
+        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
+        String memberEmail = principal.getMember().getMemberEmail();
+        return memberEmail;
     }
 
 }

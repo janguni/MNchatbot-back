@@ -1,5 +1,6 @@
 package com.petchatbot.service;
 
+import com.petchatbot.domain.dto.EmailDto;
 import com.petchatbot.domain.model.*;
 import com.petchatbot.domain.requestAndResponse.ChangePetInfoReq;
 import com.petchatbot.domain.requestAndResponse.PetRegReq;
@@ -22,8 +23,8 @@ public class PetServiceImpl implements PetService{
 
     @Transactional
     @Override
-    public void registerPet(PetRegReq petRegReq) {
-        Member findMember = getFindMember(petRegReq.getMemberEmail());
+    public void registerPet(PetRegReq petRegReq, String email) {
+        Member findMember = getFindMember(email);
         Pet pet = createPetEntity(petRegReq);
         petRepository.save(pet);
         findMember.addPet(pet);

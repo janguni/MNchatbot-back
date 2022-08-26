@@ -7,7 +7,6 @@ import lombok.Data;
 
 @Data
 public class PetRegReq {
-    private String memberEmail;
     private Breed petBreed;
     private String petName;
     private int petAge;
@@ -17,8 +16,7 @@ public class PetRegReq {
     public PetRegReq() {
     }
 
-    public PetRegReq(String memberEmail, Breed petBreed, String petName, int petAge, PetSex petSex, Neutralization petNeutralization) {
-        this.memberEmail = memberEmail;
+    public PetRegReq(Breed petBreed, String petName, int petAge, PetSex petSex, Neutralization petNeutralization) {
         this.petBreed = petBreed;
         this.petName = petName;
         this.petAge = petAge;
