@@ -112,7 +112,7 @@ public class MemberController {
         }
     }
     // 비밀번호 변경
-    @PostMapping("/member/changePw")
+    @PatchMapping("/member/changePw")
     public ResponseEntity<String> change_password(@RequestBody ChangePwReq changePwReq) {
         String memberEmail = changePwReq.getMemberEmail();
         String memberNewPassword = changePwReq.getMemberNewPassword();

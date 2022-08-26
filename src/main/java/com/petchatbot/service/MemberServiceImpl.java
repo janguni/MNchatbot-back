@@ -33,7 +33,6 @@ public class MemberServiceImpl implements MemberService {
     // 회원가입
     @Override
     public void join(MemberDto memberDto){
-        log.info("join member email= {}, password={}", memberDto.getMemberEmail(), memberDto.getMemberPassword());
         String memberEmail = memberDto.getMemberEmail();
         String memberPassword = memberDto.getMemberPassword() ;
         Member member = new Member(memberEmail, memberPassword);
@@ -42,7 +41,6 @@ public class MemberServiceImpl implements MemberService {
 
     // 비밀번호 변경
     @Transactional
-
     public void changePassword(MemberDto memberDto){
         Member findMember = memberRepository.findByMemberEmail(memberDto.getMemberEmail());
         if (memberDto.getMemberPassword() == null){
@@ -51,7 +49,6 @@ public class MemberServiceImpl implements MemberService {
         String rawPassword = memberDto.getMemberPassword();
         String encodedPassword = bCryptPasswordEncoder.encode(rawPassword);
         findMember.changePassword(encodedPassword);
-        log.info("changedMember email={}, password={}", findMember.getMemberEmail(), findMember.getMemberPassword());
     }
 
 
