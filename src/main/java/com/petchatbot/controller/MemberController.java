@@ -36,6 +36,7 @@ public class MemberController {
     public ResponseEntity<String> validateDuplicateEmail(@RequestBody EmailDto emailDto) {
         log.info("validate email={}", emailDto.getReceiveMail());
         if (memberService.isExistingMember(emailDto.getReceiveMail())){
+            log.info("--중복된 이메일--");
             return new ResponseEntity(DefaultRes.res(StatusCode.CONFLICTPERMALINK, ResponseMessage.DUPLICATE_EMAIL), HttpStatus.OK);
         }
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.AVAILABLE_EMAIL), HttpStatus.OK);
@@ -56,16 +57,17 @@ public class MemberController {
     }
 
     // 이메일 전송
-    @PostMapping("/sendEmail")
+    @PostMapping("/sendEmailCode")
     public ResponseEntity<String> sendEmail(@RequestBody EmailDto emailDto) throws MessagingException {
+        log.info("sendEmailCode email={}", emailDto);
         try {
-            log.info("memberEmail={}", emailDto);
             int RandomNumber = makeRandomNumber();
 
             emailService.sendEmail(emailDto, "멍냥챗봇 인증번호 발송 이메일 입니다.", RandomNumber);
             return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SEND_EMAIL, RandomNumber), HttpStatus.OK);
 
         } catch (MessagingException e){
+            log.info("--이메일 인증코드 발송 실패--");
             return new ResponseEntity(DefaultRes.res(StatusCode.INTERNAL_SERVER_ERROR, ResponseMessage.SEND_EMAIL_FAIL, null), HttpStatus.OK);
         }
     }
@@ -74,8 +76,7 @@ public class MemberController {
     // 인증번호 입력 (회원가입)
     @PostMapping("/enterEmailCode/join")
     public ResponseEntity<String> enterEmailCode(@RequestBody EmailCodeDto ecCode){
-        log.info("enterEmailCode memberEmail={}, memberPassword={}, sendCode={}, receivedCode={}",
-                ecCode.getMemberEmail(), ecCode.getMemberPassword(), ecCode.getSendCode(), ecCode.getReceivedCode());
+        log.info("join시도 email={}", ecCode.getMemberEmail());
         int sendCode = ecCode.getSendCode();
         int receivedCode = ecCode.getReceivedCode();
 
@@ -86,9 +87,11 @@ public class MemberController {
 
             MemberDto memberDto = new MemberDto(memberEmail, encodedPassword);
             memberService.join(memberDto);
+            log.info("join성공 이메일={}", ecCode.getMemberEmail());
             return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER), HttpStatus.OK);
         }
         else{
+            log.info("--잘못된 인증코드 입력으로 회원가입 실패--");
             return new ResponseEntity(DefaultRes.res(StatusCode.BAD_REQUEST, ResponseMessage.WRONG_EMAIL_CODE), HttpStatus.OK);
         }
     }
