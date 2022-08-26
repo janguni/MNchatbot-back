@@ -2,13 +2,11 @@ package com.petchatbot.repository;
 
 import com.petchatbot.domain.dto.EmailDto;
 import com.petchatbot.domain.dto.MemberDto;
-import com.petchatbot.domain.model.Member;
 
-import com.petchatbot.domain.requestAndResponse.PetRegReq;
+import com.petchatbot.domain.requestAndResponse.PetReq;
 import com.petchatbot.service.MemberService;
 import com.petchatbot.service.PetService;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,7 +16,6 @@ import static com.petchatbot.domain.model.Breed.DOG;
 import static com.petchatbot.domain.model.Neutralization.NEUTER;
 import static com.petchatbot.domain.model.PetSex.FEMALE;
 import static com.petchatbot.domain.model.PetSex.MALE;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Slf4j
@@ -37,8 +34,8 @@ class MemberRepositoryTest {
         MemberDto memberDto = new MemberDto("abc@naver.com", "pwpw");
         memberService.join(memberDto);
 
-        PetRegReq pet1 = new PetRegReq(DOG, "haru", 2, MALE, NEUTER);
-        PetRegReq pet2 = new PetRegReq(CAT, "onemac", 3, FEMALE, NEUTER);
+        PetReq pet1 = new PetReq(DOG, "haru", 2, MALE, NEUTER);
+        PetReq pet2 = new PetReq(CAT, "onemac", 3, FEMALE, NEUTER);
         petService.registerPet(pet1, memberDto.getMemberEmail());
         petService.registerPet(pet2, memberDto.getMemberEmail());
 

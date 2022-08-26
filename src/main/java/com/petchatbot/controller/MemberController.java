@@ -76,6 +76,13 @@ public class MemberController {
         }
     }
 
+    // 사용자 이메일 확인
+    @GetMapping("/member/email")
+    public ResponseEntity<String> enterEmailCode(Authentication authentication) {
+        String email = extractEmail(authentication);
+        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.GET_EMAIL, email), HttpStatus.OK);
+    }
+
 
     // 인증번호 입력 & 회원가입
     @PostMapping("/enterEmailCode/join")
@@ -114,6 +121,7 @@ public class MemberController {
             return new ResponseEntity(DefaultRes.res(StatusCode.BAD_REQUEST, ResponseMessage.WRONG_EMAIL_CODE), HttpStatus.OK);
         }
     }
+
     // 비밀번호 변경
     @PatchMapping("/member/changePw")
     public ResponseEntity<String> change_password(@RequestBody ChangePwReq changePwReq, Authentication authentication) {
@@ -125,14 +133,17 @@ public class MemberController {
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CHANGE_PW), HttpStatus.OK);
     }
 
+    // 회원탈퇴
     @DeleteMapping("/member/delete")
     public ResponseEntity<String> withdrawal(Authentication authentication){
         String memberEmail = extractEmail(authentication);
+        log.info("delete email={}", memberEmail);
         EmailDto emailDto = new EmailDto(memberEmail);
         memberService.withdrawal(emailDto);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.DELETE_USER), HttpStatus.OK);
     }
 
+    // 비밀번호 암호화를 위한 난수얻기
     public int makeRandomNumber() {
         // 난수의 범위 111111 ~ 999999 (6자리 난수)
         Random r = new Random();
@@ -140,6 +151,7 @@ public class MemberController {
         return checkNum;
     }
 
+    // JWT토큰을 통해 사용자 이메일 얻기
     private String extractEmail(Authentication authentication){
         PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
         String memberEmail = principal.getMember().getMemberEmail();

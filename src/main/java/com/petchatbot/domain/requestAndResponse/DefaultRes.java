@@ -1,8 +1,12 @@
 package com.petchatbot.domain.requestAndResponse;
 
+import com.petchatbot.domain.dto.PetListDto;
+import com.petchatbot.domain.model.Pet;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor

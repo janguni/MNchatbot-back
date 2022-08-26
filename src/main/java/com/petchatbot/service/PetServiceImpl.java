@@ -1,9 +1,9 @@
 package com.petchatbot.service;
 
-import com.petchatbot.domain.dto.EmailDto;
+import com.petchatbot.domain.dto.PetListDto;
 import com.petchatbot.domain.model.*;
 import com.petchatbot.domain.requestAndResponse.ChangePetInfoReq;
-import com.petchatbot.domain.requestAndResponse.PetRegReq;
+import com.petchatbot.domain.requestAndResponse.PetReq;
 import com.petchatbot.repository.MemberRepository;
 import com.petchatbot.repository.PetRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +24,7 @@ public class PetServiceImpl implements PetService{
 
     @Transactional
     @Override
-    public void registerPet(PetRegReq petRegReq, String email) {
+    public void registerPet(PetReq petRegReq, String email) {
         Member findMember = getFindMember(email);
         Pet pet = createPetEntity(petRegReq);
         petRepository.save(pet);
@@ -40,12 +39,37 @@ public class PetServiceImpl implements PetService{
     }
 
     @Override
-    public void petList(String email) {
+    public List<PetListDto> petList(String email) {
         Member member = memberRepository.findByMemberEmail(email);
         List<Pet> petList = member.getPetList();
+
+        List<PetListDto> pets = new ArrayList<>();
         for (Pet pet: petList){
-            log.info("pet 정보 ={}", pet.getPetName());
+            //log.info("pet 정보 ={}", pet.getPetName());
+            String petName = pet.getPetName();
+            Long petSerial = pet.getPetSerial();
+            Breed petBreed = pet.getPetBreed();
+            PetListDto petListDto = new PetListDto(petName, petSerial, petBreed);
+            pets.add(petListDto);
         }
+        return pets;
+    }
+
+    @Override
+    public PetReq petInfo(Long petSerial) {
+        Pet pet = petRepository.findByPetSerial(petSerial);
+        PetReq petReq = extracted(pet);
+        return petReq;
+    }
+
+    private PetReq extracted(Pet pet) {
+        String petName = pet.getPetName();
+        int petAge = pet.getPetAge();
+        Breed petBreed = pet.getPetBreed();
+        PetSex petSex = pet.getPetSex();
+        Neutralization petNeutralization = pet.getPetNeutralization();
+        PetReq petReq = new PetReq(petBreed, petName, petAge, petSex, petNeutralization);
+        return petReq;
     }
 
     private void setPet(ChangePetInfoReq petInfoReq, Pet findPet) {
@@ -69,7 +93,7 @@ public class PetServiceImpl implements PetService{
         return findMember;
     }
 
-    private Pet createPetEntity(PetRegReq petRegReq) {
+    private Pet createPetEntity(PetReq petRegReq) {
         Breed petBreed = petRegReq.getPetBreed();
         log.info("petBreed={}", petBreed);
         String petName = petRegReq.getPetName();

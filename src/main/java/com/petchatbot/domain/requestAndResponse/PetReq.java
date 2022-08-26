@@ -6,17 +6,17 @@ import com.petchatbot.domain.model.PetSex;
 import lombok.Data;
 
 @Data
-public class PetRegReq {
+public class PetReq {
     private Breed petBreed;
     private String petName;
     private int petAge;
     private PetSex petSex;
     private Neutralization petNeutralization;
 
-    public PetRegReq() {
+    public PetReq() {
     }
 
-    public PetRegReq(Breed petBreed, String petName, int petAge, PetSex petSex, Neutralization petNeutralization) {
+    public PetReq(Breed petBreed, String petName, int petAge, PetSex petSex, Neutralization petNeutralization) {
         this.petBreed = petBreed;
         this.petName = petName;
         this.petAge = petAge;
