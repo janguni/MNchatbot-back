@@ -29,6 +29,8 @@ public abstract class ResponseMessage {
     public static final String SUCCESS_GET_PET_LIST = "반려동물 list 정보 제공";
     public static final String FAIL_GET_PET_LIST = "반려동물 list 정보 없음";
 
+    public static final String SUCCESS_DELETE_PET = "반려동물 삭제 성공";
+
 
     public static final String SEND_EMAIL_FAIL = "이메일 발송 실패";
     public static final String INTERNAL_SERVER_ERROR = "서버 내부 에러";
