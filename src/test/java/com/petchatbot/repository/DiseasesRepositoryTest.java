@@ -14,14 +14,14 @@ import static org.junit.jupiter.api.Assertions.*;
 @Slf4j
 class DiseasesRepositoryTest {
 
-    @Autowired
-    DiseasesRepository diseasesRepository;
-
-    @Test
-    void 질병목록(){
-        List<Diseases> all = diseasesRepository.findAll();
-        log.info("diseases={}", all);
-    }
+//    @Autowired
+//    DiseasesRepository diseasesRepository;
+//
+//    @Test
+//    void 질병목록(){
+//        List<Diseases> all = diseasesRepository.findAll();
+//        log.info("diseases={}", all);
+//    }
 
 
 
