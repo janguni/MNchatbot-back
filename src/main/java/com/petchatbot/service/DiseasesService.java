@@ -1,6 +1,5 @@
 package com.petchatbot.service;
 
-import com.petchatbot.domain.model.Diseases;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,6 +1,5 @@
 package com.petchatbot.controller;
 
-import com.petchatbot.domain.model.Diseases;
 
 
 import lombok.RequiredArgsConstructor;
