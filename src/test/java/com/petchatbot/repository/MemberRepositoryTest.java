@@ -20,14 +20,14 @@ import static com.petchatbot.domain.model.PetSex.MALE;
 @SpringBootTest
 @Slf4j
 class MemberRepositoryTest {
-    @Autowired
-    MemberRepository memberRepository;
-
-    @Autowired
-    MemberService memberService;
-
-    @Autowired
-    PetService petService;
+//    @Autowired
+//    MemberRepository memberRepository;
+//
+//    @Autowired
+//    MemberService memberService;
+//
+//    @Autowired
+//    PetService petService;
 
 
 

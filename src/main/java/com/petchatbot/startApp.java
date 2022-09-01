@@ -1,10 +1,14 @@
 package com.petchatbot;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.data.mongo.MongoReactiveDataAutoConfiguration;
+import org.springframework.boot.autoconfigure.mongo.MongoReactiveAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+//(exclude={MongoReactiveAutoConfiguration.class, MongoReactiveDataAutoConfiguration.class})
 @SpringBootApplication
 public class startApp {
     @Bean
