@@ -31,4 +31,22 @@ public class DiseaseDto {
     private String dsPrognosis;
 
     private String dsAdvice;
+
+    public DiseaseDto() {
+    }
+
+    public DiseaseDto(String dsName, String dsAmlBreed, String dsDefinition, String dsCause, String dsPathogenesis, String dsEpidemiology, String dsSymptom, String dsDiagnosis, String dsTreatment, String dsPrevention, String dsPrognosis, String dsAdvice) {
+        this.dsName = dsName;
+        this.dsAmlBreed = dsAmlBreed;
+        this.dsDefinition = dsDefinition;
+        this.dsCause = dsCause;
+        this.dsPathogenesis = dsPathogenesis;
+        this.dsEpidemiology = dsEpidemiology;
+        this.dsSymptom = dsSymptom;
+        this.dsDiagnosis = dsDiagnosis;
+        this.dsTreatment = dsTreatment;
+        this.dsPrevention = dsPrevention;
+        this.dsPrognosis = dsPrognosis;
+        this.dsAdvice = dsAdvice;
+    }
 }

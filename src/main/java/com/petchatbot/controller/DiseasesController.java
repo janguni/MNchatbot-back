@@ -2,6 +2,7 @@ package com.petchatbot.controller;
 
 import com.petchatbot.config.ResponseMessage;
 import com.petchatbot.config.StatusCode;
+import com.petchatbot.domain.dto.DiseaseDto;
 import com.petchatbot.domain.dto.DiseaseListDto;
 import com.petchatbot.domain.model.Disease;
 import com.petchatbot.domain.requestAndResponse.DefaultRes;
@@ -36,10 +37,10 @@ public class DiseasesController {
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_SEARCH_DISEASES, diseaseList), HttpStatus.OK);
     }
 
-//    @GetMapping("/disease/{dsId}")
-//    public ResponseEntity<List<Disease>> diseaseInfo(@PathVariable("dsId") String dsId){
-//
-//
-//    }
+    @GetMapping("/disease/{dsId}")
+    public ResponseEntity<DiseaseDto> diseaseInfo(@PathVariable("dsId") String dsId){
+        DiseaseDto diseaseInfo = diseasesService.getDiseaseInfo(dsId);
+        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_GET_DISEASE_INFO, diseaseInfo), HttpStatus.OK);
+    }
 
 }

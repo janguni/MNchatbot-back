@@ -38,12 +38,25 @@ public class DiseasesService {
         return diseases;
     }
 
-//    public DiseaseDto getDiseaseInfo(String dsId){
-//        Optional<Disease> findDisease = diseasesRepository.findById(dsId);
-//        Disease findDisease1 = (Disease) findDisease;
-//
-//
-//    }
+    public DiseaseDto getDiseaseInfo(String dsId){
+        Optional<Disease> findDisease = diseasesRepository.findById(dsId);
+        Disease disease = findDisease.get();
+        String dsName = disease.getDsName();
+        String dsAmlBreed = disease.getDsAmlBreed();
+        String dsDefinition = disease.getDsDefinition();
+        String dsCause = disease.getDsCause();
+        String dsPathogenesis = disease.getDsPathogenesis();
+        String dsEpidemiology = disease.getDsEpidemiology();
+        String dsSymptom = disease.getDsSymptom();
+        String dsDiagnosis = disease.getDsDiagnosis();
+        String dsTreatment = disease.getDsTreatment();
+        String dsPrevention = disease.getDsPrevention();
+        String dsPrognosis = disease.getDsPrognosis();
+        String dsAdvice = disease.getDsAdvice();
+        DiseaseDto diseaseDto = new DiseaseDto(dsName, dsAmlBreed, dsDefinition, dsCause, dsPathogenesis, dsEpidemiology, dsSymptom, dsDiagnosis, dsTreatment, dsPrevention, dsPrognosis, dsAdvice);
+
+        return diseaseDto;
+    }
 
 
 }
