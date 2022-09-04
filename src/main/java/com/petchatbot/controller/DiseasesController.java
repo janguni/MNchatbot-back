@@ -1,9 +1,15 @@
 package com.petchatbot.controller;
 
-import com.petchatbot.domain.model.Diseases;
-import com.petchatbot.repository.DiseasesRepository;
+import com.petchatbot.config.ResponseMessage;
+import com.petchatbot.config.StatusCode;
+import com.petchatbot.domain.dto.DiseaseListDto;
+import com.petchatbot.domain.model.Disease;
+import com.petchatbot.domain.requestAndResponse.DefaultRes;
+import com.petchatbot.service.DiseasesService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,13 +21,25 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DiseasesController {
 
-    private final DiseasesRepository diseasesRepository;
+    private final DiseasesService diseasesService;
 
-    @GetMapping("/diseases/{name}")
-    public List<Diseases> searchDiseases(@PathVariable("name") String dsName){
-        //List<Diseases> diseasesList = diseasesRepository.findByDs_nameRegex(dsName);
-        List<Diseases> all = diseasesRepository.findAll();
-        return all;
+    @GetMapping("/disease/dsList/{dsName}")
+    public ResponseEntity<List<DiseaseListDto>> searchDiseases(@PathVariable("dsName") String dsName){
+
+        List<DiseaseListDto> diseaseList = diseasesService.searchDiseases(dsName);
+
+        if (diseaseList.isEmpty()){ //검색 결과 없음
+            return new ResponseEntity(DefaultRes.res(StatusCode.NOT_FOUND, ResponseMessage.FAIL_SEARCH_DISEASES, null), HttpStatus.OK);
+        }
+
+        // 검색결과 list Response
+        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_SEARCH_DISEASES, diseaseList), HttpStatus.OK);
     }
+
+//    @GetMapping("/disease/{dsId}")
+//    public ResponseEntity<List<Disease>> diseaseInfo(@PathVariable("dsId") String dsId){
+//
+//
+//    }
 
 }
