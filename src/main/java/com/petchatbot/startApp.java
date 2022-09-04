@@ -8,8 +8,7 @@ import org.springframework.boot.autoconfigure.mongo.MongoReactiveAutoConfigurati
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-//(exclude={MongoReactiveAutoConfiguration.class, MongoReactiveDataAutoConfiguration.class})
-@SpringBootApplication
+@SpringBootApplication(exclude={MongoReactiveAutoConfiguration.class, MongoReactiveDataAutoConfiguration.class})
 public class startApp {
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
