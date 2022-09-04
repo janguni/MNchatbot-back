@@ -9,14 +9,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 @Slf4j
 class MemberRepositoryTest {
-    @Autowired
-    MemberRepository memberRepository;
-
-    @Autowired
-    MemberService memberService;
-
-    @Autowired
-    PetService petService;
+//    @Autowired
+//    MemberRepository memberRepository;
+//
+//    @Autowired
+//    MemberService memberService;
+//
+//    @Autowired
+//    PetService petService;
 
 
 
