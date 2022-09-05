@@ -3,6 +3,7 @@ package com.petchatbot.controller;
 import com.petchatbot.config.ResponseMessage;
 import com.petchatbot.config.StatusCode;
 import com.petchatbot.domain.dto.DiseaseDto;
+import com.petchatbot.domain.dto.HospitalDto;
 import com.petchatbot.domain.model.Hospital;
 import com.petchatbot.domain.requestAndResponse.DefaultRes;
 import com.petchatbot.service.HospitalService;
@@ -23,11 +24,11 @@ public class HospitalController {
     private final HospitalService hospitalService;
 
     @GetMapping("/hospital/{region}/{city}/{street}")
-    public ResponseEntity<DiseaseDto> searchHospitalList(@PathVariable("region") String region,
+    public ResponseEntity<HospitalDto> searchHospitalList(@PathVariable("region") String region,
                                                          @PathVariable("city") String city,
                                                          @PathVariable("street") String street
                                                          ){
-        List<Hospital> hospitals = hospitalService.searchHospitalList(region, city, street);
+        List<HospitalDto> hospitals = hospitalService.searchHospitalList(region, city, street);
         if (hospitals.isEmpty())
             return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.FAIL_GET_HOSPITAL_LIST), HttpStatus.OK);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_GET_HOSPITAL_LIST, hospitals), HttpStatus.OK);
