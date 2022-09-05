@@ -30,7 +30,7 @@ public class HospitalController {
                                                          ){
         List<HospitalDto> hospitals = hospitalService.searchHospitalList(region, city, street);
         if (hospitals.isEmpty())
-            return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.FAIL_GET_HOSPITAL_LIST), HttpStatus.OK);
+            return new ResponseEntity(DefaultRes.res(StatusCode.NOT_FOUND, ResponseMessage.FAIL_GET_HOSPITAL_LIST), HttpStatus.OK);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_GET_HOSPITAL_LIST, hospitals), HttpStatus.OK);
     }
 }
