@@ -36,6 +36,11 @@ public abstract class ResponseMessage {
     public static final String FAIL_SEARCH_DISEASES = "질병백과 검색결과 없음";
     public static final String SUCCESS_GET_DISEASE_INFO = "질병 정보 제공";
 
+    public static final String SUCCESS_GET_HOSPITAL_LIST = "주변 연계병원 list 제공";
+    public static final String FAIL_GET_HOSPITAL_LIST = "주변 연계병원 없음";
+
+
+
 
     public static final String SEND_EMAIL_FAIL = "이메일 발송 실패";
     public static final String INTERNAL_SERVER_ERROR = "서버 내부 에러";
