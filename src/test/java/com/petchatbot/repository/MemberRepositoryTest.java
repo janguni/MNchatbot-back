@@ -1,23 +1,24 @@
 package com.petchatbot.repository;
 
-import com.petchatbot.domain.dto.MemberDto;
-import com.petchatbot.domain.model.Member;
-
 import com.petchatbot.service.MemberService;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Test;
+import com.petchatbot.service.PetService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
+@Slf4j
 class MemberRepositoryTest {
-    @Autowired
-    MemberRepository memberRepository;
+//    @Autowired
+//    MemberRepository memberRepository;
+//
+//    @Autowired
+//    MemberService memberService;
+//
+//    @Autowired
+//    PetService petService;
 
-    @Autowired
-    MemberService memberService;
+
 
 
 }

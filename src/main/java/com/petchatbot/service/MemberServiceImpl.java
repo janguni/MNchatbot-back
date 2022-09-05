@@ -1,5 +1,6 @@
 package com.petchatbot.service;
 
+import com.petchatbot.domain.dto.EmailDto;
 import com.petchatbot.domain.dto.MemberDto;
 import com.petchatbot.domain.model.Member;
 import com.petchatbot.repository.MemberRepository;
@@ -33,7 +34,6 @@ public class MemberServiceImpl implements MemberService {
     // 회원가입
     @Override
     public void join(MemberDto memberDto){
-        log.info("join member email= {}, password={}", memberDto.getMemberEmail(), memberDto.getMemberPassword());
         String memberEmail = memberDto.getMemberEmail();
         String memberPassword = memberDto.getMemberPassword() ;
         Member member = new Member(memberEmail, memberPassword);
@@ -42,7 +42,6 @@ public class MemberServiceImpl implements MemberService {
 
     // 비밀번호 변경
     @Transactional
-
     public void changePassword(MemberDto memberDto){
         Member findMember = memberRepository.findByMemberEmail(memberDto.getMemberEmail());
         if (memberDto.getMemberPassword() == null){
@@ -51,11 +50,14 @@ public class MemberServiceImpl implements MemberService {
         String rawPassword = memberDto.getMemberPassword();
         String encodedPassword = bCryptPasswordEncoder.encode(rawPassword);
         findMember.changePassword(encodedPassword);
-        log.info("changedMember email={}, password={}", findMember.getMemberEmail(), findMember.getMemberPassword());
     }
 
-
-
-
-
+    // 회원탈퇴
+    @Transactional
+    @Override
+    public void withdrawal(EmailDto emailDto) {
+        String memberEmail = emailDto.getReceiveMail();
+        Member findMember = memberRepository.findByMemberEmail(memberEmail);
+        memberRepository.delete(findMember);
+    }
 }

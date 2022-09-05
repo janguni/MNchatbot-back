@@ -23,8 +23,9 @@ public class Member {
     private String memberPassword;
     private String roles; // USER, ADMIN
 
-    @OneToMany(mappedBy = "member")
-    private List<Pet> petList = new ArrayList<>();
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Pet> petList = new ArrayList<Pet>();
+
 
     public Member() {
     }
@@ -37,12 +38,12 @@ public class Member {
     public void addPet(Pet pet){
         petList.add(pet);
         pet.addMember(this);
-        log.info("pet.addMember={}", pet.getMember());
     }
 
 
     public void changePassword(String password){
         this.memberPassword = password;
     }
+
 
 }
