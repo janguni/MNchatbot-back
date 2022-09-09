@@ -51,6 +51,9 @@ public class PetController {
     public ResponseEntity<List<Pet>> petList(Authentication authentication) {
         String email = extractEmail(authentication);
         List<PetListDto> pets = petService.petList(email);
+        if (pets.isEmpty()){
+            return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.FAIL_GET_PET_LIST, pets), HttpStatus.OK);
+        }
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_GET_PET_LIST, pets), HttpStatus.OK);
     }
 
