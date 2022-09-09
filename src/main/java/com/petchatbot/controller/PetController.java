@@ -48,7 +48,7 @@ public class PetController {
 
     // 반려동물 List
     @GetMapping("/pet/petList")
-    public ResponseEntity<List<Pet>> petList(Authentication authentication) {
+    public ResponseEntity<List<PetListDto>> petList(Authentication authentication) {
         String email = extractEmail(authentication);
         List<PetListDto> pets = petService.petList(email);
         if (pets.isEmpty()){
