@@ -49,7 +49,7 @@ public class PetServiceImpl implements PetService{
             String petName = pet.getPetName();
             Long petSerial = pet.getPetSerial();
             Species petSpecies = pet.getPetSpecies();
-            PetListDto petListDto = new PetListDto(petName, petSerial, petSpecies);
+            PetListDto petListDto = new PetListDto(petSerial, petSpecies, petName);
             pets.add(petListDto);
         }
         return pets;
