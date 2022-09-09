@@ -52,7 +52,7 @@ public class PetController {
         String email = extractEmail(authentication);
         List<PetListDto> pets = petService.petList(email);
         if (pets.isEmpty()){
-            return new ResponseEntity(DefaultRes.res(StatusCode.NOT_FOUND, ResponseMessage.FAIL_GET_PET_LIST, pets), HttpStatus.OK);
+            return new ResponseEntity(DefaultRes.res(StatusCode.NOT_FOUND, ResponseMessage.FAIL_GET_PET_LIST), HttpStatus.OK);
         }
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_GET_PET_LIST, pets), HttpStatus.OK);
     }
