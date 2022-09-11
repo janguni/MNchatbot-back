@@ -50,6 +50,7 @@ public class PetController {
     @GetMapping("/pet/petList")
     public ResponseEntity<List<PetListDto>> petList(Authentication authentication) {
         String email = extractEmail(authentication);
+        log.info("펫 리스트 요청이 들어옴!!!");
         log.info("petlist를 찾는 사용자={}", email);
         List<PetListDto> pets = petService.petList(email);
         log.info("pets={}", pets);
