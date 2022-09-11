@@ -13,10 +13,11 @@ public class Pet {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "pet_serial")
     private int petSerial;
 
     @ManyToOne
-    @JoinColumn(name="member_serial")
+    @JoinColumn(name="members_member_serial")
     private Member member;
     @Enumerated(EnumType.STRING)
     @Column(name = "pet_species")
