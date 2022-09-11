@@ -35,7 +35,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         System.out.println("JWTAuthenticationFilter: 로그인 시도중");
 
         try {
-
             ObjectMapper om = new ObjectMapper();
             Member member = om.readValue(request.getInputStream(), Member.class);
             log.info("로그인 시도 memberEmail={}, memberPassword={}", member.getMemberEmail(), member.getMemberPassword());

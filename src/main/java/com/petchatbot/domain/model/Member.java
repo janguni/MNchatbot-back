@@ -14,14 +14,17 @@ import java.util.List;
 @Getter
 @Entity
 @Slf4j
+@Table(name = "members")
 public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long member_serial;
+    @Column(name = "member_email")
     private String memberEmail;
+    @Column(name = "member_password")
     private String memberPassword;
-    private String roles; // USER, ADMIN
+    //private String roles; // USER, ADMIN
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Pet> petList = new ArrayList<Pet>();

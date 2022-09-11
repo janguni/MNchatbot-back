@@ -8,24 +8,31 @@ import javax.persistence.*;
 @Getter
 @Entity
 @Data
+@Table(name = "pets")
 public class Pet {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long petSerial;
+    private int petSerial;
 
     @ManyToOne
     @JoinColumn(name="member_serial")
     private Member member;
     @Enumerated(EnumType.STRING)
+    @Column(name = "pet_species")
     private Species petSpecies;
 
+    @Column(name = "pet_breed")
     private String petBreed;
+    @Column(name = "pet_name")
     private String petName;
+    @Column(name = "pet_age")
     private int petAge;
     @Enumerated(EnumType.STRING)
-    private PetGender petgender;
+    @Column(name = "pet_gender")
+    private PetGender petGender;
     @Enumerated(EnumType.STRING)
+    @Column(name = "pet_neutralization")
     private Neutralization petNeutralization;
 
     public Pet() {
@@ -36,7 +43,7 @@ public class Pet {
         this.petBreed = petBreed;
         this.petName = petName;
         this.petAge = petAge;
-        this.petgender = petGender;
+        this.petGender = petGender;
         this.petNeutralization = petNeutralization;
     }
 
@@ -45,7 +52,7 @@ public class Pet {
         this.petBreed = petBreed;
         this.petName = petName;
         this.petAge = petAge;
-        this.petgender = petgender;
+        this.petGender = petgender;
         this.petNeutralization = petNeutralization;
     }
 
