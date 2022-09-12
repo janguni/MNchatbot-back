@@ -30,7 +30,7 @@ public class Pet {
     @Column(name = "pet_age")
     private int petAge;
     @Enumerated(EnumType.STRING)
-    @Column(name = "pet_gender")
+    @Column(name = "pet_sex")
     private PetGender petGender;
     @Enumerated(EnumType.STRING)
     @Column(name = "pet_neutralization")
