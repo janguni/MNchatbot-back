@@ -11,18 +11,19 @@ import java.util.Arrays;
 import java.util.List;
 
 
+
+//@Table(name = "members")
 @Getter
 @Entity
 @Slf4j
-@Table(name = "members")
 public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int member_serial;
-    @Column(name = "member_email")
+    private Long member_serial;
+    //@Column(name = "member_email")
     private String memberEmail;
-    @Column(name = "member_password")
+    //@Column(name = "member_password", length = 1000)
     private String memberPassword;
     //private String roles; // USER, ADMIN
 

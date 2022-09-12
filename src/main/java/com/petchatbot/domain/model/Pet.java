@@ -5,35 +5,38 @@ import lombok.Getter;
 
 import javax.persistence.*;
 
+
+//@Table(name = "pets")
 @Getter
 @Entity
 @Data
-@Table(name = "pets")
 public class Pet {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "pet_serial")
-    private int petSerial;
+    //@Column(name = "pet_serial")
+    private Long petSerial;
 
+
+    //@JoinColumn(name="members_member_serial")
     @ManyToOne
-    @JoinColumn(name="members_member_serial")
+    @JoinColumn(name="member_serial")
     private Member member;
     @Enumerated(EnumType.STRING)
-    @Column(name = "pet_species")
+    //@Column(name = "pet_species")
     private Species petSpecies;
 
-    @Column(name = "pet_breed")
+    //@Column(name = "pet_breed")
     private String petBreed;
-    @Column(name = "pet_name")
+    //@Column(name = "pet_name")
     private String petName;
-    @Column(name = "pet_age")
+    //@Column(name = "pet_age")
     private int petAge;
     @Enumerated(EnumType.STRING)
-    @Column(name = "pet_sex")
+    //@Column(name = "pet_sex")
     private PetGender petGender;
     @Enumerated(EnumType.STRING)
-    @Column(name = "pet_neutralization")
+    //@Column(name = "pet_neutralization")
     private Neutralization petNeutralization;
 
     public Pet() {

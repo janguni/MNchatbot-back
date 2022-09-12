@@ -47,7 +47,7 @@ public class PetServiceImpl implements PetService{
         for (Pet pet: petList){
             //log.info("pet 정보 ={}", pet.getPetName());
             String petName = pet.getPetName();
-            int petSerial = pet.getPetSerial();
+            Long petSerial = pet.getPetSerial();
             Species petSpecies = pet.getPetSpecies();
             PetListDto petListDto = new PetListDto(petSerial, petSpecies, petName);
             pets.add(petListDto);
