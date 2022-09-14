@@ -36,8 +36,11 @@ public abstract class ResponseMessage {
     public static final String FAIL_SEARCH_DISEASES = "질병백과 검색결과 없음";
     public static final String SUCCESS_GET_DISEASE_INFO = "질병 정보 제공";
 
-    public static final String SUCCESS_GET_HOSPITAL_LIST = "주변 연계병원 list 제공";
-    public static final String FAIL_GET_HOSPITAL_LIST = "주변 연계병원 없음";
+    public static final String SUCCESS_GET_HOSPITAL_LIST = "주변 동물병원 list 제공";
+    public static final String FAIL_GET_HOSPITAL_LIST = "주변 동물병원 없음";
+
+    public static final String SUCCESS_GET_PARTNER_LIST = "주변 연계병원 list 제공";
+    public static final String FAIL_GET_PARTNER_LIST = "주변 연계병원 없음";
 
 
 
