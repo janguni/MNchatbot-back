@@ -50,25 +50,13 @@ public class PetController {
     @GetMapping("/pet/petList")
     public ResponseEntity<List<PetListDto>> petList(Authentication authentication) {
         String email = extractEmail(authentication);
-        log.info("펫 리스트 요청이 들어옴!!!");
-        log.info("petlist를 찾는 사용자={}", email);
         List<PetListDto> pets = petService.petList(email);
         log.info("pets={}", pets);
-        if (pets.isEmpty()){
+        if (pets.isEmpty() ){
             return new ResponseEntity(DefaultRes.res(StatusCode.NOT_FOUND, ResponseMessage.FAIL_GET_PET_LIST), HttpStatus.OK);
         }
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_GET_PET_LIST, pets), HttpStatus.OK);
     }
-
-//    @GetMapping("/pet/petList")
-//    public String petList(Authentication authentication) {
-//        String email = extractEmail(authentication);
-//        log.info("펫 리스트 요청이 들어옴!!!");
-//        log.info("petlist를 찾는 사용자={}", email);
-//        return "토큰도 됨!";
-//    }
-
-
 
 
     // 반려동물 정보

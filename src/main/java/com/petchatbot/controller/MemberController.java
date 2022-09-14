@@ -83,7 +83,6 @@ public class MemberController {
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.GET_EMAIL, email), HttpStatus.OK);
     }
 
-
     // 인증번호 입력 & 회원가입
     @PostMapping("/enterEmailCode/join")
     public ResponseEntity<String> enterEmailCode(@RequestBody EmailCodeDto ecCode){
