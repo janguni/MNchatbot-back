@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface PartnerRepository extends JpaRepository<Partner, Integer> {
 
-    List<Partner> findByPnrRegionAndPnrCityAndPnrStreet(String region, String city, String street);
+    List<Partner> findByPnrRegionAndPnrCity(String region, String city);
 }

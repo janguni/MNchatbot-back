@@ -26,12 +26,11 @@ import java.util.List;
 public class HospitalController {
     private final HospitalService hospitalService;
 
-    @GetMapping("/hospital/{region}/{city}/{street}")
+    @GetMapping("/hospital/{region}/{city}")
     public ResponseEntity<HospitalDto> searchTotalHospitalList(@PathVariable("region") String region,
-                                                         @PathVariable("city") String city,
-                                                         @PathVariable("street") String street
+                                                         @PathVariable("city") String city
                                                          ) {
-        List<TotalHospitalDto> totalHospitalList = hospitalService.searchTotalHospitalList(region, city, street);
+        List<TotalHospitalDto> totalHospitalList = hospitalService.searchTotalHospitalList(region, city);
         if (totalHospitalList.isEmpty())
             return new ResponseEntity(DefaultRes.res(StatusCode.NOT_FOUND, ResponseMessage.FAIL_GET_HOSPITAL_LIST), HttpStatus.OK);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_GET_HOSPITAL_LIST, totalHospitalList), HttpStatus.OK);

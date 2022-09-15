@@ -23,12 +23,12 @@ public class HospitalService {
     private final HospitalRepository hospitalRepository;
     private final PartnerRepository partnerRepository;
 
-    public List<TotalHospitalDto> searchTotalHospitalList(String region, String city, String street){
+    public List<TotalHospitalDto> searchTotalHospitalList(String region, String city){
 
         List<TotalHospitalDto> totalHospitals = new ArrayList<>();
 
-        List<HospitalDto> hospitals = searchHospitalList(region, city, street);
-        List<PartnerDto> partners = searchPartnerList(region, city, street);
+        List<HospitalDto> hospitals = searchHospitalList(region, city);
+        List<PartnerDto> partners = searchPartnerList(region, city);
 
         for (HospitalDto hospital : hospitals){
             String hospName = hospital.getHospName();
@@ -53,8 +53,8 @@ public class HospitalService {
 
 
     // 주위 동물병원 검색해서 동물병원 리스트 보기
-    private List<HospitalDto> searchHospitalList(String region, String city, String street){
-        List<Hospital> hospitalList = hospitalRepository.findByHospRegionAndHospCityAndHospStreet(region, city, street);
+    private List<HospitalDto> searchHospitalList(String region, String city){
+        List<Hospital> hospitalList = hospitalRepository.findByHospRegionAndHospCity(region, city);
 
         List<HospitalDto> hospitals = new ArrayList<>();
 
@@ -69,8 +69,8 @@ public class HospitalService {
     }
 
     // 주위 연계병원 보기
-    private List<PartnerDto> searchPartnerList(String region, String city, String street){
-        List<Partner> partnerList = partnerRepository.findByPnrRegionAndPnrCityAndPnrStreet(region, city, street);
+    private List<PartnerDto> searchPartnerList(String region, String city){
+        List<Partner> partnerList = partnerRepository.findByPnrRegionAndPnrCity(region, city);
 
         List<PartnerDto> partners = new ArrayList<>();
 

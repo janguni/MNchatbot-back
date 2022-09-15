@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface HospitalRepository extends MongoRepository<Hospital, String> {
 
-    public List<Hospital> findByHospRegionAndHospCityAndHospStreet(String region, String city, String street);
+    public List<Hospital> findByHospRegionAndHospCity(String region, String city);
 }
