@@ -12,7 +12,7 @@ import java.util.List;
 
 
 
-//@Table(name = "members")
+@Table(name = "members")
 @Getter
 @Entity
 @Slf4j
@@ -21,9 +21,9 @@ public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long member_serial;
-    //@Column(name = "member_email")
+    @Column(name = "member_email")
     private String memberEmail;
-    //@Column(name = "member_password", length = 1000)
+    @Column(name = "member_password")
     private String memberPassword;
     //private String roles; // USER, ADMIN
 
@@ -41,7 +41,6 @@ public class Member {
 
     public void addPet(Pet pet){
         petList.add(pet);
-        pet.addMember(this);
     }
 
 

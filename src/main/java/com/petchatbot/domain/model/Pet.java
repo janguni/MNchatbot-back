@@ -6,7 +6,7 @@ import lombok.Getter;
 import javax.persistence.*;
 
 
-//@Table(name = "pets")
+@Table(name = "pets")
 @Getter
 @Entity
 @Data
@@ -14,35 +14,35 @@ public class Pet {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //@Column(name = "pet_serial")
+    @Column(name = "pet_serial")
     private Long petSerial;
 
 
-    //@JoinColumn(name="members_member_serial")
+    @JoinColumn(name="members_member_serial")
     @ManyToOne
-    @JoinColumn(name="member_serial")
     private Member member;
     @Enumerated(EnumType.STRING)
-    //@Column(name = "pet_species")
+    @Column(name = "pet_species")
     private Species petSpecies;
 
-    //@Column(name = "pet_breed")
+    @Column(name = "pet_breed")
     private String petBreed;
-    //@Column(name = "pet_name")
+    @Column(name = "pet_name")
     private String petName;
-    //@Column(name = "pet_age")
+    @Column(name = "pet_age")
     private int petAge;
     @Enumerated(EnumType.STRING)
-    //@Column(name = "pet_sex")
+    @Column(name = "pet_sex")
     private PetGender petGender;
     @Enumerated(EnumType.STRING)
-    //@Column(name = "pet_neutralization")
+    @Column(name = "pet_neutralization")
     private Neutralization petNeutralization;
 
     public Pet() {
     }
 
-    public Pet(Species petSpecies, String petBreed, String petName, int petAge, PetGender petGender, Neutralization petNeutralization) {
+    public Pet(Member member, Species petSpecies, String petBreed, String petName, int petAge, PetGender petGender, Neutralization petNeutralization) {
+        this.member = member;
         this.petSpecies = petSpecies;
         this.petBreed = petBreed;
         this.petName = petName;

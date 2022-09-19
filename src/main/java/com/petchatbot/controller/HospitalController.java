@@ -35,6 +35,9 @@ public class HospitalController {
             return new ResponseEntity(DefaultRes.res(StatusCode.NOT_FOUND, ResponseMessage.FAIL_GET_HOSPITAL_LIST), HttpStatus.OK);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_GET_HOSPITAL_LIST, totalHospitalList), HttpStatus.OK);
     }
+
+//    @PostMapping("/hospital/apply")
+//    public ResponseEntity<>
 }
 
 

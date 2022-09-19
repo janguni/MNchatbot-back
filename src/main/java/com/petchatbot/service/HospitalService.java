@@ -52,6 +52,7 @@ public class HospitalService {
     }
 
 
+
     // 주위 동물병원 검색해서 동물병원 리스트 보기
     private List<HospitalDto> searchHospitalList(String region, String city){
         List<Hospital> hospitalList = hospitalRepository.findByHospRegionAndHospCity(region, city);

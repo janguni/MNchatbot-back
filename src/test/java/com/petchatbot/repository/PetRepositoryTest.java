@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static com.petchatbot.domain.model.Species.DOG;
 import static com.petchatbot.domain.model.Neutralization.NEUTER;
-import static com.petchatbot.domain.model.PetGender.MALE;
+
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest

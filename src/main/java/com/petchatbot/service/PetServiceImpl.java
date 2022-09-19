@@ -26,7 +26,7 @@ public class PetServiceImpl implements PetService{
     @Override
     public void registerPet(PetReq petRegReq, String email) {
         Member findMember = getFindMember(email);
-        Pet pet = createPetEntity(petRegReq);
+        Pet pet = createPetEntity(petRegReq, findMember);
         petRepository.save(pet);
         findMember.addPet(pet);
     }
@@ -101,7 +101,7 @@ public class PetServiceImpl implements PetService{
         return findMember;
     }
 
-    private Pet createPetEntity(PetReq petRegReq) {
+    private Pet createPetEntity(PetReq petRegReq, Member findMember) {
         Species petSpecies = petRegReq.getPetSpecies();
         String petBreed = petRegReq.getPetBreed();
         log.info("petSpecies={}", petSpecies);
@@ -109,7 +109,7 @@ public class PetServiceImpl implements PetService{
         int petAge = petRegReq.getPetAge();
         PetGender petGender = petRegReq.getPetGender();
         Neutralization petNeutralization = petRegReq.getPetNeutralization();
-        Pet pet = new Pet(petSpecies, petBreed, petName, petAge, petGender, petNeutralization);
+        Pet pet = new Pet(findMember, petSpecies, petBreed, petName, petAge, petGender, petNeutralization);
         return pet;
     }
 
