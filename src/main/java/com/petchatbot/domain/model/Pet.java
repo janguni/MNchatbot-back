@@ -17,7 +17,6 @@ public class Pet {
     @Column(name = "pet_serial")
     private Long petSerial;
 
-
     @JoinColumn(name="members_member_serial")
     @ManyToOne
     private Member member;

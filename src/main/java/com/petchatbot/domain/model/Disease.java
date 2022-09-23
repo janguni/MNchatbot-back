@@ -9,7 +9,6 @@ import javax.persistence.Id;
 
 @Document("animal_diseases")
 @Getter
-
 public class Disease {
 
     @Id

@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -20,7 +17,7 @@ public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long member_serial;
+    private Long memberSerial;
     @Column(name = "member_email")
     private String memberEmail;
     @Column(name = "member_password")
@@ -29,6 +26,9 @@ public class Member {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Pet> petList = new ArrayList<Pet>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Appointment> appointmentList = new ArrayList<Appointment>();
 
 
     public Member() {

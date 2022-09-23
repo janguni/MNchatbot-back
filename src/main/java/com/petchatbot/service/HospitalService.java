@@ -1,5 +1,6 @@
 package com.petchatbot.service;
 
+import com.petchatbot.domain.dto.HospitalApplyDto;
 import com.petchatbot.domain.dto.HospitalDto;
 import com.petchatbot.domain.dto.PartnerDto;
 import com.petchatbot.domain.dto.TotalHospitalDto;
@@ -23,6 +24,7 @@ public class HospitalService {
     private final HospitalRepository hospitalRepository;
     private final PartnerRepository partnerRepository;
 
+    // 동물병원, 연계병원 주소로 검색
     public List<TotalHospitalDto> searchTotalHospitalList(String region, String city){
 
         List<TotalHospitalDto> totalHospitals = new ArrayList<>();
@@ -50,6 +52,11 @@ public class HospitalService {
 
         return totalHospitals;
     }
+
+    // 상담신청
+//    public HospitalApplyDto hospitalApply(HospitalApplyDto apply){
+//        //apply.get
+//    }
 
 
 

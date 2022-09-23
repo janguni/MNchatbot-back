@@ -9,7 +9,7 @@ import java.util.Date;
 public class HospitalApplyDto {
     private int petSerial;
     //private int medicalSerial; //문진표
-    private int memberSerial;
+    // private int memberSerial; // 멤버를 따로 받을지 아닐지 아직 선택 안함
     private int partnerSerial;
     private Date apptDate;
     private Time apptTime;
@@ -23,9 +23,9 @@ public class HospitalApplyDto {
 
     }
 
-    public HospitalApplyDto(int petSerial, int memberSerial, int partnerSerial, Date apptDate, Time apptTime, String apptMemberName, String apptMemberTel, String apptBill, String apptReason, String apptImage) {
+    public HospitalApplyDto(int petSerial, int partnerSerial, Date apptDate, Time apptTime, String apptMemberName, String apptMemberTel, String apptBill, String apptReason, String apptImage) {
         this.petSerial = petSerial;
-        this.memberSerial = memberSerial;
+        //this.memberSerial = memberSerial;
         this.partnerSerial = partnerSerial;
         this.apptDate = apptDate;
         this.apptTime = apptTime;

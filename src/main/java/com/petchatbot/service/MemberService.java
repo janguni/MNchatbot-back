@@ -20,8 +20,4 @@ public interface MemberService {
 
     // 회원탈퇴
     void withdrawal(EmailDto emailDto);
-
-
-
-
 }

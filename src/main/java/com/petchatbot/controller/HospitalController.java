@@ -42,27 +42,4 @@ public class HospitalController {
 
 
 
-//    @GetMapping("/hospital/{region}/{city}/{street}")
-//    public ResponseEntity<HospitalDto> searchHospitalList(@PathVariable("region") String region,
-//                                                         @PathVariable("city") String city,
-//                                                         @PathVariable("street") String street
-//                                                         ){
-//        List<HospitalDto> hospitals = hospitalService.searchHospitalList(region, city, street);
-//        List<PartnerDto> partners = hospitalService.searchPartnerList(region, city, street);
-//        if (hospitals.isEmpty())
-//            return new ResponseEntity(DefaultRes.res(StatusCode.NOT_FOUND, ResponseMessage.FAIL_GET_HOSPITAL_LIST), HttpStatus.OK);
-//        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_GET_HOSPITAL_LIST, hospitals), HttpStatus.OK);
-//    }
-//
-//    @GetMapping("/partner/{region}/{city}/{street}")
-//    public ResponseEntity<PartnerDto> searchPartnerList(@PathVariable("region") String region,
-//                                                        @PathVariable("city") String city,
-//                                                        @PathVariable("street") String street) {
-//
-//        List<PartnerDto> partners = hospitalService.searchPartnerList(region, city, street);
-//        if (partners.isEmpty()){
-//            return new ResponseEntity(DefaultRes.res(StatusCode.NOT_FOUND, ResponseMessage.FAIL_GET_PARTNER_LIST), HttpStatus.OK);
-//        }
-//        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_GET_PARTNER_LIST, partners), HttpStatus.OK);
-//    }
 

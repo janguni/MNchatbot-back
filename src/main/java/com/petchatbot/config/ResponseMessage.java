@@ -42,6 +42,10 @@ public abstract class ResponseMessage {
     public static final String SUCCESS_GET_PARTNER_LIST = "주변 연계병원 list 제공";
     public static final String FAIL_GET_PARTNER_LIST = "주변 연계병원 없음";
 
+    public static final String SUCCESS_ADD_MEDICAL_FORM = "문진표 저장 성공";
+
+
+
 
 
 
