@@ -27,9 +27,6 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Pet> petList = new ArrayList<Pet>();
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Appointment> appointmentList = new ArrayList<Appointment>();
-
 
     public Member() {
     }
