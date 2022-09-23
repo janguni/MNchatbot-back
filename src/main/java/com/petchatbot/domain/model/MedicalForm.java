@@ -26,7 +26,6 @@ public class MedicalForm {
 
     @JoinColumn(name = "pets_members_member_serial")
     @ManyToOne
-    @NotFound(action = NotFoundAction.EXCEPTION`1)
     private Member member;
 
     @Column(name = "med_name")

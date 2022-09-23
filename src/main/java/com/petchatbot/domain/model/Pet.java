@@ -2,6 +2,8 @@ package com.petchatbot.domain.model;
 
 import lombok.Data;
 import lombok.Getter;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 
@@ -19,6 +21,7 @@ public class Pet {
 
     @JoinColumn(name="members_member_serial")
     @ManyToOne
+    @NotFound(action = NotFoundAction.EXCEPTION)
     private Member member;
     @Enumerated(EnumType.STRING)
     @Column(name = "pet_species")
