@@ -72,7 +72,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String jwtToken = JWT.create()
                 .withSubject("cos토큰")
                 .withExpiresAt(new Date(System.currentTimeMillis() + (60000 * 30))) // jwt 토큰 30분 설정
-                .withClaim("id", principalDetails.getMember().getMemberSerial())
+                .withClaim("id", principalDetails.getMember().getMember_serial())
                 .withClaim("email", principalDetails.getMember().getMemberEmail())
                 .sign(Algorithm.HMAC512("cos")); // secret key
 

@@ -17,7 +17,7 @@ public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long memberSerial;
+    private Long member_serial;
     @Column(name = "member_email")
     private String memberEmail;
     @Column(name = "member_password")

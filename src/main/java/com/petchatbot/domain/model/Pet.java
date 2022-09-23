@@ -21,7 +21,6 @@ public class Pet {
 
     @JoinColumn(name="members_member_serial")
     @ManyToOne
-    @NotFound(action = NotFoundAction.EXCEPTION)
     private Member member;
     @Enumerated(EnumType.STRING)
     @Column(name = "pet_species")
