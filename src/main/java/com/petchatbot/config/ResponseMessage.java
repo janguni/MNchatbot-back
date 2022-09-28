@@ -44,6 +44,10 @@ public abstract class ResponseMessage {
 
     public static final String SUCCESS_ADD_MEDICAL_FORM = "문진표 저장 성공";
 
+    public static final String SUCCESS_APPLY_TO_HOSPITAL = "연계병원 상담신청 성공";
+
+
+
 
 
 

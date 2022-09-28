@@ -1,9 +1,6 @@
 package com.petchatbot.service;
 
-import com.petchatbot.domain.dto.HospitalApplyDto;
-import com.petchatbot.domain.dto.HospitalDto;
-import com.petchatbot.domain.dto.PartnerDto;
-import com.petchatbot.domain.dto.TotalHospitalDto;
+import com.petchatbot.domain.dto.*;
 import com.petchatbot.domain.model.Hospital;
 import com.petchatbot.domain.model.HospitalType;
 import com.petchatbot.domain.model.Partner;
@@ -11,9 +8,12 @@ import com.petchatbot.repository.HospitalRepository;
 import com.petchatbot.repository.PartnerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.jni.Time;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -23,6 +23,8 @@ public class HospitalService {
 
     private final HospitalRepository hospitalRepository;
     private final PartnerRepository partnerRepository;
+    private final EmailService emailService;
+
 
     // 동물병원, 연계병원 주소로 검색
     public List<TotalHospitalDto> searchTotalHospitalList(String region, String city){
@@ -53,10 +55,29 @@ public class HospitalService {
         return totalHospitals;
     }
 
-    // 상담신청
-//    public HospitalApplyDto hospitalApply(HospitalApplyDto apply){
-//        //apply.get
-//    }
+    //상담신청
+    public void hospitalApply(HospitalApplyDto apply) throws MessagingException {
+        int partnerSerial = apply.getPartnerSerial();
+        Partner findPartner = partnerRepository.findByPnrSerial(partnerSerial);
+        String pnrEmail = findPartner.getPnrEmail();
+        EmailDto emailDto = new EmailDto(pnrEmail);
+        String pnrName = findPartner.getPnrName();
+
+
+        emailService.sendEmailToHospital(emailDto, pnrName + "님에게 온 상담신청입니다." + "-멍냥챗봇", apply);
+//        int petSerial = apply.getPetSerial();
+//        int partnerSerial = apply.getPartnerSerial();
+//        int medicalSerial = apply.getMedicalSerial();
+//        Date apptDate = apply.getApptDate();
+//        Time apptTime = apply.getApptTime();
+//        String apptMemberName = apply.getApptMemberName();
+//        String apptMemberTel = apply.getApptMemberTel();
+//        boolean apptBill = apply.isApptBill();
+//        String apptReason = apply.getApptReason();
+//        String apptImage = apply.getApptImage();
+
+
+    }
 
 
 
