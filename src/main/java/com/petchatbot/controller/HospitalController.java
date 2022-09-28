@@ -27,7 +27,7 @@ public class HospitalController {
     public ResponseEntity<HospitalDto> searchTotalHospitalList(@PathVariable("region") String region,
                                                          @PathVariable("city") String city
                                                          ) {
-        List<TotalHospitalDto> totalHospitalList = hospitalService.searchTotalHospitalList(region, city);
+        List<HospitalDto> totalHospitalList = hospitalService.searchTotalHospitalList(region, city);
         if (totalHospitalList.isEmpty())
             return new ResponseEntity(DefaultRes.res(StatusCode.NOT_FOUND, ResponseMessage.FAIL_GET_HOSPITAL_LIST), HttpStatus.OK);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_GET_HOSPITAL_LIST, totalHospitalList), HttpStatus.OK);

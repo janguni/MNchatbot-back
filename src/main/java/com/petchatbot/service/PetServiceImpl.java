@@ -47,7 +47,7 @@ public class PetServiceImpl implements PetService{
         for (Pet pet: petList){
             //log.info("pet 정보 ={}", pet.getPetName());
             String petName = pet.getPetName();
-            Long petSerial = pet.getPetSerial();
+            int petSerial = pet.getPetSerial();
             Species petSpecies = pet.getPetSpecies();
             PetListDto petListDto = new PetListDto(petSerial, petSpecies, petName);
             pets.add(petListDto);
@@ -56,14 +56,14 @@ public class PetServiceImpl implements PetService{
     }
 
     @Override
-    public PetReq petInfo(Long petSerial) {
+    public PetReq petInfo(int petSerial) {
         Pet pet = petRepository.findByPetSerial(petSerial);
         PetReq petReq = extracted(pet);
         return petReq;
     }
 
     @Override
-    public void petDelete(Long petSerial) {
+    public void petDelete(int petSerial) {
         Pet findPet = petRepository.findByPetSerial(petSerial);
         petRepository.delete(findPet);
     }
@@ -90,7 +90,7 @@ public class PetServiceImpl implements PetService{
     }
 
     private Pet getFindPet(ChangePetInfoReq petInfoReq) {
-        Long petSerial = petInfoReq.getPetSerial();
+        int petSerial = petInfoReq.getPetSerial();
         log.info("petSerial={}", petSerial);
         Pet findPet = petRepository.findByPetSerial(petSerial);
         return findPet;

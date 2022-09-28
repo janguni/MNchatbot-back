@@ -18,9 +18,9 @@ public interface PetService {
     List<PetListDto> petList(String email);
 
     // 반려동물 info
-    PetReq petInfo(Long petSerial);
+    PetReq petInfo(int petSerial);
 
     // 반려동물 삭제
-    void petDelete(Long petSerial);
+    void petDelete(int petSerial);
 
 }

@@ -25,7 +25,7 @@ public class MedicalFormService {
 
 
     public void saveMedicalForm(MedicalFormDto medicalFormDto, Member member){
-        Long petSerial = medicalFormDto.getPetSerial();
+        int petSerial = medicalFormDto.getPetSerial();
         Pet findPet = petRepository.findByPetSerial(petSerial);
 
         String medicalFormName = medicalFormDto.getMedicalFormName();

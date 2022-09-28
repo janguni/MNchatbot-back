@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.petchatbot.domain.model.HospitalType.NOPARTNER;
+import static com.petchatbot.domain.model.HospitalType.PARTNER;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -27,29 +30,21 @@ public class HospitalService {
 
 
     // 동물병원, 연계병원 주소로 검색
-    public List<TotalHospitalDto> searchTotalHospitalList(String region, String city){
+    public List<HospitalDto> searchTotalHospitalList(String region, String city){
 
-        List<TotalHospitalDto> totalHospitals = new ArrayList<>();
+        List<HospitalDto> totalHospitals = new ArrayList<>();
 
         List<HospitalDto> hospitals = searchHospitalList(region, city);
-        List<PartnerDto> partners = searchPartnerList(region, city);
+        List<HospitalDto> partners = searchPartnerList(region, city);
 
+        // 주위 동물병원 리스트에 add
         for (HospitalDto hospital : hospitals){
-            String hospName = hospital.getHospName();
-            String hospAddress = hospital.getHospAddress();
-            String hospTel = hospital.getHospTel();
-            TotalHospitalDto hospitalDto = new TotalHospitalDto(hospName, hospAddress, hospTel, HospitalType.NOPARTNER);
-            totalHospitals.add(hospitalDto);
+            totalHospitals.add(hospital);
         }
 
-        for (PartnerDto partner : partners){
-            String pnrName = partner.getPnrName();
-            String pnrAddress = partner.getPnrAddress();
-            String pnrEmail = partner.getPnrEmail();
-            String pnrTel = partner.getPnrTel();
-            String pnrField = partner.getPnrField();
-            TotalHospitalDto totalHospitalDto = new TotalHospitalDto(pnrName, pnrAddress, pnrEmail, pnrTel, pnrField,HospitalType.PARTNER);
-            totalHospitals.add(totalHospitalDto);
+        // 연계병원 리스트에 add
+        for (HospitalDto hospital : partners){
+            totalHospitals.add(hospital);
         }
 
         return totalHospitals;
@@ -63,25 +58,13 @@ public class HospitalService {
         EmailDto emailDto = new EmailDto(pnrEmail);
         String pnrName = findPartner.getPnrName();
 
-
-        emailService.sendEmailToHospital(emailDto, pnrName + "님에게 온 상담신청입니다." + "-멍냥챗봇", apply);
-//        int petSerial = apply.getPetSerial();
-//        int partnerSerial = apply.getPartnerSerial();
-//        int medicalSerial = apply.getMedicalSerial();
-//        Date apptDate = apply.getApptDate();
-//        Time apptTime = apply.getApptTime();
-//        String apptMemberName = apply.getApptMemberName();
-//        String apptMemberTel = apply.getApptMemberTel();
-//        boolean apptBill = apply.isApptBill();
-//        String apptReason = apply.getApptReason();
-//        String apptImage = apply.getApptImage();
-
+        emailService.sendEmailToHospital(emailDto, pnrName + "님에게 온 상담신청입니다" + " - 멍냥챗봇", apply);
 
     }
 
 
 
-    // 주위 동물병원 검색해서 동물병원 리스트 보기
+    // 주위 일반동물병원
     private List<HospitalDto> searchHospitalList(String region, String city){
         List<Hospital> hospitalList = hospitalRepository.findByHospRegionAndHospCity(region, city);
 
@@ -91,17 +74,17 @@ public class HospitalService {
             String hospName = hospital.getHospName();
             String hospAddress = hospital.getHospAddress();
             String hospTel = hospital.getHospTel();
-            HospitalDto hospitalDto = new HospitalDto(hospName, hospAddress, hospTel);
+            HospitalDto hospitalDto = new HospitalDto(hospName, hospAddress, hospTel, NOPARTNER);
             hospitals.add(hospitalDto);
         }
         return hospitals;
     }
 
-    // 주위 연계병원 보기
-    private List<PartnerDto> searchPartnerList(String region, String city){
+    // 주위 연계병원
+    private List<HospitalDto> searchPartnerList(String region, String city){
         List<Partner> partnerList = partnerRepository.findByPnrRegionAndPnrCity(region, city);
 
-        List<PartnerDto> partners = new ArrayList<>();
+        List<HospitalDto> partners = new ArrayList<>();
 
         for (Partner partner : partnerList){
             String pnrName = partner.getPnrName();
@@ -109,9 +92,9 @@ public class HospitalService {
             String pnrEmail = partner.getPnrEmail();
             String pnrAddress = partner.getPnrAddress();
             String pnrField = partner.getPnrField();
-            PartnerDto partnerDto = new PartnerDto(pnrName, pnrTel, pnrEmail, pnrAddress, pnrField);
+            int pnrSerial = partner.getPnrSerial();
+            HospitalDto partnerDto = new HospitalDto(pnrSerial, pnrName, pnrAddress, pnrTel, PARTNER);
             partners.add(partnerDto);
-
         }
 
         return partners;

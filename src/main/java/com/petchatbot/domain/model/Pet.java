@@ -19,7 +19,7 @@ public class Pet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "pet_serial")
-    private Long petSerial;
+    private int petSerial;
 
     @JoinColumn(name="members_member_serial")
     @ManyToOne

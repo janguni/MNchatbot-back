@@ -13,9 +13,9 @@ import java.util.Date;
 @Data
 public class MedicalFormDto {
 
-    private Long petSerial; // 단방향 해야 할듯
+    private int petSerial; // 단방향 해야 할듯
 
-    private Long memberSerial;
+    private int memberSerial;
 
     private String medicalFormName;
 
@@ -40,7 +40,7 @@ public class MedicalFormDto {
     public MedicalFormDto() {
     }
 
-    public MedicalFormDto(Long petSerial, Long memberSerial, String medicalFormName, Date medicalFormDate, Time medicalFormTime, String medicalFormQ1, boolean medicalFormQ2, String medicalFormQ3, boolean medicalFormQ4, boolean medicalFormQ5, boolean medicalFormQ6, String medicalFormQ7) {
+    public MedicalFormDto(int petSerial, int memberSerial, String medicalFormName, Date medicalFormDate, Time medicalFormTime, String medicalFormQ1, boolean medicalFormQ2, String medicalFormQ3, boolean medicalFormQ4, boolean medicalFormQ5, boolean medicalFormQ6, String medicalFormQ7) {
         this.petSerial = petSerial;
         this.memberSerial = memberSerial;
         this.medicalFormName = medicalFormName;

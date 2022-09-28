@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 public class ChangePetInfoReq {
-    private Long petSerial;
+    private int petSerial;
     private Species petSpecies;
     private String petBreed;
     private String petName;

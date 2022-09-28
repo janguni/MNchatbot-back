@@ -61,7 +61,7 @@ public class PetController {
 
     // 반려동물 정보
     @GetMapping("/pet/{petSerial}")
-    public ResponseEntity<PetReq> petInfo(@PathVariable("petSerial") Long petSerial){
+    public ResponseEntity<PetReq> petInfo(@PathVariable("petSerial") int petSerial){
         try {
             PetReq petReq = petService.petInfo(petSerial);
             return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_GET_PET_INFO, petReq), HttpStatus.OK);
@@ -73,7 +73,7 @@ public class PetController {
 
     // 반려동물 삭제
     @DeleteMapping("/pet/delete/{petSerial}")
-    public ResponseEntity<PetReq> petDelete(@PathVariable("petSerial") Long petSerial) {
+    public ResponseEntity<PetReq> petDelete(@PathVariable("petSerial") int petSerial) {
         petService.petDelete(petSerial);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_DELETE_PET), HttpStatus.OK);
     }
