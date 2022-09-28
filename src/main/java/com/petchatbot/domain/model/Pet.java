@@ -6,6 +6,8 @@ import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Table(name = "pets")
@@ -21,7 +23,6 @@ public class Pet {
 
     @JoinColumn(name="members_member_serial")
     @ManyToOne
-    @NotFound(action = NotFoundAction.EXCEPTION)
     private Member member;
     @Enumerated(EnumType.STRING)
     @Column(name = "pet_species")
@@ -39,6 +40,11 @@ public class Pet {
     @Enumerated(EnumType.STRING)
     @Column(name = "pet_neutralization")
     private Neutralization petNeutralization;
+
+//    @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Pet> petList = new ArrayList<Pet>();
+
+
 
     public Pet() {
     }

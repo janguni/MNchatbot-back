@@ -17,19 +17,18 @@ public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long memberSerial;
+    @Column(name = "member_serial")
+    private int memberSerial;
     @Column(name = "member_email")
     private String memberEmail;
     @Column(name = "member_password")
     private String memberPassword;
-    //private String roles; // USER, ADMIN
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Pet> petList = new ArrayList<Pet>();
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Appointment> appointmentList = new ArrayList<Appointment>();
-
+//    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<MedicalForm> medicalFormList = new ArrayList<MedicalForm>();
 
     public Member() {
     }
