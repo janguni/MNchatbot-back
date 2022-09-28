@@ -12,6 +12,10 @@ public class HospitalDto {
     private String hospAddress;
     private String hospTel;
 
+    private String hospEmail;
+
+    private String hospField;
+
     private HospitalType hospType;
 
     public HospitalDto() {
@@ -24,11 +28,13 @@ public class HospitalDto {
         this.hospType = hospitalType;
     }
 
-    public HospitalDto(int hospSerial, String hospName, String hospAddress, String hospTel, HospitalType hospitalType) {
+    public HospitalDto(int hospSerial, String hospName, String hospAddress, String hospTel, String hospEmail,String hospField,HospitalType hospitalType) {
         this.hospSerial = hospSerial;
         this.hospName = hospName;
         this.hospAddress = hospAddress;
         this.hospTel = hospTel;
+        this.hospEmail = hospEmail;
+        this.hospField = hospField;
         this.hospType = hospitalType;
     }
 }

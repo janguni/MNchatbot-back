@@ -107,7 +107,7 @@ public class EmailService {
                 "    - 축종: " + findPet.getPetSpecies() + "\n" +
                 "    - 품종: " + findPet.getPetBreed() + "\n" +
                 "    - 성별: " + findPet.getPetGender() + "\n" +
-                "    - 중성화 여부: " + findPet.getPetNeutralization() + "\n" +
+                "    - 중성화 여부: " + isNeuter + "\n" +
                 "    - 복용중인약: " + findMedicalForm.getMedicalFormQ3() + "\n" +
                 "    - 약 섭취 후 과민반응 여부: " + isHypersensitivity+ "\n" +
                 "    - 수술 또는 마취 여부: " + isSurgeryOrAnesthesia + "\n" +

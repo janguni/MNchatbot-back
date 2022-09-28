@@ -74,6 +74,7 @@ public class HospitalService {
             String hospName = hospital.getHospName();
             String hospAddress = hospital.getHospAddress();
             String hospTel = hospital.getHospTel();
+
             HospitalDto hospitalDto = new HospitalDto(hospName, hospAddress, hospTel, NOPARTNER);
             hospitals.add(hospitalDto);
         }
@@ -93,7 +94,7 @@ public class HospitalService {
             String pnrAddress = partner.getPnrAddress();
             String pnrField = partner.getPnrField();
             int pnrSerial = partner.getPnrSerial();
-            HospitalDto partnerDto = new HospitalDto(pnrSerial, pnrName, pnrAddress, pnrTel, PARTNER);
+            HospitalDto partnerDto = new HospitalDto(pnrSerial, pnrName, pnrAddress, pnrTel, pnrEmail,pnrField,PARTNER);
             partners.add(partnerDto);
         }
 
