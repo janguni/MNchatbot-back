@@ -14,9 +14,11 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.tags.EditorAwareTag;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -96,6 +98,8 @@ public class EmailService {
         if (dto.isApptBill()) isCostRequest = "네";
         else isCostRequest = "아니요";
 
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy년 MM월 dd일");
+        String refinedDate= dateFormat.format(dto.getApptDate());
         return "안녕하세요. 멍냥챗봇 입니다.\n" +
                 "해당병원에 " + dto.getApptMemberName() + "님이 상담신청을 하셨습니다.\n\n" +
                 "<상담신청인 정보>\n" +
@@ -116,7 +120,10 @@ public class EmailService {
                 "    - 기타 특이사항: " + findMedicalForm.getMedicalFormQ7() + "\n\n\n" +
                 "<상담내용>\n" +
                 "    - 상담신청 이유: " + dto.getApptReason() + "\n" +
+                "    - 원하는 상담날짜 : " + refinedDate + "\n" +
+                "    - 원하는 상담시간 : " + dto.getApptTime() + "\n" +
                 "    - 예상비용 요청여부: " + isCostRequest + "\n\n\n" +
+
                 "감사합니다 - 멍냥챗봇";
 
     }

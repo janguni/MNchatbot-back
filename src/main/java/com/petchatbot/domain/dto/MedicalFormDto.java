@@ -21,7 +21,7 @@ public class MedicalFormDto {
 
     private Date medicalFormDate;
 
-    private Time medicalFormTime;
+    private String medicalFormTime;
 
     private String medicalFormQ1;
 
@@ -40,7 +40,7 @@ public class MedicalFormDto {
     public MedicalFormDto() {
     }
 
-    public MedicalFormDto(int petSerial, int memberSerial, String medicalFormName, Date medicalFormDate, Time medicalFormTime, String medicalFormQ1, boolean medicalFormQ2, String medicalFormQ3, boolean medicalFormQ4, boolean medicalFormQ5, boolean medicalFormQ6, String medicalFormQ7) {
+    public MedicalFormDto(int petSerial, int memberSerial, String medicalFormName, Date medicalFormDate, String medicalFormTime, String medicalFormQ1, boolean medicalFormQ2, String medicalFormQ3, boolean medicalFormQ4, boolean medicalFormQ5, boolean medicalFormQ6, String medicalFormQ7) {
         this.petSerial = petSerial;
         this.memberSerial = memberSerial;
         this.medicalFormName = medicalFormName;

@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Service
@@ -24,13 +26,13 @@ public class MedicalFormService {
     private final MemberRepository memberRepository;
 
 
-    public void saveMedicalForm(MedicalFormDto medicalFormDto, Member member){
+    public void saveMedicalForm(MedicalFormDto medicalFormDto, Member member) throws ParseException {
         int petSerial = medicalFormDto.getPetSerial();
         Pet findPet = petRepository.findByPetSerial(petSerial);
 
         String medicalFormName = medicalFormDto.getMedicalFormName();
         Date medicalFormDate = medicalFormDto.getMedicalFormDate();
-        Time medicalFormTime = medicalFormDto.getMedicalFormTime();
+        String medicalFormTime = medicalFormDto.getMedicalFormTime();
         String medicalFormQ1 = medicalFormDto.getMedicalFormQ1();
         boolean medicalFormQ2 = medicalFormDto.isMedicalFormQ2();
         String medicalFormQ3 = medicalFormDto.getMedicalFormQ3();

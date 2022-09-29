@@ -11,7 +11,7 @@ public class HospitalApplyDto {
     private int medicalSerial; //문진표
     private int partnerSerial;
     private Date apptDate;
-    private Time apptTime;
+    private String apptTime;
     private String apptMemberName;
     private String apptMemberTel;
     private boolean apptBill;
@@ -22,7 +22,7 @@ public class HospitalApplyDto {
 
     }
 
-    public HospitalApplyDto(int petSerial, int medicalSerial, int partnerSerial, Date apptDate, Time apptTime, String apptMemberName, String apptMemberTel, boolean apptBill, String apptReason, String apptImage) {
+    public HospitalApplyDto(int petSerial, int medicalSerial, int partnerSerial, Date apptDate, String apptTime, String apptMemberName, String apptMemberTel, boolean apptBill, String apptReason, String apptImage) {
         this.petSerial = petSerial;
         this.medicalSerial = medicalSerial;
         this.partnerSerial = partnerSerial;
