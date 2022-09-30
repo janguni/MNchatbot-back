@@ -1,20 +1,21 @@
 package com.petchatbot.domain.dto;
 
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Time;
 import java.util.Date;
 
 @Data
 public class HospitalApplyDto {
-    private int petSerial;
-    private int medicalSerial; //문진표
-    private int partnerSerial;
-    private Date apptDate;
+    private String petSerial;
+    private String medicalSerial; //문진표
+    private String partnerSerial;
+    private String apptDate;
     private String apptTime;
     private String apptMemberName;
     private String apptMemberTel;
-    private boolean apptBill;
+    private String apptBill;
     private String apptReason;
     private String apptImage;
 
@@ -22,7 +23,7 @@ public class HospitalApplyDto {
 
     }
 
-    public HospitalApplyDto(int petSerial, int medicalSerial, int partnerSerial, Date apptDate, String apptTime, String apptMemberName, String apptMemberTel, boolean apptBill, String apptReason, String apptImage) {
+    public HospitalApplyDto(String petSerial, String medicalSerial, String partnerSerial, String apptDate, String apptTime, String apptMemberName, String apptMemberTel, String apptBill, String apptReason, String apptImage) {
         this.petSerial = petSerial;
         this.medicalSerial = medicalSerial;
         this.partnerSerial = partnerSerial;

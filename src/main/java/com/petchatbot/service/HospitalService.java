@@ -56,7 +56,11 @@ public class HospitalService {
 
     //상담신청
     public void hospitalApply(HospitalApplyDto apply) throws MessagingException {
-        int partnerSerial = apply.getPartnerSerial();
+        int petSerial = Integer.parseInt(apply.getPetSerial());
+        int partnerSerial = Integer.parseInt(apply.getPartnerSerial());
+
+
+        int medicalFormSerial = Integer.parseInt(apply.getMedicalSerial());
         Partner findPartner = partnerRepository.findByPnrSerial(partnerSerial);
         String pnrEmail = findPartner.getPnrEmail();
         EmailDto emailDto = new EmailDto(pnrEmail);
@@ -64,7 +68,7 @@ public class HospitalService {
 
 
         // 연계병원에 이메일 전송
-        emailService.sendEmailToHospital(emailDto, pnrName + "님에게 온 상담신청입니다" + " - 멍냥챗봇", apply);
+        emailService.sendEmailToHospital(emailDto, pnrName + "님에게 온 상담신청입니다" + " - 멍냥챗봇", apply, petSerial, medicalFormSerial);
 
         // 상담 신청 저장 -> 일단 물어보기
         //appointmentRepository.save()

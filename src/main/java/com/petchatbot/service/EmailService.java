@@ -51,7 +51,7 @@ public class EmailService {
         }
     }
 
-    public void sendEmailToHospital(EmailDto emailDto, String title, HospitalApplyDto hospitalApplyDto) throws MessagingException {
+    public void sendEmailToHospital(EmailDto emailDto, String title, HospitalApplyDto hospitalApplyDto,int petSerial, int medicalFormSerial) throws MessagingException {
 
         try {
             String text = "test";
@@ -60,7 +60,7 @@ public class EmailService {
             h.setFrom("lightson23@naver.com");
             h.setTo(emailDto.getReceiveMail());
             h.setSubject(title);
-            h.setText(makeEmailText(hospitalApplyDto));
+            h.setText(makeEmailText(hospitalApplyDto,petSerial, medicalFormSerial));
             emailSender.send(m);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
@@ -71,12 +71,10 @@ public class EmailService {
         return "인증번호는 " + randomNumber + " 입니다.\n멍냥챗봇에 가입해 주셔서 감사합니다.";
     }
 
-    private String makeEmailText(HospitalApplyDto dto){
+    private String makeEmailText(HospitalApplyDto dto, int petSerial, int medicalFormSerial){
 
-        int petSerial = dto.getPetSerial();
-        int medicalSerial = dto.getMedicalSerial();
         Pet findPet = petRepository.findByPetSerial(petSerial);
-        MedicalForm findMedicalForm = medicalFormRepository.findByMedicalFormSerial(medicalSerial);
+        MedicalForm findMedicalForm = medicalFormRepository.findByMedicalFormSerial(medicalFormSerial);
 
         String isNeuter; // 중성화 여부
         if (findPet.getPetNeutralization() == NEUTER) isNeuter = "네";
@@ -95,11 +93,9 @@ public class EmailService {
         else isExcessiveExercise = "아니요";
 
         String isCostRequest;
-        if (dto.isApptBill()) isCostRequest = "네";
+        if (dto.getApptBill()=="true") isCostRequest = "네";
         else isCostRequest = "아니요";
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy년 MM월 dd일");
-        String refinedDate= dateFormat.format(dto.getApptDate());
         return "안녕하세요. 멍냥챗봇 입니다.\n" +
                 "해당병원에 " + dto.getApptMemberName() + "님이 상담신청을 하셨습니다.\n\n" +
                 "<상담신청인 정보>\n" +
@@ -120,7 +116,7 @@ public class EmailService {
                 "    - 기타 특이사항: " + findMedicalForm.getMedicalFormQ7() + "\n\n\n" +
                 "<상담내용>\n" +
                 "    - 상담신청 이유: " + dto.getApptReason() + "\n" +
-                "    - 원하는 상담날짜 : " + refinedDate + "\n" +
+                "    - 원하는 상담날짜 : " + dto.getApptDate() + "\n" +
                 "    - 원하는 상담시간 : " + dto.getApptTime() + "\n" +
                 "    - 예상비용 요청여부: " + isCostRequest + "\n\n\n" +
 
