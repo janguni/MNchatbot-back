@@ -48,9 +48,9 @@ public class DiseasesController {
     }
 
     // 전체 질병 데이터 보여주기
-    @GetMapping("/disease/totalDisease/{page}/{itemCnt}")
+    @GetMapping("/disease/totalDisease/{page}/{diseaseCnt}")
     public ResponseEntity<DiseaseDictionaryDto> totalDisease(@PathVariable("page") int page,
-                                                   @PathVariable("itemCnt") int diseaseCnt
+                                                   @PathVariable("diseaseCnt") int diseaseCnt
                                                    ){
         DiseaseDictionaryDto miniDictionary = diseasesService.getDiseasesList(page, diseaseCnt);
 
