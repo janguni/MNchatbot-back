@@ -1,5 +1,6 @@
 package com.petchatbot.service;
 
+import com.petchatbot.domain.dto.DiseaseDictionaryDto;
 import com.petchatbot.domain.dto.DiseaseDto;
 import com.petchatbot.domain.dto.DiseaseListDto;
 import com.petchatbot.domain.model.Disease;
@@ -38,6 +39,26 @@ public class DiseasesService {
         }
 
         return diseases;
+    }
+
+    public DiseaseDictionaryDto getDiseasesList(int page, int itemCnt) {
+
+        List<DiseaseListDto> diseases = new ArrayList<>();
+        int startNumber = (page-1) * 10; // 질병 시작 갯수
+        List<Disease> totalDisease = diseasesRepository.findAll(); // 전체 질병 정보 불러옴
+        for (int i=startNumber; i<startNumber+itemCnt; i++){
+            Disease disease = totalDisease.get(i);
+            String dsId = disease.getId();
+            String dsName = disease.getDsName();
+            DiseaseListDto diseaseListDto = new DiseaseListDto(dsId, dsName);
+            diseases.add(diseaseListDto);
+        }
+
+        long totalCount = diseasesRepository.count();
+
+
+        DiseaseDictionaryDto miniDiseaseDictionary = new DiseaseDictionaryDto(totalCount,startNumber+itemCnt<totalCount, diseases);
+        return miniDiseaseDictionary;
     }
 
     public DiseaseDto getDiseaseInfo(String dsId){

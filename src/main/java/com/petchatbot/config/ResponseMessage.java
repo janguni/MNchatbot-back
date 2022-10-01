@@ -33,7 +33,9 @@ public abstract class ResponseMessage {
 
     public static final String NULL_SEARCH_DISEASES = "질병백과 검색어 없음";
     public static final String SUCCESS_SEARCH_DISEASES = "질병백과 검색결과 제공";
+    public static final String SUCCESS_MINI_DISEASEDICTIONARY = "질병백과 페이지 전송 성공";
     public static final String FAIL_SEARCH_DISEASES = "질병백과 검색결과 없음";
+
     public static final String SUCCESS_GET_DISEASE_INFO = "질병 정보 제공";
 
     public static final String SUCCESS_GET_HOSPITAL_LIST = "주변 동물병원 list 제공";
