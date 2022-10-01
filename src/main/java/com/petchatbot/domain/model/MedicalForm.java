@@ -35,19 +35,19 @@ public class MedicalForm {
     private Date medicalFormDate;
 
     @Column(name = "med_time")
-    private Time medicalFormTime;
+    private String medicalFormTime;
 
     @Column(name = "med_q1")
     private String medicalFormQ1;
 
     @Column(name = "med_q2")
-    private boolean medicalFormQ2;
+    private String medicalFormQ2;
 
     @Column(name = "med_q3")
-    private String medicalFormQ3;
+    private boolean medicalFormQ3;
 
     @Column(name = "med_q4")
-    private boolean medicalFormQ4;
+    private String medicalFormQ4;
 
     @Column(name = "med_q5")
     private boolean medicalFormQ5;
@@ -61,7 +61,7 @@ public class MedicalForm {
     public MedicalForm() {
     }
 
-    public MedicalForm(Pet pet, Member member, String medicalFormName, Date medicalFormDate, Time medicalFormTime, String medicalFormQ1, boolean medicalFormQ2, String medicalFormQ3, boolean medicalFormQ4, boolean medicalFormQ5, boolean medicalFormQ6, String medicalFormQ7) {
+    public MedicalForm(Pet pet, Member member, String medicalFormName, Date medicalFormDate, String medicalFormTime, String medicalFormQ1, String medicalFormQ2, boolean medicalFormQ3, String medicalFormQ4, boolean medicalFormQ5, boolean medicalFormQ6, String medicalFormQ7) {
         this.pet = pet;
         this.member = member;
         this.medicalFormName = medicalFormName;

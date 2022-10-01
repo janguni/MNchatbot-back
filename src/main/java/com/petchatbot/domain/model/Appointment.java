@@ -38,7 +38,7 @@ public class Appointment {
     private Date appointmentDate;
 
     @Column(name = "appt_time")
-    private Time appointmentTime;
+    private String appointmentTime;
 
     @Column(name = "member_name")
     private String memberName;
@@ -58,7 +58,7 @@ public class Appointment {
     public Appointment() {
     }
 
-    public Appointment(Pet pet, Member member, MedicalForm medicalForm, Partner partner, Date appointmentDate, Time appointmentTime, String memberName, String memberTel, boolean isWantBillInfo, String appointmentReason, String appointmentImage) {
+    public Appointment(Pet pet, Member member, MedicalForm medicalForm, Partner partner, Date appointmentDate, String appointmentTime, String memberName, String memberTel, boolean isWantBillInfo, String appointmentReason, String appointmentImage) {
         this.pet = pet;
         this.member = member;
         this.medicalForm = medicalForm;

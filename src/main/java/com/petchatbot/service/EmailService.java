@@ -14,9 +14,11 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.tags.EditorAwareTag;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -49,7 +51,7 @@ public class EmailService {
         }
     }
 
-    public void sendEmailToHospital(EmailDto emailDto, String title, HospitalApplyDto hospitalApplyDto) throws MessagingException {
+    public void sendEmailToHospital(EmailDto emailDto, String title, HospitalApplyDto hospitalApplyDto,int petSerial, int medicalFormSerial) throws MessagingException {
 
         try {
             String text = "test";
@@ -58,7 +60,7 @@ public class EmailService {
             h.setFrom("lightson23@naver.com");
             h.setTo(emailDto.getReceiveMail());
             h.setSubject(title);
-            h.setText(makeEmailText(hospitalApplyDto));
+            h.setText(makeEmailText(hospitalApplyDto,petSerial, medicalFormSerial));
             emailSender.send(m);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
@@ -69,19 +71,24 @@ public class EmailService {
         return "인증번호는 " + randomNumber + " 입니다.\n멍냥챗봇에 가입해 주셔서 감사합니다.";
     }
 
-    private String makeEmailText(HospitalApplyDto dto){
+    private String makeEmailText(HospitalApplyDto dto, int petSerial, int medicalFormSerial){
 
-        int petSerial = dto.getPetSerial();
-        int medicalSerial = dto.getMedicalSerial();
         Pet findPet = petRepository.findByPetSerial(petSerial);
-        MedicalForm findMedicalForm = medicalFormRepository.findByMedicalFormSerial(medicalSerial);
+        MedicalForm findMedicalForm = medicalFormRepository.findByMedicalFormSerial(medicalFormSerial);
 
         String isNeuter; // 중성화 여부
         if (findPet.getPetNeutralization() == NEUTER) isNeuter = "네";
         else isNeuter = "아니요";
 
+        String underDisease;
+        if (findMedicalForm.getMedicalFormQ2().equals("I")) underDisease = "내분비질환";
+        else if (findMedicalForm.getMedicalFormQ2().equals("S")) underDisease = "피부질환";
+        else if (findMedicalForm.getMedicalFormQ2().equals("M")) underDisease = "근골격계질환";
+        else if (findMedicalForm.getMedicalFormQ2().equals("C")) underDisease = "순환기질환";
+        else underDisease = "없음";
+
         String isHypersensitivity; // 약 섭취 후 과민반응 여부
-        if (findMedicalForm.isMedicalFormQ4()) isHypersensitivity="네";
+        if (findMedicalForm.isMedicalFormQ3()) isHypersensitivity="네";
         else isHypersensitivity = "아니요";
 
         String isSurgeryOrAnesthesia; // 수출 또는 마취 여부
@@ -93,11 +100,14 @@ public class EmailService {
         else isExcessiveExercise = "아니요";
 
         String isCostRequest;
-        if (dto.isApptBill()) isCostRequest = "네";
+        if (dto.getApptBill()=="true") isCostRequest = "네";
         else isCostRequest = "아니요";
 
         return "안녕하세요. 멍냥챗봇 입니다.\n" +
                 "해당병원에 " + dto.getApptMemberName() + "님이 상담신청을 하셨습니다.\n\n" +
+                "<상담신청 일자>\n" +
+                "    - 원하는 상담날짜 : " + dto.getApptDate() + "\n" +
+                "    - 원하는 상담시간 : " + dto.getApptTime() + "\n\n\n" +
                 "<상담신청인 정보>\n" +
                 "    - 이름: " + dto.getApptMemberName() + "\n" +
                 "    - 전화번호: " + dto.getApptMemberTel() + "\n\n\n" +
@@ -108,15 +118,17 @@ public class EmailService {
                 "    - 품종: " + findPet.getPetBreed() + "\n" +
                 "    - 성별: " + findPet.getPetGender() + "\n" +
                 "    - 중성화 여부: " + isNeuter + "\n" +
-                "    - 복용중인약: " + findMedicalForm.getMedicalFormQ3() + "\n" +
+                "    - 기저질환: " + underDisease + "\n" +
+                "    - 복용중인약: " + findMedicalForm.getMedicalFormQ4() + "\n" +
                 "    - 약 섭취 후 과민반응 여부: " + isHypersensitivity+ "\n" +
                 "    - 수술 또는 마취 여부: " + isSurgeryOrAnesthesia + "\n" +
                 "    - 과도한 운동 여부: " + isExcessiveExercise + "\n" +
-                "    - 반려동물 이미지: " + dto.getApptImage() + "\n" +
+                //"    - 반려동물 이미지: " + dto.getApptImage() + "\n" +
                 "    - 기타 특이사항: " + findMedicalForm.getMedicalFormQ7() + "\n\n\n" +
                 "<상담내용>\n" +
                 "    - 상담신청 이유: " + dto.getApptReason() + "\n" +
                 "    - 예상비용 요청여부: " + isCostRequest + "\n\n\n" +
+
                 "감사합니다 - 멍냥챗봇";
 
     }

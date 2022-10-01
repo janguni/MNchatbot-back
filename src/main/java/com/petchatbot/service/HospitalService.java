@@ -4,6 +4,7 @@ import com.petchatbot.domain.dto.*;
 import com.petchatbot.domain.model.Hospital;
 import com.petchatbot.domain.model.HospitalType;
 import com.petchatbot.domain.model.Partner;
+import com.petchatbot.repository.AppointmentRepository;
 import com.petchatbot.repository.HospitalRepository;
 import com.petchatbot.repository.PartnerRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,9 @@ public class HospitalService {
     private final HospitalRepository hospitalRepository;
     private final PartnerRepository partnerRepository;
     private final EmailService emailService;
+
+    private final AppointmentRepository appointmentRepository;
+
 
 
     // 동물병원, 연계병원 주소로 검색
@@ -52,14 +56,22 @@ public class HospitalService {
 
     //상담신청
     public void hospitalApply(HospitalApplyDto apply) throws MessagingException {
-        int partnerSerial = apply.getPartnerSerial();
+        int petSerial = Integer.parseInt(apply.getPetSerial());
+        int partnerSerial = Integer.parseInt(apply.getPartnerSerial());
+
+
+        int medicalFormSerial = Integer.parseInt(apply.getMedicalSerial());
         Partner findPartner = partnerRepository.findByPnrSerial(partnerSerial);
         String pnrEmail = findPartner.getPnrEmail();
         EmailDto emailDto = new EmailDto(pnrEmail);
         String pnrName = findPartner.getPnrName();
 
-        emailService.sendEmailToHospital(emailDto, pnrName + "님에게 온 상담신청입니다" + " - 멍냥챗봇", apply);
 
+        // 연계병원에 이메일 전송
+        emailService.sendEmailToHospital(emailDto, pnrName + "님에게 온 상담신청입니다" + " - 멍냥챗봇", apply, petSerial, medicalFormSerial);
+
+        // 상담 신청 저장 -> 일단 물어보기
+        //appointmentRepository.save()
     }
 
 

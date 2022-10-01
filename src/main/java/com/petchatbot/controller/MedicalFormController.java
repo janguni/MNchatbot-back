@@ -20,7 +20,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.text.ParseException;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -31,20 +32,21 @@ public class MedicalFormController {
     private final MemberRepository memberRepository;
 
     @PostMapping("/medicalForm/add")
-    public ResponseEntity<MedicalFormDto> addMedicalForm(@RequestBody MedicalFormDto medicalFormDto, Authentication authentication) {
+
+    public ResponseEntity<MedicalFormDto> addMedicalForm(@RequestBody MedicalFormDto medicalFormDto, Authentication authentication) throws ParseException {
         String memberEmail = extractEmail(authentication);
         Member byMemberEmail = memberRepository.findByMemberEmail(memberEmail);
         medicalFormService.saveMedicalForm(medicalFormDto, byMemberEmail);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_ADD_MEDICAL_FORM), HttpStatus.OK);
     }
 
-    @PatchMapping("/medicalForm/update")
-    public ResponseEntity<MedicalFormDto> updateMedicalForm(@RequestBody ChangeMedicalFormDto changeMedicalFormDto, Authentication authentication) {
-        String memberEmail = extractEmail(authentication);
-        Member byMemberEmail = memberRepository.findByMemberEmail(memberEmail);
-        //medicalFormService.saveMedicalForm(medicalFormDto, byMemberEmail);
-        //return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_ADD_MEDICAL_FORM), HttpStatus.OK);
-    }
+//    @PatchMapping("/medicalForm/update")
+//    public ResponseEntity<MedicalFormDto> updateMedicalForm(@RequestBody ChangeMedicalFormDto changeMedicalFormDto, Authentication authentication) {
+//        String memberEmail = extractEmail(authentication);
+//        Member byMemberEmail = memberRepository.findByMemberEmail(memberEmail);
+//        //medicalFormService.saveMedicalForm(medicalFormDto, byMemberEmail);
+//        //return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_ADD_MEDICAL_FORM), HttpStatus.OK);
+//    }
 
 
 
