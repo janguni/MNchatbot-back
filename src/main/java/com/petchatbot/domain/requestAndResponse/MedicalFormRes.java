@@ -8,7 +8,7 @@ import java.util.Date;
 public class MedicalFormRes {
     private String medicalFormName;
 
-    private Date medicalFormDate;
+    private String medicalFormDate;
 
     private String medicalFormTime;
 
@@ -29,7 +29,7 @@ public class MedicalFormRes {
     public MedicalFormRes() {
     }
 
-    public MedicalFormRes(String medicalFormName, Date medicalFormDate, String medicalFormTime, String medicalFormQ1, String medicalFormQ2, boolean medicalFormQ3, String medicalFormQ4, boolean medicalFormQ5, boolean medicalFormQ6, String medicalFormQ7) {
+    public MedicalFormRes(String medicalFormName, String medicalFormDate, String medicalFormTime, String medicalFormQ1, String medicalFormQ2, boolean medicalFormQ3, String medicalFormQ4, boolean medicalFormQ5, boolean medicalFormQ6, String medicalFormQ7) {
         this.medicalFormName = medicalFormName;
         this.medicalFormDate = medicalFormDate;
         this.medicalFormTime = medicalFormTime;

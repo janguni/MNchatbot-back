@@ -48,7 +48,7 @@ public class MedicalFormService {
         boolean medicalFormQ6 = medicalFormDto.isMedicalFormQ6();
         String medicalFormQ7;
         log.info("medicalFormQ7={}",medicalFormDto.getMedicalFormQ7());
-        if (medicalFormDto.getMedicalFormQ7()==""){
+        if (medicalFormDto.getMedicalFormQ7()==null){
             medicalFormQ7 = "특이사항 없음";
         }
         else medicalFormQ7 = medicalFormDto.getMedicalFormQ7();
@@ -84,6 +84,8 @@ public class MedicalFormService {
         MedicalForm findMedicalForm = medicalFormRepository.findByMedicalFormSerial(medicalFormSerial);
         String medicalFormName = findMedicalForm.getMedicalFormName();
         Date medicalFormDate = findMedicalForm.getMedicalFormDate();
+        SimpleDateFormat newDtFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String newMedicalFormDate = newDtFormat.format(medicalFormDate);
         String medicalFormTime = findMedicalForm.getMedicalFormTime();
         String medicalFormQ1 = findMedicalForm.getMedicalFormQ1();
         String medicalFormQ2 = findMedicalFormQ2ByLetter(findMedicalForm.getMedicalFormQ2());
@@ -93,7 +95,7 @@ public class MedicalFormService {
         boolean medicalFormQ6 = findMedicalForm.isMedicalFormQ6();
         String medicalFormQ7 = findMedicalForm.getMedicalFormQ7();
 
-        MedicalFormRes medicalFormRes = new MedicalFormRes(medicalFormName, medicalFormDate, medicalFormTime, medicalFormQ1, medicalFormQ2, medicalFormQ3, medicalFormQ4, medicalFormQ5, medicalFormQ6, medicalFormQ7);
+        MedicalFormRes medicalFormRes = new MedicalFormRes(medicalFormName, newMedicalFormDate, medicalFormTime, medicalFormQ1, medicalFormQ2, medicalFormQ3, medicalFormQ4, medicalFormQ5, medicalFormQ6, medicalFormQ7);
         return medicalFormRes;
     }
 
