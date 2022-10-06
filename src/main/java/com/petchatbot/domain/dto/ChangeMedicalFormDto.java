@@ -9,31 +9,29 @@ import java.util.Date;
 @Data
 public class ChangeMedicalFormDto {
     private int medicalSerial;
-
     private String medicalFormName;
 
     private Date medicalFormDate;
 
-    private Time medicalFormTime;
+    private String medicalFormTime;
 
     private String medicalFormQ1;
 
-    private boolean medicalFormQ2;
+    private String medicalFormQ2;
 
-    private String medicalFormQ3;
+    private boolean medicalFormQ3;
 
-    private boolean medicalFormQ4;
+    private String medicalFormQ4;
 
     private boolean medicalFormQ5;
 
     private boolean medicalFormQ6;
 
     private String medicalFormQ7;
-
     public ChangeMedicalFormDto() {
     }
 
-    public ChangeMedicalFormDto(int medicalSerial, String medicalFormName, Date medicalFormDate, Time medicalFormTime, String medicalFormQ1, boolean medicalFormQ2, String medicalFormQ3, boolean medicalFormQ4, boolean medicalFormQ5, boolean medicalFormQ6, String medicalFormQ7) {
+    public ChangeMedicalFormDto(int medicalSerial, String medicalFormName, Date medicalFormDate, String medicalFormTime, String medicalFormQ1, String medicalFormQ2, boolean medicalFormQ3, String medicalFormQ4, boolean medicalFormQ5, boolean medicalFormQ6, String medicalFormQ7) {
         this.medicalSerial = medicalSerial;
         this.medicalFormName = medicalFormName;
         this.medicalFormDate = medicalFormDate;

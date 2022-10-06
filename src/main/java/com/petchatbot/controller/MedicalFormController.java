@@ -52,21 +52,17 @@ public class MedicalFormController {
     public ResponseEntity<MedicalFormRes> getMedicalFormInfo(@PathVariable("medicalFormSerial") int medicalFormSerial) {
 
         MedicalFormRes medicalFormInfo = medicalFormService.getMedicalFormInfo(medicalFormSerial);
+        log.info("date={}", medicalFormInfo.getMedicalFormDate());
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_MEDICAL_FORM_INFO, medicalFormInfo), HttpStatus.OK);
     }
 
-//    @PatchMapping("/medicalForm/update")
-//    public ResponseEntity<MedicalFormDto> updateMedicalForm(@RequestBody ChangeMedicalFormDto changeMedicalFormDto, Authentication authentication) {
-//        String memberEmail = extractEmail(authentication);
-//        Member byMemberEmail = memberRepository.findByMemberEmail(memberEmail);
-//        //medicalFormService.saveMedicalForm(medicalFormDto, byMemberEmail);
-//        //return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_ADD_MEDICAL_FORM), HttpStatus.OK);
-//    }
-
-
-
-
-
+    @PatchMapping("/medicalForm/update")
+    public ResponseEntity<MedicalFormDto> updateMedicalForm(@RequestBody ChangeMedicalFormDto changeMedicalFormDto, Authentication authentication) {
+        String memberEmail = extractEmail(authentication);
+        Member findMember = memberRepository.findByMemberEmail(memberEmail);
+        medicalFormService.saveMedicalForm(changeMedicalFormDto, findMember);
+        //return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_ADD_MEDICAL_FORM), HttpStatus.OK);
+    }
 
     private String extractEmail(Authentication authentication){
         PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
