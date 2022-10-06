@@ -25,7 +25,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @Slf4j
 public class HospitalController {
     private final HospitalService hospitalService;
-
     @GetMapping("/hospital/{region}/{city}")
     public ResponseEntity<HospitalDto> searchTotalHospitalList(@PathVariable("region") String region,
                                                          @PathVariable("city") String city

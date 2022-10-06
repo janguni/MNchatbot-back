@@ -47,7 +47,7 @@ public abstract class ResponseMessage {
     public static final String SUCCESS_ADD_MEDICAL_FORM = "문진표 저장 성공";
     public static final String SUCCESS_GET_MEDICAL_FORM_LIST = "문진표 목록 불러오기 성공";
     public static final String FAIL_GET_MEDICAL_FORM_LIST = "문진표 목록 없음";
-
+    public static final String SUCCESS_UPDATE_MEDICAL_FORM = "문진표 저장 성공";
     public static final String SUCCESS_MEDICAL_FORM_INFO = "문진표 세부정보 불러오기 성공";
 
     public static final String SUCCESS_APPLY_TO_HOSPITAL = "연계병원 상담신청 성공";

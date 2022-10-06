@@ -5,6 +5,7 @@ import com.petchatbot.domain.dto.MedicalFormListDto;
 import com.petchatbot.domain.model.MedicalForm;
 import com.petchatbot.domain.model.Member;
 import com.petchatbot.domain.model.Pet;
+import com.petchatbot.domain.requestAndResponse.ChangeMedicalFormReq;
 import com.petchatbot.domain.requestAndResponse.MedicalFormRes;
 import com.petchatbot.repository.MedicalFormRepository;
 import com.petchatbot.repository.MemberRepository;
@@ -12,6 +13,7 @@ import com.petchatbot.repository.PetRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Time;
 import java.text.ParseException;
@@ -30,7 +32,6 @@ public class MedicalFormService {
     private final MemberRepository memberRepository;
 
     // 문진표 저장
-
     public void saveMedicalForm(MedicalFormDto medicalFormDto, Member member) throws ParseException {
         int petSerial = medicalFormDto.getPetSerial();
         Pet findPet = petRepository.findByPetSerial(petSerial);
@@ -57,6 +58,23 @@ public class MedicalFormService {
         MedicalForm medicalForm = new MedicalForm(findPet, member, medicalFormName, medicalFormDate, medicalFormTime, medicalFormQ1, medicalFormQ2, medicalFormQ3, medicalFormQ4, medicalFormQ5, medicalFormQ6, medicalFormQ7);
 
         medicalFormRepository.save(medicalForm);
+    }
+    @Transactional
+    // 문진표 수정
+    public void updateMedicalForm(ChangeMedicalFormReq medicalFormReq, Member member){
+        int medicalSerial = medicalFormReq.getMedicalSerial();
+        MedicalForm findMedicalForm = medicalFormRepository.findByMedicalFormSerial(medicalSerial);
+        String name = medicalFormReq.getMedicalFormName();
+        Date date = medicalFormReq.getMedicalFormDate();
+        String time = medicalFormReq.getMedicalFormTime();
+        String q1 = medicalFormReq.getMedicalFormQ1();
+        String q2 = medicalFormReq.getMedicalFormQ2();
+        boolean q3 = medicalFormReq.isMedicalFormQ3();
+        String q4 = medicalFormReq.getMedicalFormQ4();
+        boolean q5 = medicalFormReq.isMedicalFormQ5();
+        boolean q6 = medicalFormReq.isMedicalFormQ6();
+        String q7 = medicalFormReq.getMedicalFormQ7();
+        findMedicalForm.changeMedicalForm(name, date, time, q1, q2, q3, q4, q5, q6, q7);
     }
 
     // 문진표 목록 불러오기

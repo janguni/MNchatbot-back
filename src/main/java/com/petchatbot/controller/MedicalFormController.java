@@ -5,11 +5,10 @@ import com.petchatbot.config.StatusCode;
 import com.petchatbot.config.auth.PrincipalDetails;
 import com.petchatbot.domain.dto.*;
 import com.petchatbot.domain.model.Member;
+import com.petchatbot.domain.requestAndResponse.ChangeMedicalFormReq;
 import com.petchatbot.domain.requestAndResponse.DefaultRes;
 import com.petchatbot.domain.requestAndResponse.MedicalFormRes;
-import com.petchatbot.domain.requestAndResponse.PetReq;
 import com.petchatbot.repository.MemberRepository;
-import com.petchatbot.service.HospitalService;
 import com.petchatbot.service.MedicalFormService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -57,11 +56,11 @@ public class MedicalFormController {
     }
 
     @PatchMapping("/medicalForm/update")
-    public ResponseEntity<MedicalFormDto> updateMedicalForm(@RequestBody ChangeMedicalFormDto changeMedicalFormDto, Authentication authentication) {
+    public ResponseEntity<MedicalFormDto> updateMedicalForm(@RequestBody ChangeMedicalFormReq changeMedicalFormDto, Authentication authentication) {
         String memberEmail = extractEmail(authentication);
         Member findMember = memberRepository.findByMemberEmail(memberEmail);
-        medicalFormService.saveMedicalForm(changeMedicalFormDto, findMember);
-        //return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_ADD_MEDICAL_FORM), HttpStatus.OK);
+        medicalFormService.updateMedicalForm(changeMedicalFormDto, findMember);
+        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_ADD_MEDICAL_FORM), HttpStatus.OK);
     }
 
     private String extractEmail(Authentication authentication){

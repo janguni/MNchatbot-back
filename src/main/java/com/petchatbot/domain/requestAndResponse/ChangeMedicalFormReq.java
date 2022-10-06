@@ -1,13 +1,11 @@
-package com.petchatbot.domain.dto;
+package com.petchatbot.domain.requestAndResponse;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import java.sql.Time;
 import java.util.Date;
 
 @Data
-public class ChangeMedicalFormDto {
+public class ChangeMedicalFormReq {
     private int medicalSerial;
     private String medicalFormName;
 
@@ -28,10 +26,10 @@ public class ChangeMedicalFormDto {
     private boolean medicalFormQ6;
 
     private String medicalFormQ7;
-    public ChangeMedicalFormDto() {
+    public ChangeMedicalFormReq() {
     }
 
-    public ChangeMedicalFormDto(int medicalSerial, String medicalFormName, Date medicalFormDate, String medicalFormTime, String medicalFormQ1, String medicalFormQ2, boolean medicalFormQ3, String medicalFormQ4, boolean medicalFormQ5, boolean medicalFormQ6, String medicalFormQ7) {
+    public ChangeMedicalFormReq(int medicalSerial, String medicalFormName, Date medicalFormDate, String medicalFormTime, String medicalFormQ1, String medicalFormQ2, boolean medicalFormQ3, String medicalFormQ4, boolean medicalFormQ5, boolean medicalFormQ6, String medicalFormQ7) {
         this.medicalSerial = medicalSerial;
         this.medicalFormName = medicalFormName;
         this.medicalFormDate = medicalFormDate;
