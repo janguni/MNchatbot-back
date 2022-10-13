@@ -15,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,7 +28,6 @@ public class MedicalFormService {
 
     private final MedicalFormRepository medicalFormRepository;
     private final PetRepository petRepository;
-    private final MemberRepository memberRepository;
 
     // 문진표 저장
     public void saveMedicalForm(MedicalFormDto medicalFormDto, Member member) throws ParseException {
@@ -44,7 +42,7 @@ public class MedicalFormService {
         boolean medicalFormQ3 = medicalFormDto.isMedicalFormQ3();
         String medicalFormQ4;
         if(medicalFormQ3) medicalFormQ4 = medicalFormDto.getMedicalFormQ4();
-        medicalFormQ4 = "특이사항 없음";
+        else medicalFormQ4 = "특이사항 없음";
 
         boolean medicalFormQ5 = medicalFormDto.isMedicalFormQ5();
         boolean medicalFormQ6 = medicalFormDto.isMedicalFormQ6();
@@ -59,21 +57,28 @@ public class MedicalFormService {
 
         medicalFormRepository.save(medicalForm);
     }
-    @Transactional
     // 문진표 수정
+    @Transactional
     public void updateMedicalForm(ChangeMedicalFormReq medicalFormReq, Member member){
-        int medicalSerial = medicalFormReq.getMedicalSerial();
+        int medicalSerial = medicalFormReq.getMedicalFormSerial();
+        log.info("medicalFormSerial={}", medicalSerial);
         MedicalForm findMedicalForm = medicalFormRepository.findByMedicalFormSerial(medicalSerial);
         String name = medicalFormReq.getMedicalFormName();
         Date date = medicalFormReq.getMedicalFormDate();
         String time = medicalFormReq.getMedicalFormTime();
         String q1 = medicalFormReq.getMedicalFormQ1();
-        String q2 = medicalFormReq.getMedicalFormQ2();
+        String q2 = extractEnglishFirstLetter(medicalFormReq.getMedicalFormQ2());
         boolean q3 = medicalFormReq.isMedicalFormQ3();
-        String q4 = medicalFormReq.getMedicalFormQ4();
+        String q4;
+        if(q3) q4 = medicalFormReq.getMedicalFormQ4();
+        else q4 = "특이사항 없음";
         boolean q5 = medicalFormReq.isMedicalFormQ5();
         boolean q6 = medicalFormReq.isMedicalFormQ6();
-        String q7 = medicalFormReq.getMedicalFormQ7();
+        String q7;
+        if (medicalFormReq.getMedicalFormQ7()==null){
+            q7 = "특이사항 없음";
+        }
+        else q7 = medicalFormReq.getMedicalFormQ7();
         findMedicalForm.changeMedicalForm(name, date, time, q1, q2, q3, q4, q5, q6, q7);
     }
 
@@ -116,6 +121,12 @@ public class MedicalFormService {
 
         MedicalFormRes medicalFormRes = new MedicalFormRes(medicalFormName, newMedicalFormDate, medicalFormTime, medicalFormQ1, medicalFormQ2, medicalFormQ3, medicalFormQ4, medicalFormQ5, medicalFormQ6, medicalFormQ7);
         return medicalFormRes;
+    }
+
+    // 문진표 삭제
+    public void deleteMedicalForm(int medicalFormSerial){
+        MedicalForm findMedicalForm = medicalFormRepository.findByMedicalFormSerial(medicalFormSerial);
+        medicalFormRepository.delete(findMedicalForm);
     }
 
     private String extractEnglishFirstLetter(String word){

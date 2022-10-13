@@ -29,6 +29,7 @@ public class MedicalFormController {
     private final MedicalFormService medicalFormService;
     private final MemberRepository memberRepository;
 
+    // 문진표 등록
     @PostMapping("/medicalForm/add")
     public ResponseEntity<MedicalFormDto> addMedicalForm(@RequestBody MedicalFormDto medicalFormDto, Authentication authentication) throws ParseException {
         String memberEmail = extractEmail(authentication);
@@ -37,6 +38,7 @@ public class MedicalFormController {
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_ADD_MEDICAL_FORM), HttpStatus.OK);
     }
 
+    // 문진표 목록
     @GetMapping("/medicalForm/medicalFormList/{petSerial}")
     public ResponseEntity<List<MedicalFormListDto>> getMedicalFormList(@PathVariable("petSerial") int petSerial) {
 
@@ -47,6 +49,7 @@ public class MedicalFormController {
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_GET_MEDICAL_FORM_LIST, medicalFormList), HttpStatus.OK);
     }
 
+    // 문진표 세부정보
     @GetMapping("/medicalForm/{medicalFormSerial}")
     public ResponseEntity<MedicalFormRes> getMedicalFormInfo(@PathVariable("medicalFormSerial") int medicalFormSerial) {
 
@@ -55,12 +58,20 @@ public class MedicalFormController {
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_MEDICAL_FORM_INFO, medicalFormInfo), HttpStatus.OK);
     }
 
+    // 문진표 수정
     @PatchMapping("/medicalForm/update")
     public ResponseEntity<MedicalFormDto> updateMedicalForm(@RequestBody ChangeMedicalFormReq changeMedicalFormDto, Authentication authentication) {
         String memberEmail = extractEmail(authentication);
         Member findMember = memberRepository.findByMemberEmail(memberEmail);
         medicalFormService.updateMedicalForm(changeMedicalFormDto, findMember);
-        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_ADD_MEDICAL_FORM), HttpStatus.OK);
+        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_UPDATE_MEDICAL_FORM), HttpStatus.OK);
+    }
+
+    // 문진표 삭제
+    @DeleteMapping("/medicalForm/delete/{medicalFormSerial}")
+    public ResponseEntity<MedicalFormDto> updateMedicalForm(@PathVariable("medicalFormSerial") int medicalFormSerial) {
+        medicalFormService.deleteMedicalForm(medicalFormSerial);
+        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_DELETE_MEDICAL_FORM), HttpStatus.OK);
     }
 
     private String extractEmail(Authentication authentication){

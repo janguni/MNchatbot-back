@@ -6,7 +6,7 @@ import java.util.Date;
 
 @Data
 public class ChangeMedicalFormReq {
-    private int medicalSerial;
+    private int medicalFormSerial;
     private String medicalFormName;
 
     private Date medicalFormDate;
@@ -30,7 +30,7 @@ public class ChangeMedicalFormReq {
     }
 
     public ChangeMedicalFormReq(int medicalSerial, String medicalFormName, Date medicalFormDate, String medicalFormTime, String medicalFormQ1, String medicalFormQ2, boolean medicalFormQ3, String medicalFormQ4, boolean medicalFormQ5, boolean medicalFormQ6, String medicalFormQ7) {
-        this.medicalSerial = medicalSerial;
+        this.medicalFormSerial = medicalSerial;
         this.medicalFormName = medicalFormName;
         this.medicalFormDate = medicalFormDate;
         this.medicalFormTime = medicalFormTime;

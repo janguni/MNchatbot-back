@@ -1,18 +1,19 @@
 package com.petchatbot.service;
 
+import com.amazonaws.services.s3.AmazonS3;
 import com.petchatbot.domain.dto.*;
-import com.petchatbot.domain.model.Hospital;
-import com.petchatbot.domain.model.HospitalType;
-import com.petchatbot.domain.model.Partner;
-import com.petchatbot.repository.AppointmentRepository;
-import com.petchatbot.repository.HospitalRepository;
-import com.petchatbot.repository.PartnerRepository;
+import com.petchatbot.domain.model.*;
+import com.petchatbot.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.jni.Time;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -30,6 +31,17 @@ public class HospitalService {
     private final EmailService emailService;
 
     private final AppointmentRepository appointmentRepository;
+
+    private final MemberRepository memberRepository;
+
+    private final PetRepository petRepository;
+
+    private final MedicalFormRepository medicalFormRepository;
+
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucket;
+
+    private final AmazonS3 amazonS3;
 
 
 
@@ -55,23 +67,34 @@ public class HospitalService {
     }
 
     //상담신청
-    public void hospitalApply(HospitalApplyDto apply) throws MessagingException {
+    public void hospitalApply(HospitalApplyDto apply, String memberEmail) throws MessagingException, ParseException {
+        Member apptMember = memberRepository.findByMemberEmail(memberEmail);
         int petSerial = Integer.parseInt(apply.getPetSerial());
+        Pet apptPet = petRepository.findByPetSerial(petSerial);
         int partnerSerial = Integer.parseInt(apply.getPartnerSerial());
-
-
+        Partner apptPartner = partnerRepository.findByPnrSerial(partnerSerial);
         int medicalFormSerial = Integer.parseInt(apply.getMedicalSerial());
-        Partner findPartner = partnerRepository.findByPnrSerial(partnerSerial);
-        String pnrEmail = findPartner.getPnrEmail();
+        MedicalForm apptMedicalForm = medicalFormRepository.findByMedicalFormSerial(medicalFormSerial);
+        String pnrEmail = apptPartner.getPnrEmail();
         EmailDto emailDto = new EmailDto(pnrEmail);
-        String pnrName = findPartner.getPnrName();
+        String pnrName = apptPartner.getPnrName();
 
+        String date = apply.getApptDate();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date apptDate = dateFormat.parse(date);
+        String apptTime = apply.getApptTime();
+        String apptMemberName = apply.getApptMemberName();
+        String apptMemberTel = apply.getApptMemberTel();
+        String apptBill = apply.getApptBill();
+        String apptReason = apply.getApptReason();
 
         // 연계병원에 이메일 전송
         emailService.sendEmailToHospital(emailDto, pnrName + "님에게 온 상담신청입니다" + " - 멍냥챗봇", apply, petSerial, medicalFormSerial);
 
-        // 상담 신청 저장 -> 일단 물어보기
-        //appointmentRepository.save()
+        // 상담 신청 저장
+        //new Appointment(pet, member, medicalForm, partner, )
+
+
     }
 
 

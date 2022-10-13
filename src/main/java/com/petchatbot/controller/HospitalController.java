@@ -2,6 +2,7 @@ package com.petchatbot.controller;
 
 import com.petchatbot.config.ResponseMessage;
 import com.petchatbot.config.StatusCode;
+import com.petchatbot.config.auth.PrincipalDetails;
 import com.petchatbot.domain.dto.*;
 import com.petchatbot.domain.model.Hospital;
 import com.petchatbot.domain.requestAndResponse.DefaultRes;
@@ -16,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
+import java.text.ParseException;
 import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -38,12 +40,19 @@ public class HospitalController {
     @RequestMapping(path = "/hospital/apply", method = POST, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public ResponseEntity applyAppointmentToHospital(@ModelAttribute HospitalApplyDto hospitalApplyDto, Authentication authentication) {
         try {
-            hospitalService.hospitalApply(hospitalApplyDto);
+            String memberEmail = extractEmail(authentication);
+            hospitalService.hospitalApply(hospitalApplyDto, memberEmail);
             log.info("상담신청 완료!={}", hospitalApplyDto.getApptMemberName());
             return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_APPLY_TO_HOSPITAL), HttpStatus.OK);
-        } catch (MessagingException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private String extractEmail(Authentication authentication){
+        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
+        String memberEmail = principal.getMember().getMemberEmail();
+        return memberEmail;
     }
 }
 
