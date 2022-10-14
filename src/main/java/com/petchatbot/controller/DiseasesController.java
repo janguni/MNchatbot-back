@@ -52,6 +52,7 @@ public class DiseasesController {
     public ResponseEntity<DiseaseDictionaryDto> totalDisease(@PathVariable("page") int page,
                                                    @PathVariable("diseaseCnt") int diseaseCnt
                                                    ){
+        log.info("질병백과 페이지={}, 요청갯수={}", page, diseaseCnt);
         DiseaseDictionaryDto miniDictionary = diseasesService.getDiseasesList(page, diseaseCnt);
 
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_MINI_DISEASEDICTIONARY, miniDictionary), HttpStatus.OK);
