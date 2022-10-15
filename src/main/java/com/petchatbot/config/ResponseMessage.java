@@ -49,8 +49,11 @@ public abstract class ResponseMessage {
     public static final String FAIL_GET_MEDICAL_FORM_LIST = "문진표 목록 없음";
     public static final String SUCCESS_UPDATE_MEDICAL_FORM = "문진표 수정 성공";
     public static final String SUCCESS_MEDICAL_FORM_INFO = "문진표 세부정보 불러오기 성공";
-
     public static final String SUCCESS_DELETE_MEDICAL_FORM = "문진표 삭제 성공";
+
+    public static final String SUCCESS_GET_EXPECTDIAG_LIST = "예상진단 list 제공";
+
+
 
 
 
