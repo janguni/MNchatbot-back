@@ -26,9 +26,17 @@ public class ExpectDiagnosisController {
 
     // 예상진단 목록
     @GetMapping("/expectDiag/expectDiagList/{petSerial}")
-    public ResponseEntity<List<ExpectDiagListRes>> addMedicalForm(@PathVariable("petSerial") int petSerial) {
+    public ResponseEntity<List<ExpectDiagListRes>> getExpectDiagList(@PathVariable("petSerial") int petSerial) {
         List<ExpectDiagListRes> expectDiagList = expectDiagnosisService.getExpectDiagList(petSerial);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_GET_EXPECTDIAG_LIST, expectDiagList), HttpStatus.OK);
     }
+
+    // 예상진단 삭제
+    @DeleteMapping("/expectDiag/delete/{expectDiagSerial}")
+    public ResponseEntity<String> deleteExpectDiag(@PathVariable("expectDiagSerial") int diagSerial) {
+        expectDiagnosisService.deleteExpectDiag(diagSerial);
+        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_GET_EXPECTDIAG_LIST), HttpStatus.OK);
+    }
+
 
 }

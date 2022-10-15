@@ -43,4 +43,10 @@ public class ExpectDiagnosisService {
 
         return list;
     }
+
+    // 예상 진단 삭제
+    public void deleteExpectDiag(int diagSerial){
+        ExpectDiagnosis findExpectDiag = expectDiagRepository.findByDiagSerial(diagSerial);
+        expectDiagRepository.delete(findExpectDiag);
+    }
 }
