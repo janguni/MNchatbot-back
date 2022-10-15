@@ -76,10 +76,8 @@ public class MedicalForm {
         this.medicalFormQ7 = medicalFormQ7;
     }
 
-    public void changeMedicalForm (String medicalFormName, Date medicalFormDate, String medicalFormTime, String medicalFormQ1, String medicalFormQ2, boolean medicalFormQ3, String medicalFormQ4, boolean medicalFormQ5, boolean medicalFormQ6, String medicalFormQ7){
+    public void changeMedicalForm (String medicalFormName, String medicalFormQ1, String medicalFormQ2, boolean medicalFormQ3, String medicalFormQ4, boolean medicalFormQ5, boolean medicalFormQ6, String medicalFormQ7){
         this.medicalFormName = medicalFormName;
-        this.medicalFormDate = medicalFormDate;
-        this.medicalFormTime = medicalFormTime;
         this.medicalFormQ1 = medicalFormQ1;
         this.medicalFormQ2 = medicalFormQ2;
         this.medicalFormQ3 = medicalFormQ3;

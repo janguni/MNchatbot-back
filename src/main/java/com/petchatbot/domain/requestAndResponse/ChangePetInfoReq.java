@@ -8,7 +8,6 @@ import lombok.Data;
 @Data
 public class ChangePetInfoReq {
     private int petSerial;
-    private Species petSpecies;
     private String petBreed;
     private String petName;
     private int petAge;

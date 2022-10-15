@@ -41,8 +41,8 @@ public class PetController {
     // 반려동물 프로필 변경
     @PatchMapping("/pet/changeInfo")
     public ResponseEntity<String> changePetInfo(@RequestBody ChangePetInfoReq petInfoReq) {
+        log.info("--------------펫 수정 시도 시작--------------");
         petService.changePetInfo(petInfoReq);
-        log.info("changePetInfo = {}",petInfoReq.getPetName());
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_CHANGE_PET_INFO), HttpStatus.OK);
     }
 

@@ -35,6 +35,12 @@ public class PetServiceImpl implements PetService{
     @Transactional
     public void changePetInfo(ChangePetInfoReq petInfoReq) {
         Pet findPet = getFindPet(petInfoReq);
+        log.info("changePet.name = {}",petInfoReq.getPetName());
+        log.info("changePet.age = {}",petInfoReq.getPetAge());
+        log.info("changePet.gender = {}",petInfoReq.getPetGender());
+        log.info("changePet.breed = {}",petInfoReq.getPetBreed());
+        log.info("changePet.serial = {}",petInfoReq.getPetSerial());
+        log.info("changePet.neutralization = {}",petInfoReq.getPetNeutralization());
         setPet(petInfoReq, findPet);
     }
 
@@ -80,18 +86,16 @@ public class PetServiceImpl implements PetService{
     }
 
     private void setPet(ChangePetInfoReq petInfoReq, Pet findPet) {
-        Species petSpecies = petInfoReq.getPetSpecies();
         String petBreed = petInfoReq.getPetBreed();
         String petName = petInfoReq.getPetName();
         int petAge = petInfoReq.getPetAge();
         PetGender petGender = petInfoReq.getPetGender();
         Neutralization petNeutralization = petInfoReq.getPetNeutralization();
-        findPet.changePetInfo(petSpecies, petBreed, petName, petAge, petGender, petNeutralization);
+        findPet.changePetInfo(petBreed, petName, petAge, petGender, petNeutralization);
     }
 
     private Pet getFindPet(ChangePetInfoReq petInfoReq) {
         int petSerial = petInfoReq.getPetSerial();
-        log.info("petSerial={}", petSerial);
         Pet findPet = petRepository.findByPetSerial(petSerial);
         return findPet;
     }

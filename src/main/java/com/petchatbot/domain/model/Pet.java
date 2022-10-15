@@ -59,8 +59,7 @@ public class Pet {
         this.petNeutralization = petNeutralization;
     }
 
-    public void changePetInfo(Species petSpecies, String petBreed, String petName, int petAge, PetGender petgender, Neutralization petNeutralization){
-        this.petSpecies = petSpecies;
+    public void changePetInfo(String petBreed, String petName, int petAge, PetGender petgender, Neutralization petNeutralization){
         this.petBreed = petBreed;
         this.petName = petName;
         this.petAge = petAge;

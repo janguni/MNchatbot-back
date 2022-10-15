@@ -64,8 +64,8 @@ public class MedicalFormService {
         log.info("medicalFormSerial={}", medicalSerial);
         MedicalForm findMedicalForm = medicalFormRepository.findByMedicalFormSerial(medicalSerial);
         String name = medicalFormReq.getMedicalFormName();
-        Date date = medicalFormReq.getMedicalFormDate();
-        String time = medicalFormReq.getMedicalFormTime();
+        //Date date = medicalFormReq.getMedicalFormDate();
+        //String time = medicalFormReq.getMedicalFormTime();
         String q1 = medicalFormReq.getMedicalFormQ1();
         String q2 = extractEnglishFirstLetter(medicalFormReq.getMedicalFormQ2());
         boolean q3 = medicalFormReq.isMedicalFormQ3();
@@ -79,7 +79,7 @@ public class MedicalFormService {
             q7 = "특이사항 없음";
         }
         else q7 = medicalFormReq.getMedicalFormQ7();
-        findMedicalForm.changeMedicalForm(name, date, time, q1, q2, q3, q4, q5, q6, q7);
+        findMedicalForm.changeMedicalForm(name,q1, q2, q3, q4, q5, q6, q7);
     }
 
     // 문진표 목록 불러오기
