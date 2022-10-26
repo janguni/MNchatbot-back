@@ -61,7 +61,7 @@ public class DiseasesService {
         return miniDiseaseDictionary;
     }
 
-    public DiseaseDto getDiseaseInfo(String dsId){
+    public DiseaseDto getDiseaseInfByDiseaseId(String dsId){
         Optional<Disease> findDisease = diseasesRepository.findById(dsId);
         Disease disease = findDisease.get();
         String dsName = disease.getDsName();
@@ -77,7 +77,24 @@ public class DiseasesService {
         String dsPrognosis = disease.getDsPrognosis();
         String dsAdvice = disease.getDsAdvice();
         DiseaseDto diseaseDto = new DiseaseDto(dsName, dsAmlBreed, dsDefinition, dsCause, dsPathogenesis, dsEpidemiology, dsSymptom, dsDiagnosis, dsTreatment, dsPrevention, dsPrognosis, dsAdvice);
+        return diseaseDto;
+    }
 
+    public DiseaseDto getDiseaseInfoByDiseaseName(String dsName){
+        Disease findDisease = diseasesRepository.findByDsName(dsName);
+        log.info("findDiseaseByDiseaseName={}", findDisease);
+        String dsAmlBreed = findDisease.getDsAmlBreed();
+        String dsDefinition = findDisease.getDsDefinition();
+        String dsCause = findDisease.getDsCause();
+        String dsPathogenesis = findDisease.getDsPathogenesis();
+        String dsEpidemiology = findDisease.getDsEpidemiology();
+        String dsSymptom = findDisease.getDsSymptom();
+        String dsDiagnosis = findDisease.getDsDiagnosis();
+        String dsTreatment = findDisease.getDsTreatment();
+        String dsPrevention = findDisease.getDsPrevention();
+        String dsPrognosis = findDisease.getDsPrognosis();
+        String dsAdvice = findDisease.getDsAdvice();
+        DiseaseDto diseaseDto = new DiseaseDto(dsName, dsAmlBreed, dsDefinition, dsCause, dsPathogenesis, dsEpidemiology, dsSymptom, dsDiagnosis, dsTreatment, dsPrevention, dsPrognosis, dsAdvice);
         return diseaseDto;
     }
 }

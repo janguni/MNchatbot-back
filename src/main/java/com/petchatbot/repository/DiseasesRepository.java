@@ -12,6 +12,7 @@ import java.util.Optional;
 public interface DiseasesRepository extends MongoRepository<Disease, String> {
 
     List<Disease> findByDsNameRegex(String name);
+    Disease findByDsName(String name);
 
 }
 

@@ -53,7 +53,8 @@ public abstract class ResponseMessage {
 
     public static final String SUCCESS_GET_EXPECTDIAG_LIST = "예상진단 list 제공";
 
-
+    public static final String SUCCESS_GET_EXPECTDIAG_INFO = "예상진단 세부정보 불러오기 성공";
+    public static final String SUCCESS_DELETE_EXPECTDIAG = "예상진단 삭제 성공";
 
 
 
