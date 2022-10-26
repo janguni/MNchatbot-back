@@ -22,47 +22,64 @@ public class DiseasesService {
 
     private final DiseasesRepository diseasesRepository;
 
-    public List<DiseaseListDto> searchDiseases(String inputDsName){
-        String queryDsName = ".*" + inputDsName + ".*";
-        List<Disease> dsList = diseasesRepository.findByDsNameRegex(queryDsName);
 
-        if (dsList==null){ // 검색결과 없음
+    /**
+     * 질병명으로 검색
+     * @param inputWord
+     * @return 검색단어를 포함한 질병의 일부 정보(질병 id, 질병명)
+     */
+    public List<DiseaseListDto> searchDisease(String inputWord){
+        String inputWordForQuery = ".*" + inputWord + ".*";
+        List<Disease> diseases = diseasesRepository.findByDsNameRegex(inputWordForQuery);
+
+        if (diseases==null){ // 검색결과 없음
             return null;
         }
-
-        List<DiseaseListDto> diseases = new ArrayList<>();
-        for (Disease ds: dsList){
-            String dsId = ds.getId();
-            String dsName = ds.getDsName();
-            DiseaseListDto diseaseListDto = new DiseaseListDto(dsId, dsName);
-            diseases.add(diseaseListDto);
-        }
-
-        return diseases;
+        return getDiseasesRes(diseases);
     }
 
-    public DiseaseDictionaryDto getDiseasesList(int page, int itemCnt) {
+    // 질병들의 id, name 만을 전달
+    private List<DiseaseListDto> getDiseasesRes(List<Disease> diseases){
+        List<DiseaseListDto> diseasesRes = new ArrayList<>();
+        for (Disease ds: diseases){
+            String diseaseId = ds.getId();
+            String diseaseName = ds.getDsName();
+            DiseaseListDto diseaseDto = new DiseaseListDto(diseaseId, diseaseName);
+            diseasesRes.add(diseaseDto);
+        }
+        return diseasesRes;
+    }
 
-        List<DiseaseListDto> diseases = new ArrayList<>();
+    /**
+     * 질병백과 페이지 열람
+     * @param page
+     * @param diseaseCnt
+     * @return 질병들의 일부 정보(질병 id, 질병명)
+     */
+    public DiseaseDictionaryDto getDiseasesList(int page, int diseaseCnt) {
+
+        List<DiseaseListDto> diseasesRes = new ArrayList<>();
+
         int startNumber = (page-1) * 10; // 질병 시작 갯수
-        List<Disease> totalDisease = diseasesRepository.findAll(); // 전체 질병 정보 불러옴
-        for (int i=startNumber; i<startNumber+itemCnt; i++){
+        List<Disease> totalDisease = diseasesRepository.findAll();
+
+        for (int i=startNumber; i<startNumber+diseaseCnt; i++){
             Disease disease = totalDisease.get(i);
-            String dsId = disease.getId();
-            String dsName = disease.getDsName();
-            DiseaseListDto diseaseListDto = new DiseaseListDto(dsId, dsName);
-            diseases.add(diseaseListDto);
+            String diseaseId = disease.getId();
+            String diseaseName = disease.getDsName();
+            DiseaseListDto diseaseDto = new DiseaseListDto(diseaseId, diseaseName);
+            diseasesRes.add(diseaseDto);
         }
 
         long totalCount = diseasesRepository.count();
+        boolean hasNextPage =  startNumber+diseaseCnt < totalCount;
 
-
-        DiseaseDictionaryDto miniDiseaseDictionary = new DiseaseDictionaryDto(totalCount,startNumber+itemCnt<totalCount, diseases);
-        return miniDiseaseDictionary;
+        DiseaseDictionaryDto diseaseDictionaryPageInfo = new DiseaseDictionaryDto(totalCount, hasNextPage, diseasesRes);
+        return diseaseDictionaryPageInfo;
     }
 
-    public DiseaseDto getDiseaseInfByDiseaseId(String dsId){
-        Optional<Disease> findDisease = diseasesRepository.findById(dsId);
+    public DiseaseDto getDiseaseInfByDiseaseId(String diseaseId){
+        Optional<Disease> findDisease = diseasesRepository.findById(diseaseId);
         Disease disease = findDisease.get();
         String dsName = disease.getDsName();
         String dsAmlBreed = disease.getDsAmlBreed();
