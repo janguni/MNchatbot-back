@@ -28,20 +28,20 @@ public class ExpectDiagnosisController {
     // 예상진단 목록
     @GetMapping("/expectDiag/expectDiagList/{petSerial}")
     public ResponseEntity<List<ExpectDiagListRes>> getExpectDiagList(@PathVariable("petSerial") int petSerial) {
-        List<ExpectDiagListRes> expectDiagList = expectDiagnosisService.getExpectDiagList(petSerial);
+        List<ExpectDiagListRes> expectDiagList = expectDiagnosisService.getExpectDiagnoses(petSerial);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_GET_EXPECTDIAG_LIST, expectDiagList), HttpStatus.OK);
     }
     // 예상진단 세부목록
     @GetMapping("/expectDiag/{expectDiagSerial}")
     public ResponseEntity<ExpectDiagInfoRes> getExpectDiagInfo(@PathVariable("expectDiagSerial") int diagSerial) {
-        ExpectDiagInfoRes expectDiagInfo = expectDiagnosisService.getExpectDiagInfo(diagSerial);
+        ExpectDiagInfoRes expectDiagInfo = expectDiagnosisService.getExpectDiagnosisInfo(diagSerial);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_GET_EXPECTDIAG_INFO, expectDiagInfo), HttpStatus.OK);
     }
 
     // 예상진단 삭제
     @DeleteMapping("/expectDiag/delete/{expectDiagSerial}")
     public ResponseEntity<String> deleteExpectDiag(@PathVariable("expectDiagSerial") int diagSerial) {
-        expectDiagnosisService.deleteExpectDiag(diagSerial);
+        expectDiagnosisService.deleteExpectDiagnosis(diagSerial);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_DELETE_EXPECTDIAG), HttpStatus.OK);
     }
 
