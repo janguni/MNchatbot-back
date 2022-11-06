@@ -43,7 +43,7 @@ public class DiseasesController {
     // 질병 세부 정보 보여주기
     @GetMapping("/disease/{dsId}")
     public ResponseEntity<DiseaseDto> diseaseInfo(@PathVariable("dsId") String dsId){
-        DiseaseDto diseaseInfo = diseasesService.getDiseaseInfo(dsId);
+        DiseaseDto diseaseInfo = diseasesService.getDiseaseInfByDiseaseId(dsId);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_GET_DISEASE_INFO, diseaseInfo), HttpStatus.OK);
     }
 

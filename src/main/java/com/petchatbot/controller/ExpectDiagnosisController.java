@@ -31,10 +31,13 @@ public class ExpectDiagnosisController {
         List<ExpectDiagListRes> expectDiagList = expectDiagnosisService.getExpectDiagList(petSerial);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_GET_EXPECTDIAG_LIST, expectDiagList), HttpStatus.OK);
     }
+
     // 예상진단 세부목록
     @GetMapping("/expectDiag/{expectDiagSerial}")
     public ResponseEntity<ExpectDiagInfoRes> getExpectDiagInfo(@PathVariable("expectDiagSerial") int diagSerial) {
+        log.info("예상진단 세부정보 ={}", diagSerial);
         ExpectDiagInfoRes expectDiagInfo = expectDiagnosisService.getExpectDiagInfo(diagSerial);
+        log.info("예상진단 세부정보 전송= {}", expectDiagInfo.getDefinition());
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_GET_EXPECTDIAG_INFO, expectDiagInfo), HttpStatus.OK);
     }
 

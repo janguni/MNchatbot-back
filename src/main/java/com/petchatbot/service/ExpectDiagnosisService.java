@@ -40,8 +40,7 @@ public class ExpectDiagnosisService {
             Date diagDate = ed.getDiagDate();
 
             // 날짜 포맷 변경및 데이터 형식 String으로
-            SimpleDateFormat newDtFormat = new SimpleDateFormat("yyyy.MM.dd");
-            String newDiagDate = newDtFormat.format(diagDate);
+            String newDiagDate = formatDate(diagDate,".");
 
             ExpectDiagListRes expectDiagListRes = new ExpectDiagListRes(diagSerial, diagDsName, newDiagDate);
             list.add(expectDiagListRes);
@@ -50,11 +49,25 @@ public class ExpectDiagnosisService {
         return list;
     }
 
+    private String formatDate(Date diagDate, String separator) {
+        SimpleDateFormat newDtFormat;
+
+        if (separator.equals(".")) {
+            newDtFormat = new SimpleDateFormat("yyyy.MM.dd");
+        }
+        else {
+            newDtFormat = new SimpleDateFormat("yyyy-MM-dd");
+        }
+
+        String newDiagDate = newDtFormat.format(diagDate);
+        return newDiagDate;
+    }
+
     // 예상진단 세부 정보
     // 상담일자, 상담시간, 예상 질병명, 축종, 정의, 원인, 조언
     public ExpectDiagInfoRes getExpectDiagInfo(int diagSerial){
         ExpectDiagnosis findExpectDiag = expectDiagRepository.findByDiagSerial(diagSerial);
-        Date date = findExpectDiag.getDiagDate();
+        String date = formatDate(findExpectDiag.getDiagDate(),"-");
         Time time = findExpectDiag.getDiagTime();
         int hours = time.getHours();
         int minutes = time.getMinutes();

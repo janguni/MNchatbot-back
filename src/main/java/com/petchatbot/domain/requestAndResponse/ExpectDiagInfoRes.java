@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Data
 public class ExpectDiagInfoRes {
-    private Date date;
+    private String date;
     private String time;
     private String diseaseName;
     private String breed;
@@ -20,7 +20,7 @@ public class ExpectDiagInfoRes {
 
     }
 
-    public ExpectDiagInfoRes(Date date, String time, String diseaseName, String breed, String definition, String cause, String advice) {
+    public ExpectDiagInfoRes(String date, String time, String diseaseName, String breed, String definition, String cause, String advice) {
         this.date = date;
         this.time = time;
         this.diseaseName = diseaseName;
