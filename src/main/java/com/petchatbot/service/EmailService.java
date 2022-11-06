@@ -1,5 +1,6 @@
 package com.petchatbot.service;
 
+import com.amazonaws.services.s3.AmazonS3;
 import com.petchatbot.domain.dto.EmailDto;
 import com.petchatbot.domain.dto.HospitalApplyDto;
 import com.petchatbot.domain.model.MedicalForm;
@@ -9,6 +10,7 @@ import com.petchatbot.repository.MedicalFormRepository;
 import com.petchatbot.repository.PetRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -34,6 +36,9 @@ public class EmailService {
     private final PetRepository petRepository;
     private final MedicalFormRepository medicalFormRepository;
 
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucket;
+
 
     public void sendEmail(EmailDto emailDto, String title, int randomNumber) throws MessagingException {
         log.info("emailDto.receiveMail={}", emailDto.getReceiveMail());
@@ -51,7 +56,7 @@ public class EmailService {
         }
     }
 
-    public void sendEmailToHospital(EmailDto emailDto, String title, HospitalApplyDto hospitalApplyDto,int petSerial, int medicalFormSerial) throws MessagingException {
+    public void sendEmailToHospital(EmailDto emailDto, String title, HospitalApplyDto hospitalApplyDto, int petSerial, int medicalFormSerial, AmazonS3 amazonS3 , String s3ImageName) throws MessagingException {
 
         try {
             String text = "test";
@@ -60,7 +65,7 @@ public class EmailService {
             h.setFrom("lightson23@naver.com");
             h.setTo(emailDto.getReceiveMail());
             h.setSubject(title);
-            h.setText(makeEmailText(hospitalApplyDto,petSerial, medicalFormSerial));
+            h.setText(makeEmailText(hospitalApplyDto,petSerial, medicalFormSerial, amazonS3,s3ImageName));
             emailSender.send(m);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
@@ -71,7 +76,7 @@ public class EmailService {
         return "인증번호는 " + randomNumber + " 입니다.\n멍냥챗봇에 가입해 주셔서 감사합니다.";
     }
 
-    private String makeEmailText(HospitalApplyDto dto, int petSerial, int medicalFormSerial){
+    private String makeEmailText(HospitalApplyDto dto, int petSerial, int medicalFormSerial,AmazonS3 amazonS3,String s3ImageName){
 
         Pet findPet = petRepository.findByPetSerial(petSerial);
         MedicalForm findMedicalForm = medicalFormRepository.findByMedicalFormSerial(medicalFormSerial);
@@ -103,6 +108,9 @@ public class EmailService {
         if (dto.getApptBill()=="true") isCostRequest = "네";
         else isCostRequest = "아니요";
 
+        // 이미지
+        String image= amazonS3.getUrl(bucket, s3ImageName).toString();
+
         return "안녕하세요. 멍냥챗봇 입니다.\n" +
                 "해당병원에 " + dto.getApptMemberName() + "님이 상담신청을 하셨습니다.\n\n" +
                 "<상담신청 일자>\n" +
@@ -123,7 +131,7 @@ public class EmailService {
                 "    - 약 섭취 후 과민반응 여부: " + isHypersensitivity+ "\n" +
                 "    - 수술 또는 마취 여부: " + isSurgeryOrAnesthesia + "\n" +
                 "    - 과도한 운동 여부: " + isExcessiveExercise + "\n" +
-                //"    - 반려동물 이미지: " + dto.getApptImage() + "\n" +
+                "    - 반려동물 이미지: " + image + "\n" +
                 "    - 기타 특이사항: " + findMedicalForm.getMedicalFormQ7() + "\n\n\n" +
                 "<상담내용>\n" +
                 "    - 상담신청 이유: " + dto.getApptReason() + "\n" +

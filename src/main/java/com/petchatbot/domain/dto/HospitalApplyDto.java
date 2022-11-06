@@ -16,5 +16,5 @@ public class HospitalApplyDto {
     private String apptMemberTel;
     private String apptBill;
     private String apptReason;
-    private File apptImage; // 반려동물 사진
+    private MultipartFile apptImage; // 반려동물 사진
 }

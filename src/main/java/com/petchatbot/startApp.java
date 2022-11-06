@@ -12,6 +12,10 @@ public class startApp {
     public BCryptPasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+
+    static {
+        System.setProperty("com.amazonaws.sdk.disableEc2Metadta","true");
+    }
     public static void main(String[] args) {
         SpringApplication.run(startApp.class,args);
     }

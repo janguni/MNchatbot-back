@@ -37,6 +37,7 @@ public class HospitalController {
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_GET_HOSPITAL_LIST, totalHospitalList), HttpStatus.OK);
     }
 
+    // 상담신청
     @RequestMapping(path = "/hospital/apply", method = POST, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public ResponseEntity applyAppointmentToHospital(@ModelAttribute HospitalApplyDto hospitalApplyDto, Authentication authentication) {
         try {
