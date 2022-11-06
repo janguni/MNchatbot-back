@@ -38,25 +38,25 @@ public class MedicalForm {
     private String medicalFormTime;
 
     @Column(name = "med_q1")
-    private String medicalFormQ1;
+    private String medicalFormQ1; // 이유
 
     @Column(name = "med_q2")
-    private String medicalFormQ2;
+    private String medicalFormQ2; // 기저질환
 
     @Column(name = "med_q3")
-    private boolean medicalFormQ3;
+    private boolean medicalFormQ3; //약에 대한 특이사항 여부
 
     @Column(name = "med_q4")
-    private String medicalFormQ4;
+    private String medicalFormQ4; //약 관련내용
 
     @Column(name = "med_q5")
-    private boolean medicalFormQ5;
+    private boolean medicalFormQ5; // 수출, 마취 이력 여부
 
     @Column(name = "med_q6")
-    private boolean medicalFormQ6;
+    private boolean medicalFormQ6; // 과도한 운동 여부
 
     @Column(name = "med_q7")
-    private String medicalFormQ7;
+    private String medicalFormQ7; // 기타 특이사항
 
     public MedicalForm() {
     }

@@ -59,6 +59,10 @@ public abstract class ResponseMessage {
 
 
     public static final String SUCCESS_APPLY_TO_HOSPITAL = "연계병원 상담신청 성공";
+    public static final String SUCCESS_GET_APPOINTMENT_LIST = "상담신청 조회 성공";
+    public static final String SUCCESS_GET_APPOINTMENT_INFO = "상담신청 세부정보 조회 성공";
+    public static final String SUCCESS_DELETE_APPOINTMENT = "상담신청 삭제 성공";
+
 
 
 

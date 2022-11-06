@@ -92,9 +92,18 @@ public class EmailService {
         else if (findMedicalForm.getMedicalFormQ2().equals("C")) underDisease = "순환기질환";
         else underDisease = "없음";
 
-        String isHypersensitivity; // 약 섭취 후 과민반응 여부
-        if (findMedicalForm.isMedicalFormQ3()) isHypersensitivity="네";
-        else isHypersensitivity = "아니요";
+        String isSpecialNoteMedication; // 약에 대한 특이사항 여부
+        String medication;
+        if (findMedicalForm.isMedicalFormQ3()) {
+            isSpecialNoteMedication="네";
+            medication = findMedicalForm.getMedicalFormQ4();
+        }
+
+        else {
+            isSpecialNoteMedication = "아니요";
+            medication = "약에 대한 세부사항 없음";
+        }
+
 
         String isSurgeryOrAnesthesia; // 수출 또는 마취 여부
         if (findMedicalForm.isMedicalFormQ5()) isSurgeryOrAnesthesia="네";
@@ -127,8 +136,8 @@ public class EmailService {
                 "    - 성별: " + findPet.getPetGender() + "\n" +
                 "    - 중성화 여부: " + isNeuter + "\n" +
                 "    - 기저질환: " + underDisease + "\n" +
-                "    - 복용중인약: " + findMedicalForm.getMedicalFormQ4() + "\n" +
-                "    - 약 섭취 후 과민반응 여부: " + isHypersensitivity+ "\n" +
+                "    - 약에 관한 특이사항 여부: " + isSpecialNoteMedication + "\n" +
+                "    - 약 관련 내용: " + medication + "\n" +
                 "    - 수술 또는 마취 여부: " + isSurgeryOrAnesthesia + "\n" +
                 "    - 과도한 운동 여부: " + isExcessiveExercise + "\n" +
                 "    - 반려동물 이미지: " + image + "\n" +

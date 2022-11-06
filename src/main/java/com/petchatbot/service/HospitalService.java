@@ -129,7 +129,7 @@ public class HospitalService {
 
 
         // 연계병원에 이메일 전송
-        //emailService.sendEmailToHospital(emailDto, pnrName + "님에게 온 상담신청입니다" + " - 멍냥챗봇", apply, petSerial, medicalFormSerial, amazonS3,s3ImageName);
+        emailService.sendEmailToHospital(emailDto, pnrName + "님에게 온 상담신청입니다" + " - 멍냥챗봇", apply, petSerial, medicalFormSerial, amazonS3,s3ImageName);
 
 
     }
