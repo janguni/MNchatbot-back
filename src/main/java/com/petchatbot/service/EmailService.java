@@ -118,7 +118,13 @@ public class EmailService {
         else isCostRequest = "아니요";
 
         // 이미지
-        String image= amazonS3.getUrl(bucket, s3ImageName).toString();
+        String image;
+        if (s3ImageName == "noImageFile"){
+            image = "이미지가 첨부되지 않음";
+        }
+        else {
+            image = amazonS3.getUrl(bucket, s3ImageName).toString();
+        }
 
         return "안녕하세요. 멍냥챗봇 입니다.\n" +
                 "해당병원에 " + dto.getApptMemberName() + "님이 상담신청을 하셨습니다.\n\n" +

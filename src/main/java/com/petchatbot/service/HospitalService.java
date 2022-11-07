@@ -48,9 +48,6 @@ public class HospitalService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-//    @Value("cloud.aws.region")
-//    private String region;
-
     private AmazonS3 amazonS3;
 
 
@@ -102,30 +99,37 @@ public class HospitalService {
         else apptBill=false;
 
         String apptReason = apply.getApptReason();
-
+        String s3ImageName;
         // 상담 신청 저장
-        MultipartFile imageFile = apply.getApptImage();
-        //String s3ImageName = UUID.randomUUID() + "-" + imageFile.getOriginalFilename();
-        int randomNumber = (int)(Math.random()*100000);
-        char randomChar = (char) ((int) (Math.random() * 26) + 65);
-        char randomChar2 = (char) ((int) (Math.random() * 26) + 97);
+        log.info("imageFile={}", apply.getApptImage());
+        if (apply.getApptImage()!=null){
+            MultipartFile imageFile = apply.getApptImage();
+            //String s3ImageName = UUID.randomUUID() + "-" + imageFile.getOriginalFilename();
+            int randomNumber = (int)(Math.random()*100000);
+            char randomChar = (char) ((int) (Math.random() * 26) + 65);
+            char randomChar2 = (char) ((int) (Math.random() * 26) + 97);
 
-        String s3ImageName =  randomChar+randomNumber+randomChar2+imageFile.getOriginalFilename();
+            s3ImageName =  randomChar+randomNumber+randomChar2+imageFile.getOriginalFilename();
 
-        ObjectMetadata objMeta = new ObjectMetadata();
-        objMeta.setContentLength(imageFile.getInputStream().available());
+            ObjectMetadata objMeta = new ObjectMetadata();
+            objMeta.setContentLength(imageFile.getInputStream().available());
 
-        amazonS3 = AmazonS3ClientBuilder.standard()
-                .withRegion("ap-northeast-2")
-                .build();
+            amazonS3 = AmazonS3ClientBuilder.standard()
+                    .withRegion("ap-northeast-2")
+                    .build();
 
-        amazonS3.putObject(bucket, s3ImageName, imageFile.getInputStream(), objMeta); // s3에 저장
-        Appointment appointment = new Appointment(apptPet, apptMember, apptMedicalForm, apptPartner, apptDate, apptTime, apptMemberName, apptMemberTel, apptBill, apptReason, s3ImageName);
-
-        if (s3ImageName.length()>50){
-            log.info("파일명이 너무 김");
+            amazonS3.putObject(bucket, s3ImageName, imageFile.getInputStream(), objMeta); // s3에 저장
+            Appointment appointment = new Appointment(apptPet, apptMember, apptMedicalForm, apptPartner, apptDate, apptTime, apptMemberName, apptMemberTel, apptBill, apptReason, s3ImageName);
+            if (apply.getApptImage()!=null && s3ImageName.length()>50){
+                log.info("파일명이 너무 김");
+            }
+            appointmentRepository.save(appointment);
         }
-        else appointmentRepository.save(appointment);
+        else {
+            s3ImageName = "noImageFile";
+            Appointment appointment = new Appointment(apptPet, apptMember, apptMedicalForm, apptPartner, apptDate, apptTime, apptMemberName, apptMemberTel, apptBill, apptReason, s3ImageName);
+            appointmentRepository.save(appointment);
+        }
 
 
         // 연계병원에 이메일 전송

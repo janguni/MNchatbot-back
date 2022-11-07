@@ -31,9 +31,8 @@ import java.util.List;
 public class ExpectDiagnosisController {
     private final ExpectDiagnosisService expectDiagnosisService;
 
-    @PostMapping("/expectDiag/add")
-    public ResponseEntity<ExpectDiagInfoRes> addExpectDiag(@RequestBody PetSerialReq petReq,Authentication authentication) {
-        int petSerial = petReq.getPetSerial();
+    @PostMapping("/expectDiag/add/{petSerial}")
+    public ResponseEntity<ExpectDiagInfoRes> addExpectDiag(@PathVariable("petSerial") int petSerial ,Authentication authentication) {
         String memberEmail = extractEmail(authentication);
 
         String url = "http://43.200.87.239:5000/tospring";

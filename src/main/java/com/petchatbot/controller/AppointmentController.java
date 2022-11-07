@@ -27,6 +27,7 @@ public class AppointmentController {
 
     @GetMapping("/appointment/appointmentList/{petSerial}")
     public ResponseEntity<List<AppointmentListRes>> getAppointments(@PathVariable("petSerial") int petSerial) {
+        log.info("상담내역 목록 확인을 시도함 펫 시리얼= {}", petSerial);
         List<AppointmentListRes> appointments = appointmentService.getAppointments(petSerial);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_GET_APPOINTMENT_LIST, appointments), HttpStatus.OK);
     }
@@ -34,6 +35,7 @@ public class AppointmentController {
 
     @GetMapping("/appointment/{appointmentSerial}")
     public ResponseEntity<AppointmentInfoRes> getAppointmentInfo(@PathVariable("appointmentSerial") int appointmentSerial) {
+        log.info("상담내역 세부정보 확인을 시도함 상담시리얼= {}", appointmentSerial);
         AppointmentInfoRes appointmentInfo = appointmentService.getAppointmentInfo(appointmentSerial);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_GET_APPOINTMENT_INFO, appointmentInfo), HttpStatus.OK);
     }

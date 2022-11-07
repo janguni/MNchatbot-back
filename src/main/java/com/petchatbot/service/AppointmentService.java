@@ -106,7 +106,13 @@ public class AppointmentService {
         else isCostRequest = "아니요";
 
         String imageName = findAppointment.getAppointmentImage();
-        URL imageUrl = amazonS3Client.getUrl(bucket, imageName);
+        URL imageUrl;
+        if (imageName == "noImageFile"){
+            imageUrl = null;
+        }
+        else {
+            imageUrl = amazonS3Client.getUrl(bucket, imageName);
+        }
 
         AppointmentInfoRes res = new AppointmentInfoRes(formattedDate, time, memberName, memberTel, petName, age, species, breed, gender, isNeuter, underDisease, takingMedication, isHypersensitivity, isSurgeryOrAnesthesia, isExcessiveExercise, etc, apptReason,isCostRequest, imageUrl);
 
