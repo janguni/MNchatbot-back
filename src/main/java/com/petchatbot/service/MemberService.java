@@ -8,16 +8,12 @@ import javax.servlet.http.HttpServletResponse;
 
 public interface MemberService {
 
-
     // 기존 회원인지 체크
     boolean isExistingMember(String email);
-
     // 회원가입
     void join(MemberDto memberDto);
-
     // 비밀번호 변경
     void changePassword(MemberDto memberDto);
-
     // 회원탈퇴
     void withdrawal(EmailDto emailDto);
 }

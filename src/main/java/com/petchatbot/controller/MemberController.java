@@ -41,32 +41,17 @@ public class MemberController {
             log.info("--중복된 이메일--");
             return new ResponseEntity(DefaultRes.res(StatusCode.CONFLICTPERMALINK, ResponseMessage.DUPLICATE_EMAIL), HttpStatus.OK);
         }
-        log.info("validate email={}", emailDto.getReceiveMail());
+        log.info("중복확인 통과 이메일={}", emailDto.getReceiveMail());
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.AVAILABLE_EMAIL), HttpStatus.OK);
     }
-
-//    @PostMapping("/join")
-//    public ResponseEntity<String> join(@RequestBody JoinReq joinReq) {
-//        String email = joinReq.getMemberEmail();
-//        String password = joinReq.getMemberPassword();
-//
-//        String rawPassword = joinReq.getMemberPassword();
-//        String encodedPassword = bCryptPasswordEncoder.encode(rawPassword); // 패스워드 암호화
-//
-//        // 성공 로직
-//        MemberDto memberDto = new MemberDto(email, encodedPassword);
-//        log.info("email={}, password={}", email, rawPassword);
-//        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.ENTER_JOIN_INFORMATION), HttpStatus.OK);
-//    }
 
 
     // 이메일 전송
     @PostMapping("/sendEmailCode")
     public ResponseEntity<String> sendEmail(@RequestBody EmailDto emailDto) throws MessagingException {
-        log.info("sendEmailCode email={}", emailDto);
+        //log.info("sendEmailCode email={}", emailDto);
         try {
             int RandomNumber = makeRandomNumber();
-
             emailService.sendEmail(emailDto, "멍냥챗봇 인증번호 발송 이메일 입니다.", RandomNumber);
             return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SEND_EMAIL, RandomNumber), HttpStatus.OK);
 
@@ -76,7 +61,7 @@ public class MemberController {
         }
     }
 
-    // 사용자 이메일 확인
+    // 사용자 이메일 확인 (프로필)
     @GetMapping("/member/email")
     public ResponseEntity<String> enterEmailCode(Authentication authentication) {
         String email = extractEmail(authentication);
@@ -96,7 +81,7 @@ public class MemberController {
 
             MemberDto memberDto = new MemberDto(memberEmail, encodedPassword);
             memberService.join(memberDto);
-            log.info("join email={}", ecCode.getMemberEmail());
+            log.info("회원가입한 email={}", ecCode.getMemberEmail());
             return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER), HttpStatus.OK);
         }
         else{
@@ -126,7 +111,7 @@ public class MemberController {
     public ResponseEntity<String> change_password(@RequestBody ChangePwReq changePwReq, Authentication authentication) {
         String memberEmail = extractEmail(authentication);
         String memberNewPassword = changePwReq.getMemberNewPassword();
-        log.info("changePw email={}", memberEmail);
+        log.info("비밀번호 변경 할 email={}", memberEmail);
         MemberDto memberDto = new MemberDto(memberEmail, memberNewPassword);
         memberService.changePassword(memberDto);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CHANGE_PW), HttpStatus.OK);
@@ -141,7 +126,7 @@ public class MemberController {
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.DELETE_USER), HttpStatus.OK);
     }
 
-    // 비밀번호 암호화를 위한 난수얻기
+    // 인증코드 전송을 위한 난수얻기
     public int makeRandomNumber() {
         // 난수의 범위 111111 ~ 999999 (6자리 난수)
         Random r = new Random();

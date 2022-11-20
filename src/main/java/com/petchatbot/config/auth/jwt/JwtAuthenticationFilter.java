@@ -32,26 +32,17 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     // 로그인 시도
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        System.out.println("JWTAuthenticationFilter: 로그인 시도중");
 
         try {
             ObjectMapper om = new ObjectMapper();
             Member member = om.readValue(request.getInputStream(), Member.class);
-            log.info("로그인 시도 memberEmail={}, memberPassword={}", member.getMemberEmail(), member.getMemberPassword());
 
             // 토큰 생성 (인증용 객체)
             UsernamePasswordAuthenticationToken authenticationToken =
                     new UsernamePasswordAuthenticationToken(member.getMemberEmail(), member.getMemberPassword());
 
-
-            // 정상적인 로그인 시도인지 검증
             // 정상이면 authentication 객체를 반환
             Authentication authentication = authenticationManager.authenticate(authenticationToken);
-
-
-            // (확인용임) 로그인 시도를 한 member의 이메일 확인
-            PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-            log.info("확인용 ={}",principalDetails.getMember().getMemberEmail());
 
             return authentication;
 
@@ -64,11 +55,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     // attemptAuthentication 함수가 정상적으로 동작하면 호출되는 함수
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        log.info("successfulAuthentication 실행됨: 인증이 완료되었다는 뜻");
 
         PrincipalDetails principalDetails = (PrincipalDetails) authResult.getPrincipal();
+        log.info("login 성공 이메일 = {}",principalDetails.getMember().getMemberEmail());
 
-        // Hash암호방식
+        // jwt 토큰 생성
         String jwtToken = JWT.create()
                 .withSubject("cos토큰")
                 .withExpiresAt(new Date(System.currentTimeMillis() + (60000 * 30))) // jwt 토큰 30분 설정
@@ -80,9 +71,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         setSuccessResponse(request, response);
     }
 
+    // attemptAuthentication 함수가 정상적으로 동작하지 않으면 호출되는 함수
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        log.info("unsuccessfulAuthentication 실행됨: 인증에 실패했다는 뜻");
+        log.error("login 실패");
         setFailResponse(request, response);
     }
 

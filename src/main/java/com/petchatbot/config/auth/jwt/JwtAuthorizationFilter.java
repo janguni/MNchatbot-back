@@ -58,7 +58,6 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             Authentication authentication =
                     new UsernamePasswordAuthenticationToken(principalDetails, null, principalDetails.getAuthorities());
 
-            // 강제로 시큐리티의 세션에 접근하여 Authentication 객체
             SecurityContextHolder.getContext().setAuthentication(authentication);
             chain.doFilter(request, response);
         }
