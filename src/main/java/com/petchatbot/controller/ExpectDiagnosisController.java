@@ -34,13 +34,12 @@ public class ExpectDiagnosisController {
     @PostMapping("/expectDiag/add/{petSerial}")
     public ResponseEntity<ExpectDiagInfoRes> addExpectDiag(@PathVariable("petSerial") int petSerial ,Authentication authentication) {
         String memberEmail = extractEmail(authentication);
-
+        log.info("-----------예상진단 추가 시도-----------");
+        log.info("시도한 펫 시리얼={}", petSerial);
         String url = "http://43.200.87.239:5000/tospring";
         String sb = "";
         try {
             HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
-
-
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
 
             String line = null;
@@ -49,6 +48,7 @@ public class ExpectDiagnosisController {
                 sb = sb + line + "\n";
             }
             br.close();
+            sb = sb.replace("\n","");
             expectDiagnosisService.addExpectDiag(petSerial, memberEmail, sb);
 
         } catch (MalformedURLException e) {
@@ -73,7 +73,6 @@ public class ExpectDiagnosisController {
     public ResponseEntity<ExpectDiagInfoRes> getExpectDiagInfo(@PathVariable("expectDiagSerial") int diagSerial) {
         log.info("예상진단 세부정보 ={}", diagSerial);
         ExpectDiagInfoRes expectDiagInfo = expectDiagnosisService.getExpectDiagInfo(diagSerial);
-        log.info("예상진단 세부정보 전송= {}", expectDiagInfo.getDefinition());
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_GET_EXPECTDIAG_INFO, expectDiagInfo), HttpStatus.OK);
     }
 

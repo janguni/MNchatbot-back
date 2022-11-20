@@ -3,7 +3,9 @@ package com.petchatbot.service;
 import com.petchatbot.domain.dto.EmailDto;
 import com.petchatbot.domain.dto.MemberDto;
 import com.petchatbot.domain.model.Member;
+import com.petchatbot.domain.model.Pet;
 import com.petchatbot.repository.MemberRepository;
+import com.petchatbot.repository.PetRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +22,8 @@ import javax.servlet.http.HttpServletResponse;
 public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final PetRepository petRepository;
+    private final PetService petService;
 
 
     // 기존 회원인지 체크
@@ -58,6 +63,10 @@ public class MemberServiceImpl implements MemberService {
     public void withdrawal(EmailDto emailDto) {
         String memberEmail = emailDto.getReceiveMail();
         Member findMember = memberRepository.findByMemberEmail(memberEmail);
+        List<Pet> pets = petRepository.findByMember(findMember);
+        for (Pet p : pets) {
+            petService.petDelete(p.getPetSerial());
+        }
         memberRepository.delete(findMember);
     }
 }

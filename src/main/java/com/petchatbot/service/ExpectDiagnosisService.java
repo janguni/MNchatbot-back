@@ -39,6 +39,7 @@ public class ExpectDiagnosisService {
         Member findMember = memberRepository.findByMemberEmail(memberEmail);
         Pet findPet = petRepository.findByPetSerial(petSerial);
         ExpectDiagnosis expectDiagnosis = new ExpectDiagnosis(findPet, findMember, date, time, diagnosisName);
+        log.info("시도한 펫 이름: {}   사용자:{}   날짜:{}   시간:{}   질병명:{}", findPet.getPetName(), findMember.getMemberEmail(), date, time, diagnosisName);
         expectDiagRepository.save(expectDiagnosis);
     }
 
@@ -60,6 +61,12 @@ public class ExpectDiagnosisService {
 
             ExpectDiagListRes expectDiagListRes = new ExpectDiagListRes(diagSerial, diagDsName, newDiagDate);
             list.add(expectDiagListRes);
+        }
+        log.info("----------{}의 예상진단 목록 확인----------", findPet.getPetName());
+        for (ExpectDiagListRes e:list) {
+            log.info("예상진단 시리얼: {}",e.getDiagSerial());
+            log.info("예상진단 질병명: {}",e.getDiagDsName());
+            log.info("예상진단 날짜: {}",e.getDiagDate());
         }
 
         return list;
@@ -97,6 +104,16 @@ public class ExpectDiagnosisService {
         String advice = diseaseDto.getDsAdvice();
 
         ExpectDiagInfoRes expectDiagInfoRes = new ExpectDiagInfoRes(date, formattedTime, diseaseName, breed, definition, cause, advice);
+        log.info("----------{}의 {} 예상진단 세부정보 확인----------", findExpectDiag.getPet().getPetName(), diseaseName);
+
+        log.info("예상진단 날짜: {}",expectDiagInfoRes.getDate());
+        log.info("예상진단 시간: {}",expectDiagInfoRes.getTime());
+        log.info("예상진단 질병명: {}",expectDiagInfoRes.getDiseaseName());
+        log.info("예상진단 축종: {}",expectDiagInfoRes.getBreed());
+        log.info("예상진단 정의: {}",expectDiagInfoRes.getDefinition());
+        log.info("예상진단 원인: {}",expectDiagInfoRes.getCause());
+        log.info("예상진단 조언: {}",expectDiagInfoRes.getAdvice());
+
         return expectDiagInfoRes;
 
     }

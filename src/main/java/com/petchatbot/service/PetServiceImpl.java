@@ -4,6 +4,8 @@ import com.petchatbot.domain.dto.PetListDto;
 import com.petchatbot.domain.model.*;
 import com.petchatbot.domain.requestAndResponse.ChangePetInfoReq;
 import com.petchatbot.domain.requestAndResponse.PetReq;
+import com.petchatbot.repository.ExpectDiagnosisRepository;
+import com.petchatbot.repository.MedicalFormRepository;
 import com.petchatbot.repository.MemberRepository;
 import com.petchatbot.repository.PetRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,11 @@ public class PetServiceImpl implements PetService{
 
     private final MemberRepository memberRepository;
     private final PetRepository petRepository;
+    private final ExpectDiagnosisService expectDiagnosisService;
+    private final ExpectDiagnosisRepository expectDiagnosisRepository;
+
+    private final MedicalFormRepository medicalFormRepository;
+    private final MedicalFormService medicalFormService;
 
     @Transactional
     @Override
@@ -69,8 +76,22 @@ public class PetServiceImpl implements PetService{
     }
 
     @Override
+    @Transactional
     public void petDelete(int petSerial) {
+        // 해당 반려동물의 예상질병 삭제
         Pet findPet = petRepository.findByPetSerial(petSerial);
+        List<ExpectDiagnosis> expectDiagnoses = expectDiagnosisRepository.findByPet(findPet);
+        for (ExpectDiagnosis e: expectDiagnoses){
+            expectDiagnosisService.deleteExpectDiag(e.getDiagSerial());
+        }
+
+        // 해당 반려동물 의 문진표 삭제
+        List<MedicalForm> medicalForms = medicalFormRepository.findByPet(findPet);
+        for (MedicalForm m: medicalForms) {
+            medicalFormService.deleteMedicalForm(m.getMedicalFormSerial());
+        }
+
+        // 반려동물 삭제
         petRepository.delete(findPet);
     }
 

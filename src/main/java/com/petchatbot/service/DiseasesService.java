@@ -81,6 +81,7 @@ public class DiseasesService {
     }
 
     public DiseaseDto getDiseaseInfoByDiseaseName(String dsName){
+        log.info("질병명 으로 찾기={}", dsName);
         Disease findDisease = diseasesRepository.findByDsName(dsName);
         log.info("findDiseaseByDiseaseName={}", findDisease);
         String dsAmlBreed = findDisease.getDsAmlBreed();
