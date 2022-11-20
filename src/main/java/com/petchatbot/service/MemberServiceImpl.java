@@ -26,7 +26,11 @@ public class MemberServiceImpl implements MemberService {
     private final PetService petService;
 
 
-    // 기존 회원인지 체크
+    /**
+     * 이메일 중복 확인
+     * @param email
+     * @return 중복이라면 true
+     */
     @Override
     public boolean isExistingMember(String email){
         Member findMember = memberRepository.findByMemberEmail(email);
@@ -36,7 +40,6 @@ public class MemberServiceImpl implements MemberService {
     }
 
 
-    // 회원가입
     @Override
     public void join(MemberDto memberDto){
         String memberEmail = memberDto.getMemberEmail();
@@ -45,13 +48,11 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.save(member);
     }
 
-    // 비밀번호 변경
     @Transactional
     public void changePassword(MemberDto memberDto){
         Member findMember = memberRepository.findByMemberEmail(memberDto.getMemberEmail());
-        if (memberDto.getMemberPassword() == null){
-            throw new IllegalStateException("비밀번호가 null");
-        }
+
+        // 비밀번호 암호화
         String rawPassword = memberDto.getMemberPassword();
         String encodedPassword = bCryptPasswordEncoder.encode(rawPassword);
         findMember.changePassword(encodedPassword);

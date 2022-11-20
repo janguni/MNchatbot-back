@@ -23,7 +23,6 @@ public abstract class ResponseMessage {
 
     public static final String ADD_PET = "반려동물추가 성공";
     public static final String SUCCESS_CHANGE_PET_INFO = "반려동물 프로필 변경 성공";
-    public static final String WRONG_CHANGE_PET_INFO = "반려동물 프로필 변경 성공";
     public static final String SUCCESS_GET_PET_INFO = "반려동물 정보 제공";
     public static final String FAIL_GET_PET_INFO = "반려동물 정보 없음";
     public static final String SUCCESS_GET_PET_LIST = "반려동물 list 정보 제공";
@@ -56,8 +55,6 @@ public abstract class ResponseMessage {
 
     public static final String SUCCESS_GET_EXPECTDIAG_INFO = "예상진단 세부정보 불러오기 성공";
     public static final String SUCCESS_DELETE_EXPECTDIAG = "예상진단 삭제 성공";
-
-
 
     public static final String SUCCESS_APPLY_TO_HOSPITAL = "연계병원 상담신청 성공";
     public static final String SUCCESS_GET_APPOINTMENT_LIST = "상담신청 조회 성공";
