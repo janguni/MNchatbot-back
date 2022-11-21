@@ -48,6 +48,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Transactional
+    @Override
     public void changePassword(MemberDto memberDto){
         Member findMember = memberRepository.findByMemberEmail(memberDto.getMemberEmail());
 

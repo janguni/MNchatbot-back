@@ -20,50 +20,72 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+// 1. 반려동물 추가
+// 2. 반려동물 프로필 변경
+// 3. 반려동물 목록 확인
+// 4. 반려동물 세부정보 확인
+// 5. 반려동물 삭제
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 public class PetController {
 
-    private final MemberRepository memberRepository;
-    private final MemberService memberService;
     private final PetService petService;
 
-    // 반려동물 추가
+    /**
+     * 반려동물 추가
+     * @param petRegReq (반려동물 이름, 나이, 품종, 축종, 성별, 중성화 여부)
+     * @param authentication (JWT 토큰 활용)
+     * @return 정상: 200/ 그 외 처리x
+     */
     @PostMapping("/pet/add")
     public ResponseEntity<String> addPet(@RequestBody PetReq petRegReq, Authentication authentication) {
         String email = extractEmail(authentication);
         petService.registerPet(petRegReq, email);
-        log.info("addPet = {}",petRegReq.getPetName());
+        log.info("[{}]님의 반려동물 [{}]추가 완료", email ,petRegReq.getPetName());
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.ADD_PET), HttpStatus.OK);
     }
 
-    // 반려동물 프로필 변경
+
+
+    /**
+     * 반려동물 프로필 변경
+     * @param petInfoReq (반려동물 이름, 나이, 축종, 성별, 중성화 여부)
+     * @return 정상: 200/ 그 외 처리x
+     */
     @PatchMapping("/pet/changeInfo")
     public ResponseEntity<String> changePetInfo(@RequestBody ChangePetInfoReq petInfoReq) {
-        log.info("--------------펫 수정 시도 시작--------------");
         petService.changePetInfo(petInfoReq);
+        log.info("반려동물 [{}]의 프로필 변경 완료",petInfoReq.getPetName());
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_CHANGE_PET_INFO), HttpStatus.OK);
     }
 
-     // 반려동물 List
+
+    /**
+     * 사용자의 반려동물 목록 확인
+     * @param authentication (JWT 활용)
+     * @return 정상: 200 / 그 외 처리x
+     */
     @GetMapping("/pet/petList")
     public ResponseEntity<List<PetListDto>> petList(Authentication authentication) {
         String email = extractEmail(authentication);
         List<PetListDto> pets = petService.petList(email);
-        log.info("pets={}", pets);
-        if (pets.isEmpty() ){
-            return new ResponseEntity(DefaultRes.res(StatusCode.NOT_FOUND, ResponseMessage.FAIL_GET_PET_LIST), HttpStatus.OK);
-        }
+        log.info("[{}]님의 반려동물 목록 확인 완료", email);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_GET_PET_LIST, pets), HttpStatus.OK);
     }
 
 
-    // 반려동물 정보
+    /**
+     * 반려동물 세부정보 확인
+     * @param petSerial
+     * @return 정상:200 / 반려동물 시리얼로 반려동물을 DB에서 찾지 못한 경우: 404???? => 예외를 터트리는 걸로 변경해야할까 고민
+     */
     @GetMapping("/pet/{petSerial}")
     public ResponseEntity<PetReq> petInfo(@PathVariable("petSerial") int petSerial){
         try {
             PetReq petReq = petService.petInfo(petSerial);
+            log.info("반려동물 [{}]의 세부정보 확인 완료", petReq.getPetName());
             return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_GET_PET_INFO, petReq), HttpStatus.OK);
         } catch (Exception e){
             log.info("반려동물 정보 없음 = {}", petSerial);
@@ -71,13 +93,20 @@ public class PetController {
         }
     }
 
-    // 반려동물 삭제
+    /**
+     * 반려동물 삭제
+     * @param petSerial
+     * @return 정상: 200 / 그 외 처리x
+     */
     @DeleteMapping("/pet/delete/{petSerial}")
     public ResponseEntity<PetReq> petDelete(@PathVariable("petSerial") int petSerial) {
         petService.petDelete(petSerial);
+        log.info("반려동물 (serial:{}) 삭제 완료", petSerial);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_DELETE_PET), HttpStatus.OK);
     }
 
+
+    // authentication 객체로부터 사용자 이메일을 추출
     private String extractEmail(Authentication authentication){
         PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
         String memberEmail = principal.getMember().getMemberEmail();
