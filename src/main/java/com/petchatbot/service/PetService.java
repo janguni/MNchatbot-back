@@ -2,14 +2,14 @@ package com.petchatbot.service;
 
 import com.petchatbot.domain.dto.PetListDto;
 import com.petchatbot.domain.requestAndResponse.ChangePetInfoReq;
-import com.petchatbot.domain.requestAndResponse.PetReq;
+import com.petchatbot.domain.dto.PetDto;
 
 import java.util.List;
 
 public interface PetService {
 
     // 반려동물 추가
-    void registerPet(PetReq petRegReq, String email);
+    void registerPet(PetDto petRegReq, String email);
 
     // 반려동물 변경
     void changePetInfo(ChangePetInfoReq petInfoReq);
@@ -18,7 +18,7 @@ public interface PetService {
     List<PetListDto> petList(String email);
 
     // 반려동물 info
-    PetReq petInfo(int petSerial);
+    PetDto petInfo(int petSerial);
 
     // 반려동물 삭제
     void petDelete(int petSerial);

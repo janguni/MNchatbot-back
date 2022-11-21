@@ -4,12 +4,9 @@ import com.petchatbot.config.ResponseMessage;
 import com.petchatbot.config.StatusCode;
 import com.petchatbot.config.auth.PrincipalDetails;
 import com.petchatbot.domain.dto.PetListDto;
-import com.petchatbot.domain.model.Pet;
 import com.petchatbot.domain.requestAndResponse.ChangePetInfoReq;
 import com.petchatbot.domain.requestAndResponse.DefaultRes;
-import com.petchatbot.domain.requestAndResponse.PetReq;
-import com.petchatbot.repository.MemberRepository;
-import com.petchatbot.service.MemberService;
+import com.petchatbot.domain.dto.PetDto;
 import com.petchatbot.service.PetService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +37,7 @@ public class PetController {
      * @return 정상: 200/ 그 외 처리x
      */
     @PostMapping("/pet/add")
-    public ResponseEntity<String> addPet(@RequestBody PetReq petRegReq, Authentication authentication) {
+    public ResponseEntity<String> addPet(@RequestBody PetDto petRegReq, Authentication authentication) {
         String email = extractEmail(authentication);
         petService.registerPet(petRegReq, email);
         log.info("[{}]님의 반려동물 [{}]추가 완료", email ,petRegReq.getPetName());
@@ -82,11 +79,11 @@ public class PetController {
      * @return 정상:200 / 반려동물 시리얼로 반려동물을 DB에서 찾지 못한 경우: 404???? => 예외를 터트리는 걸로 변경해야할까 고민
      */
     @GetMapping("/pet/{petSerial}")
-    public ResponseEntity<PetReq> petInfo(@PathVariable("petSerial") int petSerial){
+    public ResponseEntity<PetDto> petInfo(@PathVariable("petSerial") int petSerial){
         try {
-            PetReq petReq = petService.petInfo(petSerial);
-            log.info("반려동물 [{}]의 세부정보 확인 완료", petReq.getPetName());
-            return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_GET_PET_INFO, petReq), HttpStatus.OK);
+            PetDto petDto = petService.petInfo(petSerial);
+            log.info("반려동물 [{}]의 세부정보 확인 완료", petDto.getPetName());
+            return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_GET_PET_INFO, petDto), HttpStatus.OK);
         } catch (Exception e){
             log.info("반려동물 정보 없음 = {}", petSerial);
             return new ResponseEntity(DefaultRes.res(StatusCode.NOT_FOUND, ResponseMessage.FAIL_GET_PET_INFO, null), HttpStatus.OK);
@@ -99,7 +96,7 @@ public class PetController {
      * @return 정상: 200 / 그 외 처리x
      */
     @DeleteMapping("/pet/delete/{petSerial}")
-    public ResponseEntity<PetReq> petDelete(@PathVariable("petSerial") int petSerial) {
+    public ResponseEntity<PetDto> petDelete(@PathVariable("petSerial") int petSerial) {
         petService.petDelete(petSerial);
         log.info("반려동물 (serial:{}) 삭제 완료", petSerial);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_DELETE_PET), HttpStatus.OK);

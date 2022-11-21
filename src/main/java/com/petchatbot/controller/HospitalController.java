@@ -4,9 +4,7 @@ import com.petchatbot.config.ResponseMessage;
 import com.petchatbot.config.StatusCode;
 import com.petchatbot.config.auth.PrincipalDetails;
 import com.petchatbot.domain.dto.*;
-import com.petchatbot.domain.model.Hospital;
 import com.petchatbot.domain.requestAndResponse.DefaultRes;
-import com.petchatbot.domain.requestAndResponse.PetReq;
 import com.petchatbot.service.HospitalService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,8 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import javax.mail.MessagingException;
-import java.text.ParseException;
 import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;

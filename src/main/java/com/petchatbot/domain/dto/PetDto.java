@@ -1,4 +1,4 @@
-package com.petchatbot.domain.requestAndResponse;
+package com.petchatbot.domain.dto;
 
 import com.petchatbot.domain.model.Species;
 import com.petchatbot.domain.model.Neutralization;
@@ -6,7 +6,7 @@ import com.petchatbot.domain.model.PetGender;
 import lombok.Data;
 
 @Data
-public class PetReq {
+public class PetDto {
     private Species petSpecies;
     private String petBreed;
     private String petName;
@@ -14,10 +14,7 @@ public class PetReq {
     private PetGender petGender;
     private Neutralization petNeutralization;
 
-    public PetReq() {
-    }
-
-    public PetReq(Species petSpecies, String petBreed, String petName, int petAge, PetGender petGender, Neutralization petNeutralization) {
+    public PetDto(Species petSpecies, String petBreed, String petName, int petAge, PetGender petGender, Neutralization petNeutralization) {
         this.petSpecies = petSpecies;
         this.petBreed = petBreed;
         this.petName = petName;

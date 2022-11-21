@@ -3,7 +3,7 @@ package com.petchatbot.service;
 import com.petchatbot.domain.dto.PetListDto;
 import com.petchatbot.domain.model.*;
 import com.petchatbot.domain.requestAndResponse.ChangePetInfoReq;
-import com.petchatbot.domain.requestAndResponse.PetReq;
+import com.petchatbot.domain.dto.PetDto;
 import com.petchatbot.repository.ExpectDiagnosisRepository;
 import com.petchatbot.repository.MedicalFormRepository;
 import com.petchatbot.repository.MemberRepository;
@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -25,32 +26,39 @@ public class PetServiceImpl implements PetService{
     private final PetRepository petRepository;
     private final ExpectDiagnosisService expectDiagnosisService;
     private final ExpectDiagnosisRepository expectDiagnosisRepository;
-
     private final MedicalFormRepository medicalFormRepository;
     private final MedicalFormService medicalFormService;
 
+    /**
+     * 반려동물 추가
+     * @param petDto (반려동물 등록 시 필요한 정보)
+     * @param email (사용자 이메일)
+     */
     @Transactional
     @Override
-    public void registerPet(PetReq petRegReq, String email) {
+    public void registerPet(PetDto petDto, String email) {
         Member findMember = getFindMember(email);
-        Pet pet = createPetEntity(petRegReq, findMember);
-        petRepository.save(pet);
-        findMember.addPet(pet);
+        Pet pet = getPetFromPetDto(petDto, findMember);
+        petRepository.save(pet); // 반려동물 db에 저장
+        findMember.addPet(pet); // 사용자의 petList에 pet 저장 (단방향 매핑)???
     }
 
+    /**
+     * 반려동물 프로필 변경
+     * @param petInfoReq (품종을 제외한 반려동물 정보)
+     */
     @Override
     @Transactional
     public void changePetInfo(ChangePetInfoReq petInfoReq) {
         Pet findPet = getFindPet(petInfoReq);
-        log.info("changePet.name = {}",petInfoReq.getPetName());
-        log.info("changePet.age = {}",petInfoReq.getPetAge());
-        log.info("changePet.gender = {}",petInfoReq.getPetGender());
-        log.info("changePet.breed = {}",petInfoReq.getPetBreed());
-        log.info("changePet.serial = {}",petInfoReq.getPetSerial());
-        log.info("changePet.neutralization = {}",petInfoReq.getPetNeutralization());
-        setPet(petInfoReq, findPet);
+        setPetInfo(petInfoReq, findPet);
     }
 
+    /**
+     * 반려동물 목록 확인
+     * @param email
+     * @return 반려동물들의 시리얼, 품종, 이름 정보만
+     */
     @Override
     public List<PetListDto> petList(String email) {
         Member member = memberRepository.findByMemberEmail(email);
@@ -58,7 +66,6 @@ public class PetServiceImpl implements PetService{
 
         List<PetListDto> pets = new ArrayList<>();
         for (Pet pet: petList){
-            //log.info("pet 정보 ={}", pet.getPetName());
             String petName = pet.getPetName();
             int petSerial = pet.getPetSerial();
             Species petSpecies = pet.getPetSpecies();
@@ -68,13 +75,22 @@ public class PetServiceImpl implements PetService{
         return pets;
     }
 
+    /**
+     * 반려동물의 세부정보
+     * @param petSerial
+     * @return 반려동물 세부정보
+     */
     @Override
-    public PetReq petInfo(int petSerial) {
+    public PetDto petInfo(int petSerial) {
         Pet pet = petRepository.findByPetSerial(petSerial);
-        PetReq petReq = extracted(pet);
-        return petReq;
+        PetDto petDto = getPetDtoFromPet(pet);
+        return petDto;
     }
 
+    /**
+     * 반려동물 삭제
+     * @param petSerial
+     */
     @Override
     @Transactional
     public void petDelete(int petSerial) {
@@ -95,18 +111,39 @@ public class PetServiceImpl implements PetService{
         petRepository.delete(findPet);
     }
 
-    private PetReq extracted(Pet pet) {
+    // Pet 객체로부터 PetDto 객체 생성해서 반환
+    private PetDto getPetDtoFromPet(Pet pet) {
         Species petSpecies = pet.getPetSpecies();
         String petBreed = pet.getPetBreed();
         String petName = pet.getPetName();
         int petAge = pet.getPetAge();
         PetGender petGender = pet.getPetGender();
         Neutralization petNeutralization = pet.getPetNeutralization();
-        PetReq petReq = new PetReq(petSpecies, petBreed, petName, petAge, petGender, petNeutralization);
-        return petReq;
+        PetDto petDto = new PetDto(petSpecies, petBreed, petName, petAge, petGender, petNeutralization);
+        return petDto;
     }
 
-    private void setPet(ChangePetInfoReq petInfoReq, Pet findPet) {
+    // petDto 객체로부터 Pet 객체 생성해서 반환 (바로 위의 함수와 반대)
+    private Pet getPetFromPetDto(PetDto petDto, Member findMember) {
+        Species petSpecies = petDto.getPetSpecies();
+        String petBreed = petDto.getPetBreed();
+        String petName = petDto.getPetName();
+        int petAge = petDto.getPetAge();
+        PetGender petGender = petDto.getPetGender();
+        Neutralization petNeutralization = petDto.getPetNeutralization();
+        Pet pet = new Pet(findMember, petSpecies, petBreed, petName, petAge, petGender, petNeutralization);
+        return pet;
+    }
+
+    // petInfoReq객체로 Pet객체 생성해서 반환
+    private Pet getFindPet(ChangePetInfoReq petInfoReq) {
+        int petSerial = petInfoReq.getPetSerial();
+        Pet findPet = petRepository.findByPetSerial(petSerial);
+        return findPet;
+    }
+
+    // 수정할 반려동물 세부정보와 Pet 객체로 반려동물 데이터 변경
+    private void setPetInfo(ChangePetInfoReq petInfoReq, Pet findPet) {
         String petBreed = petInfoReq.getPetBreed();
         String petName = petInfoReq.getPetName();
         int petAge = petInfoReq.getPetAge();
@@ -115,27 +152,9 @@ public class PetServiceImpl implements PetService{
         findPet.changePetInfo(petBreed, petName, petAge, petGender, petNeutralization);
     }
 
-    private Pet getFindPet(ChangePetInfoReq petInfoReq) {
-        int petSerial = petInfoReq.getPetSerial();
-        Pet findPet = petRepository.findByPetSerial(petSerial);
-        return findPet;
-    }
-
+    // email 로부터 Member 객체 찾아서 반환
     private Member getFindMember(String email) {
         Member findMember = memberRepository.findByMemberEmail(email);
         return findMember;
     }
-
-    private Pet createPetEntity(PetReq petRegReq, Member findMember) {
-        Species petSpecies = petRegReq.getPetSpecies();
-        String petBreed = petRegReq.getPetBreed();
-        log.info("petSpecies={}", petSpecies);
-        String petName = petRegReq.getPetName();
-        int petAge = petRegReq.getPetAge();
-        PetGender petGender = petRegReq.getPetGender();
-        Neutralization petNeutralization = petRegReq.getPetNeutralization();
-        Pet pet = new Pet(findMember, petSpecies, petBreed, petName, petAge, petGender, petNeutralization);
-        return pet;
-    }
-
 }
