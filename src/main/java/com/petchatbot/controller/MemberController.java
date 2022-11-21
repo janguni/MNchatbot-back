@@ -31,7 +31,6 @@ import java.util.Random;
 public class MemberController {
     private final MemberService memberService;
     private final EmailService emailService;
-
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     // 이메일 중복 확인
@@ -49,7 +48,6 @@ public class MemberController {
     // 이메일 전송
     @PostMapping("/sendEmailCode")
     public ResponseEntity<String> sendEmail(@RequestBody EmailDto emailDto) throws MessagingException {
-        //log.info("sendEmailCode email={}", emailDto);
         try {
             int RandomNumber = makeRandomNumber();
             emailService.sendEmail(emailDto, "멍냥챗봇 인증번호 발송 이메일 입니다.", RandomNumber);
@@ -89,6 +87,7 @@ public class MemberController {
             return new ResponseEntity(DefaultRes.res(StatusCode.BAD_REQUEST, ResponseMessage.WRONG_EMAIL_CODE), HttpStatus.OK);
         }
     }
+
 
     // 인증코드 입력 (비밀번호 변경을 위함)
     @PostMapping("/enterEmailCode")

@@ -28,9 +28,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     {
         http.csrf().disable();
 
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) //session 사용x
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
-                .addFilter(corsFilter) //@CrossOrigin(인증X), 시큐리티 필터에 인증(O)
+                .addFilter(corsFilter)
                 .formLogin().disable()
                 .httpBasic().disable()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager()))
@@ -39,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
                 .and()
                 .authorizeRequests()
-                .antMatchers("/", "/login", "/enterEmailCode/join", "/sendEmailCode", "/validateDuplicateEmail","/enterEmailCode","/pet/petList").permitAll()
+                .antMatchers("/", "/login", "/enterEmailCode/join", "/sendEmailCode", "/validateDuplicateEmail","/enterEmailCode").permitAll()
                 .anyRequest().authenticated();
 
 

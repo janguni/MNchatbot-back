@@ -27,14 +27,13 @@ public class MemberServiceImpl implements MemberService {
 
 
     /**
-     * 이메일 중복 확인
+     * 이메일 중복 확인 (회원가입 시)
      * @param email
      * @return 중복이라면 true
      */
     @Override
     public boolean isExistingMember(String email){
         Member findMember = memberRepository.findByMemberEmail(email);
-
         if (findMember == null){return false;}
         else {return true;}
     }

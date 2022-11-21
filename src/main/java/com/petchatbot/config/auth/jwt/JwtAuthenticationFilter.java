@@ -26,7 +26,6 @@ import com.auth0.jwt.JWT;
 @RequiredArgsConstructor
 @Slf4j
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-
     private final AuthenticationManager authenticationManager;
 
     // 로그인 시도
