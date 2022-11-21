@@ -46,11 +46,25 @@ public class MemberController {
 
 
     // 이메일 전송
-    @PostMapping("/sendEmailCode")
-    public ResponseEntity<String> sendEmail(@RequestBody EmailDto emailDto) throws MessagingException {
+    @PostMapping("/sendEmailCode/join")
+    public ResponseEntity<String> sendEmailForJoin(@RequestBody EmailDto emailDto) throws MessagingException {
         try {
             int RandomNumber = makeRandomNumber();
-            emailService.sendEmail(emailDto, "멍냥챗봇 인증번호 발송 이메일 입니다.", RandomNumber);
+            emailService.sendEmailForJoin(emailDto, "[멍냥챗봇] 인증번호 발송 이메일 입니다.", RandomNumber);
+            return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SEND_EMAIL, RandomNumber), HttpStatus.OK);
+
+        } catch (MessagingException e){
+            log.info("--이메일 인증코드 발송 실패--");
+            return new ResponseEntity(DefaultRes.res(StatusCode.INTERNAL_SERVER_ERROR, ResponseMessage.SEND_EMAIL_FAIL, null), HttpStatus.OK);
+        }
+    }
+
+    // 이메일 전송
+    @PostMapping("/sendEmailCode/changePw")
+    public ResponseEntity<String> sendEmailForChangePw(@RequestBody EmailDto emailDto) throws MessagingException {
+        try {
+            int RandomNumber = makeRandomNumber();
+            emailService.sendEmailForChangePw(emailDto, "[멍냥챗봇] 인증번호 발송 이메일 입니다.", RandomNumber);
             return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SEND_EMAIL, RandomNumber), HttpStatus.OK);
 
         } catch (MessagingException e){

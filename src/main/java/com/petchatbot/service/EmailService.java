@@ -39,17 +39,30 @@ public class EmailService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-
-    public void sendEmail(EmailDto emailDto, String title, int randomNumber) throws MessagingException {
-        log.info("emailDto.receiveMail={}", emailDto.getReceiveMail());
+    public void sendEmailForJoin(EmailDto emailDto, String title, int randomNumber) throws MessagingException {
         try {
-            String text = "test";
+            String message = "멍냥챗봇에 가입해 주셔서 감사합니다.\n";
             MimeMessage m = emailSender.createMimeMessage();
             MimeMessageHelper h = new MimeMessageHelper(m, "UTF-8");
             h.setFrom("lightson23@naver.com");
             h.setTo(emailDto.getReceiveMail());
             h.setSubject(title);
-            h.setText(makeEmailText(randomNumber));
+            h.setText(makeEmailText(randomNumber,message));
+            emailSender.send(m);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendEmailForChangePw(EmailDto emailDto, String title, int randomNumber) throws MessagingException {
+        try {
+            String message = "앱으로 돌아가셔서 인증번호 입력 후 비밀번호 재설정을 완료해주세요.";
+            MimeMessage m = emailSender.createMimeMessage();
+            MimeMessageHelper h = new MimeMessageHelper(m, "UTF-8");
+            h.setFrom("lightson23@naver.com");
+            h.setTo(emailDto.getReceiveMail());
+            h.setSubject(title);
+            h.setText(makeEmailText(randomNumber, message));
             emailSender.send(m);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
@@ -72,8 +85,8 @@ public class EmailService {
         }
     }
 
-    private String makeEmailText(int randomNumber){
-        return "인증번호는 " + randomNumber + " 입니다.\n멍냥챗봇에 가입해 주셔서 감사합니다.";
+    private String makeEmailText(int randomNumber,String message){
+        return "인증번호는 " + randomNumber + " 입니다.\n" + message;
     }
 
     private String makeEmailText(HospitalApplyDto dto, int petSerial, int medicalFormSerial,AmazonS3 amazonS3,String s3ImageName){
