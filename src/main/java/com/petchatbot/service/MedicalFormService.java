@@ -1,25 +1,28 @@
 package com.petchatbot.service;
 
-import com.petchatbot.domain.dto.MedicalFormDto;
-import com.petchatbot.domain.dto.MedicalFormListDto;
+
 import com.petchatbot.domain.model.MedicalForm;
 import com.petchatbot.domain.model.Member;
 import com.petchatbot.domain.model.Pet;
-import com.petchatbot.domain.requestAndResponse.ChangeMedicalFormReq;
-import com.petchatbot.domain.requestAndResponse.MedicalFormRes;
 import com.petchatbot.repository.MedicalFormRepository;
-import com.petchatbot.repository.MemberRepository;
 import com.petchatbot.repository.PetRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+// 1. 문진표 추가
+// 2. 문진표 목록 확인
+// 3. 문진표 세부정보 확인
+// 4. 문진표 수정
+// 5. 문진표 삭제
+
+// 1.1. 문진표 저장 dto -> 문진표 객체
+// 3.1. 문진표 객체 -> 문진표 세부정보 dto
 
 @Service
 @Slf4j
@@ -30,7 +33,7 @@ public class MedicalFormService {
     private final PetRepository petRepository;
 
     /**
-     * 문진표 저장
+     * 문진표 추가
      * @param medicalSaveReq
      * @param member (해당 문진표 저장 시 사용자 데이터 필요)
      */
@@ -40,30 +43,7 @@ public class MedicalFormService {
     }
 
 
-    /**
-     * 문진표 수정
-     * @param medicalEditReq
-     */
-    @Transactional
-    public void updateMedicalForm(MedicalForm.EditReq medicalEditReq){
 
-        // 수정할 문진표 객체 찾기
-        int medicalSerial = medicalEditReq.getMedicalFormSerial();
-        MedicalForm findMedicalForm = medicalFormRepository.findByMedicalFormSerial(medicalSerial);
-
-
-        // 약에 대한 특이사항이 없다면 질문 4번을 "특이사항 없음"으로 처리
-        if (!medicalEditReq.isMedicalFormQ3()) {
-            medicalEditReq.setMedicalFormQ4("특이사항 없음");
-        }
-
-        // 기타 특이사항이 없다면 질문 7번을 "특이사항 없음"으로 처리
-        if (medicalEditReq.getMedicalFormQ7()==null){
-            medicalEditReq.setMedicalFormQ7("특이사항 없음");
-        }
-
-        findMedicalForm.changeMedicalForm(medicalEditReq);
-    }
 
 
     /**
@@ -112,10 +92,36 @@ public class MedicalFormService {
         return medicalDetail;
     }
 
+    /**
+     * 문진표 수정
+     * @param medicalEditReq
+     */
+    @Transactional
+    public void updateMedicalForm(MedicalForm.EditReq medicalEditReq){
+
+        // 수정할 문진표 객체 찾기
+        int medicalSerial = medicalEditReq.getMedicalFormSerial();
+        MedicalForm findMedicalForm = medicalFormRepository.findByMedicalFormSerial(medicalSerial);
 
 
+        // 약에 대한 특이사항이 없다면 질문 4번을 "특이사항 없음"으로 처리
+        if (!medicalEditReq.isMedicalFormQ3()) {
+            medicalEditReq.setMedicalFormQ4("특이사항 없음");
+        }
 
-    // 문진표 삭제
+        // 기타 특이사항이 없다면 질문 7번을 "특이사항 없음"으로 처리
+        if (medicalEditReq.getMedicalFormQ7()==null){
+            medicalEditReq.setMedicalFormQ7("특이사항 없음");
+        }
+
+        findMedicalForm.changeMedicalForm(medicalEditReq);
+    }
+
+
+    /**
+     * 문진표 삭제
+     * @param medicalFormSerial
+     */
     public void deleteMedicalForm(int medicalFormSerial){
         // 문진표 시리얼로 문진표 찾기
         MedicalForm findMedicalForm = medicalFormRepository.findByMedicalFormSerial(medicalFormSerial);
