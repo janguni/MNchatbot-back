@@ -1,5 +1,4 @@
 package com.petchatbot.controller;
-
 import com.petchatbot.config.ResponseMessage;
 import com.petchatbot.config.StatusCode;
 import com.petchatbot.config.auth.PrincipalDetails;
@@ -17,8 +16,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
 import java.util.List;
+
+
+// 1. 문진표 추가
+// 2. 문진표 목록 확인
+// 3. 문진표 세부정보 확인
+// 4. 문진표 수정
+// 5. 문진표 삭제
+
 
 @RestController
 @RequiredArgsConstructor
@@ -28,54 +34,76 @@ public class MedicalFormController {
     private final MedicalFormService medicalFormService;
     private final MemberRepository memberRepository;
 
-    // 문진표 등록
+    /**
+     * 문진표 추가
+     * @param medicalFormDto (펫 시리얼, 멤버 시리얼, 날짜, 시간, 문진표 문항들) -> 사용자 시리얼은 삭제할 예정
+     * @param authentication (Jwt 활용)
+     * @return 정상:200 / 그 외 처리x
+     */
     @PostMapping("/medicalForm/add")
-    public ResponseEntity<MedicalFormDto> addMedicalForm(@RequestBody MedicalFormDto medicalFormDto, Authentication authentication) throws ParseException {
-        String memberEmail = extractEmail(authentication);
-        Member byMemberEmail = memberRepository.findByMemberEmail(memberEmail);
-        medicalFormService.saveMedicalForm(medicalFormDto, byMemberEmail);
+    public ResponseEntity<MedicalFormDto> addMedicalForm(@RequestBody MedicalFormDto medicalFormDto, Authentication authentication) {
+        Member findMember = extractMember(authentication);
+        medicalFormService.saveMedicalForm(medicalFormDto, findMember);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_ADD_MEDICAL_FORM), HttpStatus.OK);
     }
 
-    // 문진표 목록
+
+    /**
+     * 문진표 목록 확인
+     * @param petSerial
+     * @return 정상:200 / 그 외 처리x
+     */
     @GetMapping("/medicalForm/medicalFormList/{petSerial}")
     public ResponseEntity<List<MedicalFormListDto>> getMedicalFormList(@PathVariable("petSerial") int petSerial) {
-
         List<MedicalFormListDto> medicalFormList = medicalFormService.getMedicalFormList(petSerial);
-        if (medicalFormList.isEmpty()){
-            return new ResponseEntity(DefaultRes.res(StatusCode.NOT_FOUND, ResponseMessage.FAIL_GET_MEDICAL_FORM_LIST), HttpStatus.OK);
-        }
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_GET_MEDICAL_FORM_LIST, medicalFormList), HttpStatus.OK);
     }
 
-    // 문진표 세부정보
+
+    /**
+     * 문진표 세부정보 확인
+     * @param medicalFormSerial
+     * @return 정상:200 / 그 외 처리x
+     */
     @GetMapping("/medicalForm/{medicalFormSerial}")
     public ResponseEntity<MedicalFormRes> getMedicalFormInfo(@PathVariable("medicalFormSerial") int medicalFormSerial) {
-
         MedicalFormRes medicalFormInfo = medicalFormService.getMedicalFormInfo(medicalFormSerial);
-        log.info("date={}", medicalFormInfo.getMedicalFormDate());
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_MEDICAL_FORM_INFO, medicalFormInfo), HttpStatus.OK);
     }
 
-    // 문진표 수정
+
+    /**
+     * 문진표 수정
+     * @param changeMedicalFormDto (문진표 시리얼, 문진표 이름, 날짜 ,시간 문진표 문항들)
+     * @param authentication (Jwt 활용)
+     * @return 정상:200 / 그 외 처리x
+     */
     @PatchMapping("/medicalForm/update")
     public ResponseEntity<MedicalFormDto> updateMedicalForm(@RequestBody ChangeMedicalFormReq changeMedicalFormDto, Authentication authentication) {
-        String memberEmail = extractEmail(authentication);
-        Member findMember = memberRepository.findByMemberEmail(memberEmail);
+        Member findMember = extractMember(authentication);
         medicalFormService.updateMedicalForm(changeMedicalFormDto, findMember);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_UPDATE_MEDICAL_FORM), HttpStatus.OK);
     }
 
-    // 문진표 삭제
+
+    /**
+     * 문진표 삭제
+     * @param medicalFormSerial
+     * @return 정상:200 / 그 외 처리x
+     */
     @DeleteMapping("/medicalForm/delete/{medicalFormSerial}")
     public ResponseEntity<MedicalFormDto> updateMedicalForm(@PathVariable("medicalFormSerial") int medicalFormSerial) {
         medicalFormService.deleteMedicalForm(medicalFormSerial);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_DELETE_MEDICAL_FORM), HttpStatus.OK);
     }
 
-    private String extractEmail(Authentication authentication){
+
+
+    // Jwt 토큰으로 멤버 객체 반환
+    private Member extractMember(Authentication authentication){
         PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
         String memberEmail = principal.getMember().getMemberEmail();
-        return memberEmail;
+        Member findMember = memberRepository.findByMemberEmail(memberEmail);
+        return findMember;
     }
 }

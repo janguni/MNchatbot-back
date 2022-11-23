@@ -26,20 +26,5 @@ public class ChangeMedicalFormReq {
     private boolean medicalFormQ6;
 
     private String medicalFormQ7;
-    public ChangeMedicalFormReq() {
-    }
 
-    public ChangeMedicalFormReq(int medicalSerial, String medicalFormName, Date medicalFormDate, String medicalFormTime, String medicalFormQ1, String medicalFormQ2, boolean medicalFormQ3, String medicalFormQ4, boolean medicalFormQ5, boolean medicalFormQ6, String medicalFormQ7) {
-        this.medicalFormSerial = medicalSerial;
-        this.medicalFormName = medicalFormName;
-        this.medicalFormDate = medicalFormDate;
-        this.medicalFormTime = medicalFormTime;
-        this.medicalFormQ1 = medicalFormQ1;
-        this.medicalFormQ2 = medicalFormQ2;
-        this.medicalFormQ3 = medicalFormQ3;
-        this.medicalFormQ4 = medicalFormQ4;
-        this.medicalFormQ5 = medicalFormQ5;
-        this.medicalFormQ6 = medicalFormQ6;
-        this.medicalFormQ7 = medicalFormQ7;
-    }
 }

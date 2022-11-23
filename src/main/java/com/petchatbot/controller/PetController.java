@@ -4,9 +4,11 @@ import com.petchatbot.config.ResponseMessage;
 import com.petchatbot.config.StatusCode;
 import com.petchatbot.config.auth.PrincipalDetails;
 import com.petchatbot.domain.dto.PetListDto;
+import com.petchatbot.domain.model.Member;
 import com.petchatbot.domain.requestAndResponse.ChangePetInfoReq;
 import com.petchatbot.domain.requestAndResponse.DefaultRes;
 import com.petchatbot.domain.dto.PetDto;
+import com.petchatbot.repository.MemberRepository;
 import com.petchatbot.service.PetService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +31,7 @@ import java.util.List;
 public class PetController {
 
     private final PetService petService;
+    private final MemberRepository memberRepository;
 
     /**
      * 반려동물 추가
@@ -66,9 +69,8 @@ public class PetController {
      */
     @GetMapping("/pet/petList")
     public ResponseEntity<List<PetListDto>> petList(Authentication authentication) {
-        String email = extractEmail(authentication);
-        List<PetListDto> pets = petService.petList(email);
-        log.info("[{}]님의 반려동물 목록 확인 완료", email);
+        Member findMember = extractMember(authentication);
+        List<PetListDto> pets = petService.petList(findMember);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_GET_PET_LIST, pets), HttpStatus.OK);
     }
 
@@ -108,5 +110,12 @@ public class PetController {
         PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
         String memberEmail = principal.getMember().getMemberEmail();
         return memberEmail;
+    }
+
+    private Member extractMember(Authentication authentication){
+        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
+        String memberEmail = principal.getMember().getMemberEmail();
+        Member findMember = memberRepository.findByMemberEmail(memberEmail);
+        return findMember;
     }
 }

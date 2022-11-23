@@ -56,13 +56,12 @@ public class PetServiceImpl implements PetService{
 
     /**
      * 반려동물 목록 확인
-     * @param email
+     * @param findMember
      * @return 반려동물들의 시리얼, 품종, 이름 정보만
      */
     @Override
-    public List<PetListDto> petList(String email) {
-        Member member = memberRepository.findByMemberEmail(email);
-        List<Pet> petList = member.getPetList();
+    public List<PetListDto> petList(Member findMember) {
+        List<Pet> petList = findMember.getPetList();
 
         List<PetListDto> pets = new ArrayList<>();
         for (Pet pet: petList){

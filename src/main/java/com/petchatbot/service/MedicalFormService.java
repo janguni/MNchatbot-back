@@ -30,7 +30,7 @@ public class MedicalFormService {
     private final PetRepository petRepository;
 
     // 문진표 저장
-    public void saveMedicalForm(MedicalFormDto medicalFormDto, Member member) throws ParseException {
+    public void saveMedicalForm(MedicalFormDto medicalFormDto, Member member){
         int petSerial = medicalFormDto.getPetSerial();
         Pet findPet = petRepository.findByPetSerial(petSerial);
 

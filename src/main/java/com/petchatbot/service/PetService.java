@@ -1,6 +1,7 @@
 package com.petchatbot.service;
 
 import com.petchatbot.domain.dto.PetListDto;
+import com.petchatbot.domain.model.Member;
 import com.petchatbot.domain.requestAndResponse.ChangePetInfoReq;
 import com.petchatbot.domain.dto.PetDto;
 
@@ -15,7 +16,7 @@ public interface PetService {
     void changePetInfo(ChangePetInfoReq petInfoReq);
 
     // 반려동물 list
-    List<PetListDto> petList(String email);
+    List<PetListDto> petList(Member member);
 
     // 반려동물 info
     PetDto petInfo(int petSerial);
