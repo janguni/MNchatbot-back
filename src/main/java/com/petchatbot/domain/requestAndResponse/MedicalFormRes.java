@@ -7,27 +7,17 @@ import java.util.Date;
 @Data
 public class MedicalFormRes {
     private String medicalFormName;
-
     private String medicalFormDate;
-
     private String medicalFormTime;
-
     private String medicalFormQ1;
-
     private String medicalFormQ2;
-
     private boolean medicalFormQ3;
-
     private String medicalFormQ4;
 
     private boolean medicalFormQ5;
-
     private boolean medicalFormQ6;
-
     private String medicalFormQ7;
 
-    public MedicalFormRes() {
-    }
 
     public MedicalFormRes(String medicalFormName, String medicalFormDate, String medicalFormTime, String medicalFormQ1, String medicalFormQ2, boolean medicalFormQ3, String medicalFormQ4, boolean medicalFormQ5, boolean medicalFormQ6, String medicalFormQ7) {
         this.medicalFormName = medicalFormName;

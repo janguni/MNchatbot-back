@@ -1,6 +1,9 @@
 package com.petchatbot.domain.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
@@ -76,14 +79,75 @@ public class MedicalForm {
         this.medicalFormQ7 = medicalFormQ7;
     }
 
-    public void changeMedicalForm (String medicalFormName, String medicalFormQ1, String medicalFormQ2, boolean medicalFormQ3, String medicalFormQ4, boolean medicalFormQ5, boolean medicalFormQ6, String medicalFormQ7){
-        this.medicalFormName = medicalFormName;
-        this.medicalFormQ1 = medicalFormQ1;
-        this.medicalFormQ2 = medicalFormQ2;
-        this.medicalFormQ3 = medicalFormQ3;
-        this.medicalFormQ4 = medicalFormQ4;
-        this.medicalFormQ5 = medicalFormQ5;
-        this.medicalFormQ6 = medicalFormQ6;
-        this.medicalFormQ7 = medicalFormQ7;
+    public void changeMedicalForm (MedicalForm.EditReq medicalFormEditReq){
+        this.medicalFormName = medicalFormEditReq.getMedicalFormName();
+        this.medicalFormQ1 = medicalFormEditReq.getMedicalFormQ1();
+        this.medicalFormQ2 = medicalFormEditReq.getMedicalFormQ2();
+        this.medicalFormQ3 = medicalFormEditReq.isMedicalFormQ3();
+        this.medicalFormQ4 = medicalFormEditReq.getMedicalFormQ4();
+        this.medicalFormQ5 = medicalFormEditReq.isMedicalFormQ5();
+        this.medicalFormQ6 = medicalFormEditReq.isMedicalFormQ6();
+        this.medicalFormQ7 = medicalFormEditReq.getMedicalFormQ7();
     }
+
+
+    @AllArgsConstructor
+    public static class GroupRes {
+        public int medicalFormSerial;
+        public String medicalFormName;
+        public String medicalFormDate;
+    }
+
+
+
+    @AllArgsConstructor
+    public static class DetailRes {
+        private String medicalFormName;
+        private String medicalFormDate;
+        private String medicalFormTime;
+        private String medicalFormQ1;
+        private String medicalFormQ2;
+        private boolean medicalFormQ3;
+        private String medicalFormQ4;
+        private boolean medicalFormQ5;
+        private boolean medicalFormQ6;
+        private String medicalFormQ7;
+    }
+
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class EditReq {
+        private int medicalFormSerial;
+        private String medicalFormName;
+        private Date medicalFormDate;
+        private String medicalFormTime;
+        private String medicalFormQ1;
+        private String medicalFormQ2;
+        private boolean medicalFormQ3;
+        private String medicalFormQ4;
+        private boolean medicalFormQ5;
+        private boolean medicalFormQ6;
+        private String medicalFormQ7;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class SaveReq {
+        private int petSerial;
+        private int memberSerial;
+        private String medicalFormName;
+        private Date medicalFormDate;
+        private String medicalFormTime;
+        private String medicalFormQ1;
+        private String medicalFormQ2;
+        private boolean medicalFormQ3;
+        private String medicalFormQ4;
+        private boolean medicalFormQ5;
+        private boolean medicalFormQ6;
+        private String medicalFormQ7;
+    }
+
+
 }

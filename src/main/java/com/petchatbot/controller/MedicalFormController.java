@@ -3,6 +3,7 @@ import com.petchatbot.config.ResponseMessage;
 import com.petchatbot.config.StatusCode;
 import com.petchatbot.config.auth.PrincipalDetails;
 import com.petchatbot.domain.dto.*;
+import com.petchatbot.domain.model.MedicalForm;
 import com.petchatbot.domain.model.Member;
 import com.petchatbot.domain.requestAndResponse.ChangeMedicalFormReq;
 import com.petchatbot.domain.requestAndResponse.DefaultRes;
@@ -36,14 +37,14 @@ public class MedicalFormController {
 
     /**
      * 문진표 추가
-     * @param medicalFormDto (펫 시리얼, 멤버 시리얼, 날짜, 시간, 문진표 문항들) -> 사용자 시리얼은 삭제할 예정
+     * @param medicalFormSaveReq (펫 시리얼, 멤버 시리얼, 날짜, 시간, 문진표 문항들)
      * @param authentication (Jwt 활용)
      * @return 정상:200 / 그 외 처리x
      */
     @PostMapping("/medicalForm/add")
-    public ResponseEntity<MedicalFormDto> addMedicalForm(@RequestBody MedicalFormDto medicalFormDto, Authentication authentication) {
+    public ResponseEntity<MedicalFormDto> addMedicalForm(@RequestBody MedicalForm.SaveReq medicalFormSaveReq, Authentication authentication) {
         Member findMember = extractMember(authentication);
-        medicalFormService.saveMedicalForm(medicalFormDto, findMember);
+        medicalFormService.saveMedicalForm(medicalFormSaveReq, findMember);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_ADD_MEDICAL_FORM), HttpStatus.OK);
     }
 
@@ -54,8 +55,8 @@ public class MedicalFormController {
      * @return 정상:200 / 그 외 처리x
      */
     @GetMapping("/medicalForm/medicalFormList/{petSerial}")
-    public ResponseEntity<List<MedicalFormListDto>> getMedicalFormList(@PathVariable("petSerial") int petSerial) {
-        List<MedicalFormListDto> medicalFormList = medicalFormService.getMedicalFormList(petSerial);
+    public ResponseEntity<List<MedicalForm.GroupRes>> getMedicalFormList(@PathVariable("petSerial") int petSerial) {
+        List<MedicalForm.GroupRes> medicalFormList = medicalFormService.getMedicalFormList(petSerial);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_GET_MEDICAL_FORM_LIST, medicalFormList), HttpStatus.OK);
     }
 
@@ -66,22 +67,20 @@ public class MedicalFormController {
      * @return 정상:200 / 그 외 처리x
      */
     @GetMapping("/medicalForm/{medicalFormSerial}")
-    public ResponseEntity<MedicalFormRes> getMedicalFormInfo(@PathVariable("medicalFormSerial") int medicalFormSerial) {
-        MedicalFormRes medicalFormInfo = medicalFormService.getMedicalFormInfo(medicalFormSerial);
-        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_MEDICAL_FORM_INFO, medicalFormInfo), HttpStatus.OK);
+    public ResponseEntity<MedicalForm.DetailRes> getMedicalFormInfo(@PathVariable("medicalFormSerial") int medicalFormSerial) {
+        MedicalForm.DetailRes medicalDetail = medicalFormService.getMedicalFormInfo(medicalFormSerial);
+        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_MEDICAL_FORM_INFO, medicalDetail), HttpStatus.OK);
     }
 
 
     /**
      * 문진표 수정
-     * @param changeMedicalFormDto (문진표 시리얼, 문진표 이름, 날짜 ,시간 문진표 문항들)
-     * @param authentication (Jwt 활용)
+     * @param medicalEdit (문진표 시리얼, 문진표 이름, 날짜 ,시간 문진표 문항들)
      * @return 정상:200 / 그 외 처리x
      */
     @PatchMapping("/medicalForm/update")
-    public ResponseEntity<MedicalFormDto> updateMedicalForm(@RequestBody ChangeMedicalFormReq changeMedicalFormDto, Authentication authentication) {
-        Member findMember = extractMember(authentication);
-        medicalFormService.updateMedicalForm(changeMedicalFormDto, findMember);
+    public ResponseEntity<MedicalFormDto> updateMedicalForm(@RequestBody MedicalForm.EditReq medicalEdit) {
+        medicalFormService.updateMedicalForm(medicalEdit);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_UPDATE_MEDICAL_FORM), HttpStatus.OK);
     }
 
