@@ -30,6 +30,8 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
+    private final MemberRepository memberRepository;
+
     private final EmailService emailService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -107,12 +109,17 @@ public class MemberController {
 
     // 비밀번호 변경
     @PatchMapping("/member/changePw")
-    public ResponseEntity<String> change_password(@RequestBody ChangePwReq changePwReq, Authentication authentication) {
-        String memberEmail = extractEmail(authentication);
+    public ResponseEntity<String> change_password(@RequestBody ChangePwReq changePwReq) {
+        log.info("------------------비밀번호 변경 시도------------------");
+        String memberEmail = changePwReq.getMemberEmail();
         String memberNewPassword = changePwReq.getMemberNewPassword();
-        log.info("비밀번호 변경 할 email={}", memberEmail);
+        if (memberRepository.findByMemberEmail(memberEmail) == null){
+            log.info("비밀변경 시도 실패 - 아이디 존재x = {}", memberEmail);
+            return new ResponseEntity(DefaultRes.res(StatusCode.BAD_REQUEST, ResponseMessage.CHANGE_PW_FAIL), HttpStatus.OK);
+        }
         MemberDto memberDto = new MemberDto(memberEmail, memberNewPassword);
         memberService.changePassword(memberDto);
+        log.info("비밀번호 변경 성공 이메일 email={}", memberEmail);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CHANGE_PW), HttpStatus.OK);
     }
 
