@@ -18,22 +18,38 @@ import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
+
+// 1. 해당 시도/시군구 동물병원 검색
+// 2. 연계병원에 상담신청
+
 @RestController
 @RequiredArgsConstructor
 @Slf4j
 public class HospitalController {
     private final HospitalService hospitalService;
+
+    /**
+     * 해당 시도/시군구 동물병원 검색
+     * @param region (시도)
+     * @param city (시군구)
+     * @return 정상:200  / 검색한 지역의 동물병원이 없을 시: 404
+     */
     @GetMapping("/hospital/{region}/{city}")
     public ResponseEntity<HospitalDto> searchTotalHospitalList(@PathVariable("region") String region,
-                                                         @PathVariable("city") String city
-                                                         ) {
+                                                         @PathVariable("city") String city) {
         List<HospitalDto> totalHospitalList = hospitalService.searchTotalHospitalList(region, city);
-        if (totalHospitalList.isEmpty())
+
+        if (totalHospitalList.isEmpty()) // 검색한 지역의 동물병원이 없을 시
             return new ResponseEntity(DefaultRes.res(StatusCode.NOT_FOUND, ResponseMessage.FAIL_GET_HOSPITAL_LIST), HttpStatus.OK);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.SUCCESS_GET_HOSPITAL_LIST, totalHospitalList), HttpStatus.OK);
     }
 
-    // 상담신청
+    /**
+     * 연계병원에 상담신청
+     * @param hospitalApplyDto (펫 시리얼, 문진표 시리얼, 연계병원 시리얼, 날짜, 시간, ...)
+     * @param authentication (Jwt 토큰 활용)
+     * @return 정상:200 / 그 외 오류가 날 시에는 예외를 터트림
+     */
     @RequestMapping(path = "/hospital/apply", method = POST, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public ResponseEntity applyAppointmentToHospital(@ModelAttribute HospitalApplyDto hospitalApplyDto, Authentication authentication) {
         try {
@@ -46,6 +62,8 @@ public class HospitalController {
         }
     }
 
+
+    // jwt 토큰에서 사용자 이메일 추출하여 반환
     private String extractEmail(Authentication authentication){
         PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
         String memberEmail = principal.getMember().getMemberEmail();

@@ -13,8 +13,6 @@ public class EmailDto {
     @Id
     private String receiveMail;
 
-    public EmailDto() {}
-
     public EmailDto(String receiveMail) {
         this.receiveMail = receiveMail;
     }

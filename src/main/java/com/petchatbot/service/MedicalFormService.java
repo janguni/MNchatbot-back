@@ -44,8 +44,6 @@ public class MedicalFormService {
 
 
 
-
-
     /**
      * 문진표 목록 확인
      * @param petSerial

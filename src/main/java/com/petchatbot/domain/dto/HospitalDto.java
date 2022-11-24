@@ -6,20 +6,13 @@ import lombok.extern.slf4j.Slf4j;
 
 @Data
 public class HospitalDto {
-
     private int hospSerial;
     private String hospName;
     private String hospAddress;
     private String hospTel;
-
     private String hospEmail;
-
     private String hospField;
-
     private HospitalType hospType;
-
-    public HospitalDto() {
-    }
 
     public HospitalDto(String hospName, String hospAddress, String hospTel, HospitalType hospitalType) {
         this.hospName = hospName;

@@ -39,6 +39,13 @@ public class EmailService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
+    /**
+     * 회원가입 시 인증코드 전송
+     * @param emailDto (이메일)
+     * @param title (이메일 제목)
+     * @param randomNumber (인증코드)
+     * @throws MessagingException
+     */
     public void sendEmailForJoin(EmailDto emailDto, String title, int randomNumber) throws MessagingException {
         try {
             String message = "멍냥챗봇에 가입해 주셔서 감사합니다.\n";
@@ -54,6 +61,13 @@ public class EmailService {
         }
     }
 
+    /**
+     * 비밀번호 변경 시 이메일 전송
+     * @param emailDto (이메일)
+     * @param title (이메일 제목)
+     * @param randomNumber (인증코드)
+     * @throws MessagingException
+     */
     public void sendEmailForChangePw(EmailDto emailDto, String title, int randomNumber) throws MessagingException {
         try {
             String message = "앱으로 돌아가셔서 인증번호 입력 후 비밀번호 재설정을 완료해주세요.";
@@ -69,10 +83,13 @@ public class EmailService {
         }
     }
 
+    /**
+     * 연계병원에게 상담신청 내용 이메일전송
+     * @throws MessagingException
+     */
     public void sendEmailToHospital(EmailDto emailDto, String title, HospitalApplyDto hospitalApplyDto, int petSerial, int medicalFormSerial, AmazonS3 amazonS3 , String s3ImageName) throws MessagingException {
 
         try {
-            String text = "test";
             MimeMessage m = emailSender.createMimeMessage();
             MimeMessageHelper h = new MimeMessageHelper(m, "UTF-8");
             h.setFrom("lightson23@naver.com");
@@ -85,10 +102,12 @@ public class EmailService {
         }
     }
 
+    // 인증번호 문장 만들기
     private String makeEmailText(int randomNumber,String message){
         return "인증번호는 " + randomNumber + " 입니다.\n" + message;
     }
 
+    // 상담신청 전체 내용 만들기
     private String makeEmailText(HospitalApplyDto dto, int petSerial, int medicalFormSerial,AmazonS3 amazonS3,String s3ImageName){
 
         Pet findPet = petRepository.findByPetSerial(petSerial);
@@ -98,7 +117,8 @@ public class EmailService {
         if (findPet.getPetNeutralization() == NEUTER) isNeuter = "네";
         else isNeuter = "아니요";
 
-        String underDisease;
+
+        String underDisease; // 기저질환
         if (findMedicalForm.getMedicalFormQ2().equals("I")) underDisease = "내분비질환";
         else if (findMedicalForm.getMedicalFormQ2().equals("S")) underDisease = "피부질환";
         else if (findMedicalForm.getMedicalFormQ2().equals("M")) underDisease = "근골격계질환";
@@ -111,7 +131,6 @@ public class EmailService {
             isSpecialNoteMedication="네";
             medication = findMedicalForm.getMedicalFormQ4();
         }
-
         else {
             isSpecialNoteMedication = "아니요";
             medication = "약에 대한 세부사항 없음";
@@ -126,17 +145,17 @@ public class EmailService {
         if (findMedicalForm.isMedicalFormQ6()) isExcessiveExercise="네";
         else isExcessiveExercise = "아니요";
 
-        String isCostRequest;
+        String isCostRequest; // 비용 요청 여부
         if (dto.getApptBill()=="true") isCostRequest = "네";
         else isCostRequest = "아니요";
 
-        // 이미지
-        String image;
+
+        String image; // 이미지
         if (s3ImageName == "noImageFile"){
             image = "이미지가 첨부되지 않음";
         }
         else {
-            image = amazonS3.getUrl(bucket, s3ImageName).toString();
+            image = amazonS3.getUrl(bucket, s3ImageName).toString(); // s3에서 이미지 파일 가져오기
         }
 
         return "안녕하세요. 멍냥챗봇 입니다.\n" +
